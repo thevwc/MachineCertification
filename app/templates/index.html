@@ -15,7 +15,7 @@
 
     <!-- VERSION SECTION -->
     <div class="version">
-        <h5>ver. Apr 8, 2022</h5>
+        <h5>ver. Apr 17, 2022</h5>
     </div>  
       
     <!-- SELECTION AREA -->
@@ -37,13 +37,13 @@
         <!-- <label for="machineSelected">Machine data: </label> -->
         <select 
             id='machineSelected' 
+            class="selectpicker"
             title='Select a machine ...' 
             data-live-search=true 
             data-live-search-style="contains" 
             data-width='auto'>
             <option class="optMachines" value="">Select a machine ...</option>
             {% for m in machineList %}
-                console.log({{m.machineDisplayName}})
                 <option 
                     class="optMachineName" 
                     data-machineID={{m.machineID}} 
@@ -60,7 +60,7 @@
         <!-- <label for="memberSelected">Member data: </label> -->
         <select 
             id='memberSelected' 
-            class='memberSelection' 
+            class='memberSelection selectpicker' 
             title='Select a member ...' 
             data-live-search=true 
             data-live-search-style="contains" 
@@ -82,7 +82,7 @@
         <!-- <label for="instructorSelected">Instructor data: </label> -->
         <select 
             id='instructorSelected' 
-            class='instructorSelection' 
+            class='instructorSelection selectpicker' 
             title='Select an instructor ...' 
             data-live-search=true 
             data-live-search-style="contains" 

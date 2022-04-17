@@ -48,12 +48,16 @@ def login():
 # MAIN PAGE
 @app.route('/index')
 def index():
+    # get shop location from URL
+    shopLocation = 'RA'
+
      # BUILD ARRAY OF MACHINE NAMES FOR DROPDOWN LIST OF MACHINES
     #machineNames=[]
     sqlMachines = "SELECT machineID, machineDesc, machineLocation + ' - ' + machineDesc + ' (' + machineID + ')' as machineDisplayName, machineLocation "
     sqlMachines += "FROM MachinesRequiringCertification "
-    sqlMachines += "ORDER BY machineDesc, machineLocation"
-    
+    sqlMachines += "WHERE machineLocation = '" + shopLocation + "' "
+    sqlMachines += "ORDER BY machineDesc, machineLocation "
+
     machineList = db.engine.execute(sqlMachines)
     if machineList == None:
         flash('No names to list.','danger')
@@ -109,8 +113,12 @@ def getMemberLoginData():
     
 @app.route('/displayMachineInstructorsAndMembers',methods=['GET','POST'])
 def displayMachineData():
+    print('... displayMachineData')
+
     req = request.get_json()
     machineID = req["machineID"]
+    print('machineID - ',machineID)
+
     machine = db.session.query(Machines).filter(Machines.machineID == machineID).first()
     if machine == None:
         msg = "Machine ID " + machineID + " was not found."
@@ -185,6 +193,8 @@ def displayMachineData():
 
 @app.route('/displayMemberData',methods=['POST'])
 def displayMemberData():
+    print('... displayMemberData')
+
     req = request.get_json() 
     villageID = req["villageID"]
     location = req["location"]
@@ -208,11 +218,15 @@ def displayMemberData():
 
 @app.route('/displayMachineInstructors',methods=['GET','POST'])
 def displayMachineInstructors():
+    print('... displayMachineInstructors')
+    
     req = request.get_json()
     instructorID = req["instructorID"]
+    print('instructorID - ',instructorID)
+
     instructor = db.session.query(Member).filter(Member.Member_ID == instructorID).first()
     if instructor == None:
-        msg = "Instructor ID " + machineID + " was not found."
+        msg = "Instructor ID " + instructorID + " was not found."
         return jsonify(msg=msg,status=201)
     instructorName = instructor.First_Name
     if instructor.Nickname is not None:
@@ -228,6 +242,7 @@ def displayMachineInstructors():
     machineDict = []
     machineItem = []
     machines = db.session.query(Machines)
+    #.order(Machines.machineLocation,Machines.machineDesc)
     for m in machines:
         instructorCertified = db.session.query(MachineInstructors)\
             .filter(MachineInstructors.machineID == m.machineID)\

@@ -51,6 +51,7 @@
         padding-bottom:0px;
         padding-left:0px;
         margin:auto;
+        display:none;
     }
     #locationSelected {
         width:175px;
@@ -63,7 +64,7 @@
         margin:auto;
     }
     #machineSelected {
-        width:250px;
+        width:280px;
     }
     
     .members {
@@ -74,7 +75,7 @@
         margin:auto;
     }                         
     #memberSelected {
-        width:250px;
+        width:280px;
     }
 
     .instructors {
@@ -85,7 +86,7 @@
         margin:auto;
     }                         
     #instructorSelected {
-        width:250px;
+        width:280px;
     }
 
     #machineSection {
@@ -114,6 +115,7 @@
         margin-top:10px;
         width:300px;
         margin:auto;
+        font-size:small;
         /* display:none; */
     }
     .memberName {
@@ -221,7 +223,9 @@
     #memberSelected {
         width:300px;
     }
-
+    #memberSection {
+        font-size:medium;
+    }
     .instructors {
         grid-area:instructorsArea;
         padding-top:0px;
@@ -326,7 +330,12 @@
         padding-top:10px;
         margin-top:10px;
         display:block;
+        font-size:large;
+        width:400px;
     }
+    /* #memberData {
+        width:100%;
+    } */
     #instructorSection {
         grid-area:detail3Area;
         background-color: lightgreen;

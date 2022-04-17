@@ -1,6 +1,7 @@
 // index.js
-const shopChoice = document.getElementById("shopChoice")
-console.log('shopChoice - '+shopChoice.value)
+// const shopChoice = document.getElementById("shopChoice")
+// console.log('shopChoice - '+shopChoice.value)
+// shopChoice = 'BW'
 
 const machineSelected = document.getElementById("machineSelected")
 const memberSelected = document.getElementById("memberSelected")
@@ -12,14 +13,16 @@ const largeScreen = window.matchMedia("(min-width: 992px)")
 const machineInstructorBtn = document.getElementById("machineInstructorBtn")
 const machineMemberBtn = document.getElementById("machineMemberBtn")
 const machineInstructorsAndMembers = document.getElementById("machineInstructorsAndMembers")
+console.log('... constants have been defined')
 
 // EVENT LISTENERS
-shopChoice.addEventListener("click",locationChange)
-machineSelected.addEventListener("click",machineClicked)
-memberSelected.addEventListener("click",memberClicked)
-instructorSelected.addEventListener("click",instructorChange)
+//shopChoice.addEventListener("click",locationChange)
+machineSelected.addEventListener("change",machineClicked)
+//machineSelected.addEventListener("change",machineChanged)
+memberSelected.addEventListener("change",memberClicked)
+instructorSelected.addEventListener("change",instructorChange)
 largeScreen.addEventListener("change",handleMediaChange)
-
+console.log('... event listeners have been defined')
 
 // CODE EXECUTED EVERY TIME
 handleMediaChange(largeScreen)
@@ -28,28 +31,36 @@ handleMediaChange(largeScreen)
 // FUNCTIONS
 
 // SHOW/HIDE MACHINE LIST OPTIONS BASED ON LOCATION SELECTION
-function locationChange() {
-    // SHOW ALL MACHINES
-    $('.optMachineName').each(function(){
-        $(this).show();
-    })
-    if (shopChoice.value != 'BOTH') {
-        // HIDE OPTION IF THE data.location MATCHES THE SELECTED LOCATION
-        let currentLocation = shopChoice.value
-        $('.optMachineName').each(function(){
-            let sData = $(this).data('location');
-            if (sData != currentLocation){
-                $(this).hide();
-            }
-        })
-    }
-}
+// function locationChange() {
+//     // SHOW ALL MACHINES
+//     $('.optMachineName').each(function(){
+//         $(this).show();
+//     })
+//     if (shopChoice.value != 'BOTH') {
+//         // HIDE OPTION IF THE data.location MATCHES THE SELECTED LOCATION
+//         let currentLocation = shopChoice.value
+//         console.log('currentLocation - '+currentLocation)
+
+//         $('.optMachineName').each(function(){
+//             let sData = $(this).data('location');
+//             if (sData != currentLocation){
+//                 $(this).hide();
+//             }
+//         })
+//     }
+// }
 
 function machineClicked() {
+    console.log('... machineClicked rtn')
     // CLEAR OTHER SELECTIONS
     if (machineSelected.selectedIndex != 0) {
+        $('.selectpicker').selectpicker('refresh');
         memberSelected.selectedIndex = 0
         instructorSelected.selectedIndex = 0
+        $('#memberSelected').prop('selectedIndex',0);
+        $('#instructorSelected').prop('selectedIndex',0);
+        memberSelected.setAttribute('selectedIndex',0)
+        instructorSelected.setAttribute('selectedIndex',0)
     }
     else {
         return
@@ -65,7 +76,13 @@ function machineClicked() {
     displayMachineInstructorsAndMembers()
 }
 
+function machineChanged() {
+    console.log('... machine changed rt')
+}
+
 function memberClicked() {
+    console.log('... memberClicked rtn')
+    
     // CLEAR OTHER SELECTIONS
     if (memberSelected.selectedIndex == 0) {
         return
@@ -97,6 +114,7 @@ function memberClicked() {
 }
 
 function instructorChange() {
+    console.log('... instructorClicked rtn')
     // CLEAR OTHER SELECTIONS
     if (instructorSelected.selectedIndex != 0) {
         machineSelected.selectedIndex = 0
