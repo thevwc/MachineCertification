@@ -124,6 +124,7 @@ function instructorChange() {
     if (!largeScreen.matches) {
         machineSection.style.display="none"
         memberSection.style.display="none"
+        instructorSection.style.display="block"
     }
     // GET INSTRUCTOR CONTACT DATA TO DISPLAY
     displayMachineInstructorData()
@@ -132,6 +133,9 @@ function instructorChange() {
 function displayMachineInstructorsAndMembers() {
     let e = document.getElementById("machineSelected");
     machineID = e.options[e.selectedIndex].getAttribute('data-machineid')
+    if (machineID == null) {
+        return
+    } 
     let dataToSend = {
         machineID: machineID
     };
@@ -222,6 +226,9 @@ function displayMachineInstructorsAndMembers() {
 function displayMemberCertifications(villageID,location) {
     console.log('villageID - '+villageID)
     console.log('location - '+location)
+    if (villageID == null) {
+        return
+    } 
     let dataToSend = {
         villageID: villageID,
         location: location
@@ -366,6 +373,9 @@ function handleMediaChange(e) {
 function displayMachineInstructorData() {
     let e = document.getElementById("instructorSelected");
     instructorID = e.options[e.selectedIndex].getAttribute('data-villageid')
+    if (instructorID == null) {
+        return
+    } 
     let dataToSend = {
         instructorID: instructorID
     };

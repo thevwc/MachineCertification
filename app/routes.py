@@ -49,7 +49,7 @@ def login():
 @app.route('/index')
 def index():
     # get shop location from URL
-    shopLocation = 'RA'
+    shopLocation = 'BW'
 
      # BUILD ARRAY OF MACHINE NAMES FOR DROPDOWN LIST OF MACHINES
     #machineNames=[]
@@ -113,11 +113,11 @@ def getMemberLoginData():
     
 @app.route('/displayMachineInstructorsAndMembers',methods=['GET','POST'])
 def displayMachineData():
-    print('... displayMachineData')
+    #print('... displayMachineData')
 
     req = request.get_json()
     machineID = req["machineID"]
-    print('machineID - ',machineID)
+    #print('machineID - ',machineID)
 
     machine = db.session.query(Machines).filter(Machines.machineID == machineID).first()
     if machine == None:
@@ -193,7 +193,7 @@ def displayMachineData():
 
 @app.route('/displayMemberData',methods=['POST'])
 def displayMemberData():
-    print('... displayMemberData')
+    #print('... displayMemberData')
 
     req = request.get_json() 
     villageID = req["villageID"]
@@ -218,11 +218,11 @@ def displayMemberData():
 
 @app.route('/displayMachineInstructors',methods=['GET','POST'])
 def displayMachineInstructors():
-    print('... displayMachineInstructors')
+    #print('... displayMachineInstructors')
     
     req = request.get_json()
     instructorID = req["instructorID"]
-    print('instructorID - ',instructorID)
+    #print('instructorID - ',instructorID)
 
     instructor = db.session.query(Member).filter(Member.Member_ID == instructorID).first()
     if instructor == None:
