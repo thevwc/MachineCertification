@@ -139,7 +139,7 @@ function displayMachineInstructorsAndMembers() {
     let dataToSend = {
         machineID: machineID
     };
-    fetch(`${window.origin}/displayMachineInstructorsAndMembers`, {
+    fetch(`${window.origin}/displayMachineInstructorsMembersUsage`, {
         method: "POST",
         credentials: "include",
         body: JSON.stringify(dataToSend),
@@ -220,6 +220,46 @@ function displayMachineInstructorsAndMembers() {
                 dtlParent.appendChild(divMemberName)
             }
         }
+
+        // Display 'Machine Usage' heading
+        var divUsageHdg = document.createElement('div')
+        divUsageHdg.classList.add('MachineUsageHdg')
+        divUsageHdg.innerHTML = "Machine Usage:"
+        divUsageHdg.style.textAlign = 'left'
+        divUsageHdg.style.paddingTop = '30px'
+        divUsageHdg.style.paddingLeft = '30px'
+        dtlParent.appendChild(divUsageHdg)
+
+        // Display dates machine was used 
+        machineUsage = data.UsageDict
+
+        if (machineUsage.length == 0){
+            // If no members, display message
+            var divNoMembers = document.createElement('div')
+            divNoMembers.classList.add('NoUsage')
+            divNoMembers.innerHTML = "No usage to date."
+            divNoMembers.style.width = '400px'
+            divNoMembers.style.marginLeft = '60px'
+            dtlParent.appendChild(divNoMembers)
+        }
+        else {
+            for (var element of machineUsage) {
+                var divUsageDate = document.createElement('div')
+                divUsageDate.classList.add('usageDate')
+                divUsageDate.innerHTML = element['usageDate']
+                divUsageDate.style.width = '400px'
+                divUsageDate.style.marginLeft = '60px'
+                dtlParent.appendChild(divUsageDate)
+
+                var divUsageMemberName = document.createElement('div')
+                divUsageMemberName.classList.add('UsageMemberName')
+                divUsageMemberName.innerHTML = element['memberName']
+                divUsageMemberName.style.width = '400px'
+                divUsageMemberName.style.marginLeft = '60px'
+                dtlParent.appendChild(divUsageMemberName)
+            }
+        }
+
         return
     })
 }

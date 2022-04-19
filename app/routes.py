@@ -8,7 +8,7 @@ from flask_bootstrap import Bootstrap
 from werkzeug.urls import url_parse
 from app.models import ShopName, Member, MemberActivity, MonitorSchedule, MonitorScheduleTransaction,\
 MonitorWeekNote, CoordinatorsSchedule, ControlVariables, DuesPaidYears, Contact, Machines, \
-MachineInstructors, MemberMachineCertifications
+MachineInstructors, MemberMachineCertifications, MachineActivity
 from app import app
 from app import db
 from sqlalchemy import func, case, desc, extract, select, update, text
@@ -111,7 +111,7 @@ def getMemberLoginData():
     msg = "Authorized"
     return jsonify(msg=msg,status=200)
     
-@app.route('/displayMachineInstructorsAndMembers',methods=['GET','POST'])
+@app.route('/displayMachineInstructorsMembersUsage',methods=['GET','POST'])
 def displayMachineData():
     #print('... displayMachineData')
 
@@ -185,10 +185,44 @@ def displayMachineData():
                 'certifiedBy':instructorName
             }
             certifiedDict.append(certifiedItem)
+
+           
+    # GET MACHINE USAGE FROM MachineActivity table
+    usageDict = []
+    usageItem = []
+
+    sp = "EXEC machineUsageForSpecificMachine '" + machineID + "'"
+    sql = SQLQuery(sp)
+    usage = db.engine.execute(sql)
+    if usage == None:
+        memberName = 'No members have been usage.'
+        usageItem = {
+                'memberID':'',
+                'memberName':'',
+                'machineID':machineID,
+                'usageDate':''        
+        }
+        usageDict.append(usageItem)
+    else:
+        for u in usage:
+            memberName = u.first_name
+            if u.nickname is not None:
+                if len(u.nickname) > 0 :
+                    memberName += ' (' + u.nickname + ')'
+            memberName += ' ' + u.last_name
+            activityDate = u.startDateTime.strftime('%m-%d-%Y %H:%M')
+            usageItem = {
+                'memberID':u.member_ID,
+                'memberName':memberName,
+                'machineID':u.machineID,
+                'usageDate':activityDate
+            }
+            usageDict.append(usageItem)
+        
     msg="Success"
     status=200
     return jsonify(msg=msg,status=status,machineLocation=machineLocation,machineID=machineID,
-    machineDesc=machineDesc,instructorsList=instructorsList,certifiedDict=certifiedDict)
+    machineDesc=machineDesc,instructorsList=instructorsList,certifiedDict=certifiedDict,UsageDict=usageDict)
 
 
 @app.route('/displayMemberData',methods=['POST'])
