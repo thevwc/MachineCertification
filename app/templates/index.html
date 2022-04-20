@@ -15,17 +15,17 @@
 
     <!-- VERSION SECTION -->
     <div class="version">
-        <h5>ver. Apr 19, 2022</h5>
+        <h5>ver. Apr 20, 2022</h5>
     </div>  
       
     <!-- SELECTION AREA -->
     
     <!-- locations -->
-    <div class="locations">
+    <div class="locationSelector">
         <form class = "filterItems ">
             <label for="shopChoice">Location: </label>
             <select id="shopChoice" name="shopList" style="height:25px; width:150px; font-size: 1em;">
-                <option id="both" value="BOTH" >Both</option>
+                <!-- <option id="both" value="BOTH" >Both</option> -->
                 <option id='RA' value="RA">Rolling Acres</option>
                 <option id='BW' value="BW">Brownwood</option>
             </select>
@@ -33,15 +33,14 @@
     </div>
 
     <!--list of machines -->
-    <div class="machines">
-        <!-- <label for="machineSelected">Machine data: </label> -->
+    <div class="machineSelector">
         <select 
             id='machineSelected' 
             class="selectpicker"
             title='Select a machine ...' 
             data-live-search=true 
             data-live-search-style="contains" 
-            data-width='auto'>
+            data-width='500px'>
             <option class="optMachines" value="">Select a machine ...</option>
             {% for m in machineList %}
                 <option 
@@ -55,16 +54,15 @@
         </select>
     </div>
 
-    <!--list of members -->
-    <div class="members" >
-        <!-- <label for="memberSelected">Member data: </label> -->
+    <!--List of members -->
+    <div class="memberSelector" >
         <select 
             id='memberSelected' 
             class='memberSelection selectpicker' 
             title='Select a member ...' 
             data-live-search=true 
             data-live-search-style="contains" 
-            data-width='auto'>
+            data-width='500px'>
             <option class="optMembers" value="">Select a member ...</option>
             {% for mbr in memberList %}
                 <option  
@@ -76,17 +74,16 @@
             {% endfor %}
         </select>
     </div>
-    
-     <!--List of instructors -->
-     <div class="instructors" >
-        <!-- <label for="instructorSelected">Instructor data: </label> -->
+
+    <!--List of instructors -->
+    <div class="instructorSelector" >
         <select 
             id='instructorSelected' 
             class='instructorSelection selectpicker' 
             title='Select an instructor ...' 
             data-live-search=true 
             data-live-search-style="contains" 
-            data-width='auto'>
+            data-width='500px'>
             <option class="optInstructors" value="">Select an instructor ...</option>
             {% for i in instructorList %}
                 <option  
@@ -99,75 +96,18 @@
         </select>
     </div>
 
-    <div id="machineSection">
-        <div style="text-align:center">MACHINE SECTION</div>
+    <div id="machineDetailSection">
         <div id="machineInstructorsAndMembers"></div>
     </div>
 
-    <div id="memberSection">
-        <div style="text-align:center">MEMBER SECTION</div>
+    <div id="memberDetailSection">
         <div id="memberData"></div>
-        <!-- MEMBERS CERTIFIED FOR THIS MACHINE -->
-        <!-- last, first (nick)  member ID -->
-        <!-- <table id='contactTable' style="margin:auto">
-            <caption id="contactTableCaption" style="caption-side:top;text-align:center">
-            </caption>
-        <tbody id="contactTableBody"></tbody>     -->
-            <!-- <tr>
-                <td>Home phone:  </td>
-                <td style="text-align:right">352-391-7894</td>
-            </tr>
-            <tr>
-                <td>Mobile phone:  </td>
-                <td style="text-align:right">352-391-7894</td>
-            </tr>
-            <tr>
-                <td>Email:  </td>
-                <td style="text-align:right">hartl1r@gmail.com</td>
-            </tr> -->
-        <!-- </table> -->
-
-        <!-- MEMBER DATA -->
-        <!-- last, first (nick)  member ID -->
-        <!-- home phone -->
-        <!-- mobile phone -->
-        <!-- email -->
-
-        <!-- LIST ALL MACHINES WITH CHECKBOX FOR MEMBER IS CERTIFIED -->
-        <!-- checkbox    machineID    machineDesc    machineLocation -->
+        <div id="memberMachines"></div>
     </div>  
     
-    <div id="instructorSection">
-        <div style="text-align:center">INSTRUCTOR SECTION</div>
+    <div id="instructorDetailSection">
         <div id="instructorData"></div>
-        <!-- MEMBERS OF machineCertificationStaff -->
-        <!-- last, first (nick)  member ID -->
-
-        <!-- INSTRUCTOR DATA -->
-        <!-- last, first (nick)  member ID -->
-        <!-- home phone -->
-        <!-- mobile phone -->
-        <!-- email -->
         <div id="instructorMachines"></div>
-            <!-- <br> -->
-            <!-- <div class="row">
-                <div class="col-3">Can Certify</div>
-                <div class="col-5">Machine</div>
-                <div class="col-1">Location</div>
-            </div>
-            <br> -->
-            <!-- <div id="instructorMachinesDetail"> -->
-                <!-- <div class="row">
-                    <input class='col-3 canCertify' type="checkbox" checked>
-                    <div class="col-5 clsMachineDesc">Sample (E000000)</div>
-                    <div class="col-1 clsMachineLocation">BW</div>
-                    <div id='E000000' class="clsMachineID" style="display:none">E000000</div>
-                </div> -->
-
-            <!-- </div> -->
-        
-        <!-- LIST ALL MACHINES WITH CHECKBOX FOR WHICH INSTRUCTOR MAY CERTIFY -->
-        <!-- checkbox    machineID    machineDesc    machineLocation -->
     </div>  
 </div>  <!-- END OF PARENT WRAPPER -->
 

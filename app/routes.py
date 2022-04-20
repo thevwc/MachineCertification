@@ -215,7 +215,7 @@ def displayMachineData():
                 'memberID':u.member_ID,
                 'memberName':memberName,
                 'machineID':u.machineID,
-                'usageDate':activityDate
+                'usageDate':activityDate + '  -  ' + memberName
             }
             usageDict.append(usageItem)
         
@@ -248,7 +248,25 @@ def displayMemberData():
     eMail = mbr.eMail
     msg="Success"
     
-    return jsonify(msg=msg,memberName=memberName,mobilePhone=mobilePhone,homePhone=homePhone,eMail=eMail)
+    # Get all machines and mark those this member is certified
+    machineDict = []
+    machineItem = []
+    machines = db.session.query(Machines)
+    #.order(Machines.machineLocation,Machines.machineDesc)
+    for m in machines:
+        memberCertified = db.session.query(MemberMachineCertifications)\
+            .filter(MemberMachineCertifications.machineID == m.machineID)\
+            .filter(MemberMachineCertifications.member_ID == villageID).scalar() is not None
+        
+        machineItem = {
+            'machineID': m.machineID,
+            'machineDesc': m.machineDesc,   #+ ' ('+m.machineID + ')',
+            'machineLocation': m.machineLocation,
+            'memberCertified':memberCertified
+        }
+        
+        machineDict.append(machineItem)
+    return jsonify(msg=msg,memberName=memberName,mobilePhone=mobilePhone,homePhone=homePhone,eMail=eMail,machineDict=machineDict)
 
 @app.route('/displayMachineInstructors',methods=['GET','POST'])
 def displayMachineInstructors():
@@ -284,7 +302,7 @@ def displayMachineInstructors():
         
         machineItem = {
             'machineID': m.machineID,
-            'machineDesc': m.machineDesc + ' ('+m.machineID + ')',
+            'machineDesc': m.machineDesc,  # + ' ('+m.machineID + ')',
             'machineLocation': m.machineLocation,
             'instructorCertified':instructorCertified
         }

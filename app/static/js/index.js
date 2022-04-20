@@ -6,9 +6,9 @@
 const machineSelected = document.getElementById("machineSelected")
 const memberSelected = document.getElementById("memberSelected")
 const instructorSelected = document.getElementById("instructorSelected")
-const machineSection = document.getElementById("machineSection")
-const memberSection = document.getElementById("memberSection")
-const instructorSection = document.getElementById("instructorSection")
+const machineDetailSection = document.getElementById("machineDetailSection")
+const memberDetailSection = document.getElementById("memberDetailSection")
+const instructorDetailSection = document.getElementById("instructorDetailSection")
 const largeScreen = window.matchMedia("(min-width: 992px)")
 const machineInstructorBtn = document.getElementById("machineInstructorBtn")
 const machineMemberBtn = document.getElementById("machineMemberBtn")
@@ -67,9 +67,9 @@ function machineClicked() {
     }
     // HIDE MEMBER AND INSTRUCTOR SECTIONS IF NOT ON LARGE SCREEN
     if (!largeScreen.matches) {
-        machineSection.style.display="block"
-        memberSection.style.display="none"
-        instructorSection.style.display="none"
+        machineDetailSection.style.display="block"
+        memberDetailSection.style.display="none"
+        instructorDetailSection.style.display="none"
     }
     // GET MACHINE DATA TO DISPLAY
     machineInstructorsAndMembers.style.display="block"
@@ -94,9 +94,9 @@ function memberClicked() {
 
     // HIDE MACHINE AND INSTRUCTOR SECTIONS IF NOT ON LARGE SCREEN
     if (!largeScreen.matches) { 
-        machineSection.style.display="none"
-        memberSection.style.display="block"
-        instructorSection.style.display="none"
+        machineDetailSection.style.display="none"
+        memberDetailSection.style.display="block"
+        instructorDetailSection.style.display="none"
     }
     // GET MEMBER CONTACT INFO TO DISPLAY
     let option = memberSelected.options[memberSelected.selectedIndex]; 
@@ -122,9 +122,9 @@ function instructorChange() {
     }
     // HIDE MACHINE AND MEMBER SECTIONS IF NOT ON LARGE SCREEN
     if (!largeScreen.matches) {
-        machineSection.style.display="none"
-        memberSection.style.display="none"
-        instructorSection.style.display="block"
+        machineDetailSection.style.display="none"
+        memberDetailSection.style.display="none"
+        instructorDetailSection.style.display="block"
     }
     // GET INSTRUCTOR CONTACT DATA TO DISPLAY
     displayMachineInstructorData()
@@ -236,7 +236,7 @@ function displayMachineInstructorsAndMembers() {
         if (machineUsage.length == 0){
             // If no members, display message
             var divNoMembers = document.createElement('div')
-            divNoMembers.classList.add('NoUsage')
+            divNoMembers.classList.add('noUsage')
             divNoMembers.innerHTML = "No usage to date."
             divNoMembers.style.width = '400px'
             divNoMembers.style.marginLeft = '60px'
@@ -247,16 +247,12 @@ function displayMachineInstructorsAndMembers() {
                 var divUsageDate = document.createElement('div')
                 divUsageDate.classList.add('usageDate')
                 divUsageDate.innerHTML = element['usageDate']
-                divUsageDate.style.width = '400px'
-                divUsageDate.style.marginLeft = '60px'
                 dtlParent.appendChild(divUsageDate)
 
-                var divUsageMemberName = document.createElement('div')
-                divUsageMemberName.classList.add('UsageMemberName')
-                divUsageMemberName.innerHTML = element['memberName']
-                divUsageMemberName.style.width = '400px'
-                divUsageMemberName.style.marginLeft = '60px'
-                dtlParent.appendChild(divUsageMemberName)
+                // var divUsageMemberName = document.createElement('div')
+                // divUsageMemberName.classList.add('usageMemberName')
+                // divUsageMemberName.innerHTML = element['memberName']
+                // dtlParent.appendChild(divUsageMemberName)
             }
         }
 
@@ -313,6 +309,7 @@ function displayMemberCertifications(villageID,location) {
     td1Lbl = document.createElement("td")
     td1Data = document.createElement("td")
     td1Lbl.innerHTML="Home phone:"
+    td1Lbl.style="text-Align:left"
     td1Data.innerHTML= data.homePhone
     td1Data.style="text-Align:right"
     tableRow.appendChild(td1Lbl)
@@ -323,6 +320,7 @@ function displayMemberCertifications(villageID,location) {
     td2Lbl = document.createElement("td")
     td2Data = document.createElement("td")
     td2Lbl.innerHTML="Mobile phone:"
+    td2Lbl.style="text-Align:left"
     td2Data.innerHTML= data.mobilePhone
     td2Data.style="text-Align:right"
     tableRow.appendChild(td2Lbl)
@@ -333,6 +331,7 @@ function displayMemberCertifications(villageID,location) {
     td3Lbl = document.createElement("td")
     td3Data = document.createElement("td")
     td3Lbl.innerHTML="Email:"
+    td3Lbl.style="text-Align:left"
     td3Data.innerHTML= data.eMail
     td3Data.style="text-Align:right"
     tableRow.appendChild(td3Lbl)
@@ -340,46 +339,81 @@ function displayMemberCertifications(villageID,location) {
     tableBody.appendChild(tableRow)
 
     memberData.appendChild(table)
-    // tableColLbl = document.createElement("td")
-    // tableColLbl.innerHTML="Mobile phone:"
-    // tableRow.appendChild(tableColLbl)
-    // tableColData = document.createElement("td")
-    // tableColData.innerHTML= data.mobilePhone
-    // tableColData.style="text-Align:right"
-    // tableRow.appendChild(tableColData)
-    // contactTableBody.appendChild(tableRow)
 
-    // Build eMail line
-    // tableCol = document.createElement("td")
-    // tableCol.innerHTML="Email:"
-    // tableRow.appendChild(tableCol)
-    // tableCol.innerHTML= data.eMail
-    // tableCol.style="text-Align:right"
-    // tableRow.appendChild(tableCol)
-    // contactTableBody.appendChild(tableRow)
+    // DISPLAY MACHINES FOR WHICH MEMBER HAS BEEN CERTIFIED
+    // Clear previous data from 'memberMachines' div
+    var memberMachinesParent = document.getElementById('memberMachines')
+    while (memberMachinesParent.firstChild) {
+        memberMachinesParent.removeChild(memberMachinesParent.lastChild);
+    }
 
+    machine = data.machineDict
+    if (machine.length == 0){
+        // If no machines, display message
+        var divNoMachines = document.createElement('div')
+        divNoMachines.innerHTML = "No machines have been defined."
+        divNoMachines.style.width = '400px'
+        divNoMachines.style.marginLeft = '60px'
+        memberMachinesParent.appendChild(divNoMachines)
+        return
+    }
+            
+        // BUILD HEADINGS FOR LIST OF MACHINES
+        var breakElement = document.createElement('br')
+        memberMachinesParent.appendChild(breakElement)
 
-    // Display name and contact info
-    // var divMemberName = document.createElement('div')
-    // divMemberName.innerHTML = data.memberName
-    // divMemberName.style.textAlign='center'
-    // dtlParent.appendChild(divMemberName)
+        var divHdgRow = document.createElement('div')
+        divHdgRow.classList.add('row')
 
-    // var divHomePhone = document.createElement('div')
-    // divHomePhone.innerHTML = "Home phone " + data.homePhone
-    // divHomePhone.style.textAlign='left'
-    // dtlParent.appendChild(divHomePhone)
+        var divHdgCol = document.createElement('div')
+        divHdgCol.classList.add('col-2')
+        divHdgRow.appendChild(divHdgCol) 
+        
+        var divHdgText = document.createElement('div')
+        divHdgText.classList.add('col-8')
+        divHdgText.innerHTML="<h6 style=text-align:left>Certified for the following -</h6>"
+        divHdgRow.appendChild(divHdgText)
 
-    // var divMobilePhone = document.createElement('div')
-    // divMobilePhone.innerHTML = "Mobile phone " + data.mobilePhone
-    // divMobilePhone.style.textAlign='left'
-    // dtlParent.appendChild(divMobilePhone)
+        memberMachinesParent.appendChild(divHdgRow)
 
-    // var divEmail = document.createElement('div')
-    // divEmail.innerHTML = "Email " + data.eMail
-    // divEmail.style.textAlign='left'
-    // dtlParent.appendChild(divEmail)
-    
+        for (m of machine) {
+            // BUILD THE ROW
+            var divRow = document.createElement('div')
+            divRow.classList.add('row', 'mbrMachRow')
+            
+            var blankCol = document.createElement('div')
+            blankCol.classList.add('col-2')
+            divRow.appendChild(blankCol)
+
+            var chkInput = document.createElement('input')
+            chkInput.type="checkbox"
+            chkInput.id = m['machineID']
+            chkInput.classList.add('col-1')
+            if (m['memberCertified']) {
+                chkInput.checked = true
+                chkInput.innerHTML = 'True'
+            }
+            else {
+                chkInput.innerHTML = 'False'
+            }
+            divRow.appendChild(chkInput)
+
+            var divColMachineDesc = document.createElement('div')
+            divColMachineDesc.classList.add('col-6')
+            divColMachineDesc.classList.add('clsMachineDesc')
+            divColMachineDesc.innerHTML = m['machineDesc']
+            divColMachineDesc.style.textAlign='left'
+            divRow.appendChild(divColMachineDesc)
+
+            var divColMachineLoc = document.createElement('div')
+            divColMachineLoc.classList.add('col-1', 'clsMachineLocation')
+            divColMachineLoc.innerHTML = m['machineLocation']
+            divRow.appendChild(divColMachineLoc)
+
+            // ADD THE ROW TO THE DETAIL SECTION
+            memberMachinesParent.appendChild(divRow)
+        }
+   
    
     return
     })
@@ -399,14 +433,14 @@ function closeModal() {
 function handleMediaChange(e) {
     if (e.matches) {
         // LOGIC FOR SCREENS 992 OR LARGER
-        machineSection.style.display="block"
-        memberSection.style.display="block"
-        instructorSection.style.display="block"
+        machineDetailSection.style.display="block"
+        memberDetailSection.style.display="block"
+        instructorDetailSection.style.display="block"
     }
     else {
-        machineSection.style.display="none"
-        memberSection.style.display="none"
-        instructorSection.style.display="none"
+        machineDetailSection.style.display="none"
+        memberDetailSection.style.display="none"
+        instructorDetailSection.style.display="none"
     }
 }
 
@@ -490,8 +524,16 @@ function displayMachineInstructorData() {
 
         var divHdgRow = document.createElement('div')
         divHdgRow.classList.add('row', 'headings')
-        divHdgRow.innerHTML="<h6>May certify the following -</h6>"
-        divHdgRow.margin='auto'
+
+        var divHdgCol = document.createElement('div')
+        divHdgCol.classList.add('col-1')
+        divHdgRow.appendChild(divHdgCol) 
+
+        var divHdgText = document.createElement('div')
+        divHdgText.classList.add('col-8')
+        divHdgText.innerHTML="<h6 style=text-align:left>May certify the following -</h6>"
+        divHdgRow.appendChild(divHdgText)
+
         instructorMachinesParent.appendChild(divHdgRow)
 
         for (m of machine) {
@@ -514,9 +556,10 @@ function displayMachineInstructorData() {
             divRow.appendChild(chkInput)
 
             var divColMachineDesc = document.createElement('div')
-            divColMachineDesc.classList.add('col-8')
+            divColMachineDesc.classList.add('col-6')
             divColMachineDesc.classList.add('clsMachineDesc')
             divColMachineDesc.innerHTML = m['machineDesc']
+            divColMachineDesc.style.textAlign='left'
             divRow.appendChild(divColMachineDesc)
 
             var divColMachineLoc = document.createElement('div')
