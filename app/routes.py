@@ -364,20 +364,20 @@ def certifyMember():
 
 @app.route('/deCertifyMember',methods=['GET','POST'])
 def deCertifyMember():
-    print('... /deCertifyMember')
+    #print('... /deCertifyMember')
     
     req = request.get_json()
     memberID = req["villageID"]
     machineID = req["machineID"]
     staffID = req["staffID"]
     
-    print('memberID - ',memberID)
-    print('machineID - ',machineID)
-    print('staffID - ',staffID)
+    # print('memberID - ',memberID)
+    # print('machineID - ',machineID)
+    # print('staffID - ',staffID)
     
     sqlDelete = "DELETE FROM memberMachineCertifications "
     sqlDelete += " WHERE member_ID = '" + memberID + "' and machineID = '" + machineID + "'"
-    print('sqlDelete - ',sqlDelete)
+    #print('sqlDelete - ',sqlDelete)
     try:
         certification = db.engine.execute(sqlDelete)
     except (SQLAlchemyError, DBAPIError) as e:
@@ -396,3 +396,66 @@ def deCertifyMember():
     msg='Success'
     return jsonify(msg=msg,status=200)
     
+@app.route('/prtMemberCertifications')
+def prtMemberCertifications():
+    #print('/prtMemberCertifications')
+    villageID=request.args.get('villageID')
+    today=date.today()
+    todaysDate = today.strftime('%B %d, %Y')
+
+    # Get the member's name and contact info
+    mbr = db.session.query(Member).filter(Member.Member_ID == villageID).first()
+    if (mbr == None):
+        msg="Member not found"
+        status=400
+        return jsonify(msg=msg,status=status)
+    memberName = mbr.First_Name
+    if mbr.Nickname is not None:
+        if len(mbr.Nickname) > 0 :
+            memberName += ' (' + mbr.Nickname + ')'
+    memberName += ' ' + mbr.Last_Name
+    mobilePhone = mbr.Cell_Phone
+    homePhone = mbr.Home_Phone
+    eMail = mbr.eMail
+
+    # Get the machines the member is certified
+    machinesCertifiedDict = []
+    machinesCertifiedItem = []
+    machinesCertified = db.session.query(MemberMachineCertifications)\
+            .filter(MemberMachineCertifications.member_ID == villageID)
+    # If not certifed for any machines ...
+    if (machinesCertified == None):
+        machinesCertifiedItem = {
+            'machineID': '',
+            'machineDesc': 'Nothing certified',
+            'machineLocation': '',
+            'dateCertified': ''
+        }
+        machinesCertifiedDict.append(machineItem)
+        return render_template("memberCerts.html",todaysDate=todaysDate,\
+            memberName=memberName,villageID=villageID,\
+            machineDict=machineDict)
+    # List the machines for which the member is certified
+    #     select memberMachineCertifications.*, machinesRequiringCertification.* from memberMachineCertifications
+    # left join machinesRequiringCertification on memberMachineCertifications.machineID = machinesRequiringCertification.machineID
+    # order by machineLocation, machineDesc
+    
+    for mc in machinesCertified:
+        machineID = mc.machineID
+        # Look up specific machine to get description and location
+        machine = db.session.query(Machines).filter(Machines.machineID == machineID).first()
+        dateCertified=mc.dateCertified.strftime('%m-%d-%Y')
+        # print('machineID - ',machineID)
+        # print('dateCertified - ',dateCertified)
+        machinesCertifiedItem = {
+            'machineID': machineID,
+            'machineDesc': machine.machineDesc  + ' ('+ machineID + ')',
+            'machineLocation': machine.machineLocation,
+            'dateCertified':dateCertified
+        }
+        # print('item - ',machinesCertifiedItem)
+        machinesCertifiedDict.append(machinesCertifiedItem)
+        
+    return render_template("memberCerts.html",todaysDate=todaysDate,\
+            memberName=memberName,villageID=villageID,\
+            machinesCertifiedDict=machinesCertifiedDict)

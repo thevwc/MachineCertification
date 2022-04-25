@@ -1,0 +1,49 @@
+
+@media print {
+    body {
+        background-color: var(--main-body-bg-color);
+        height: 100%;
+    }
+}
+    .parent {
+        display: grid;
+        width:50%;
+        height:100%;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+        grid-template-areas:"hdgArea"
+                            "machinesTableArea"
+                            "footerArea";
+        grid-gap:0em;
+        color:black;             
+    }
+    #heading {
+        grid-area: hdgArea;
+        display:grid;
+        width:50%;
+        padding-top: 0px;
+        padding-bottom:0px;
+        text-align: center;
+        color: black;
+    }
+
+    #machinesTable {
+        grid-area:machinesTableArea;
+        color:black;
+        padding-top:5px;
+        padding-left:0px;
+        padding-right: 0px;
+        margin-top:10px;
+        width:50%;
+        margin-left:10px;
+        border: 1px solid black;
+        /* display:none; */
+    }
+    
+    #footer {
+        grid-area: footerArea;
+        width:50%;
+        margin-top:20px;
+        margin-left:150px;
+    }
+ 

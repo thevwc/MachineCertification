@@ -420,10 +420,17 @@ function displayMemberCertifications(villageID,location) {
         // ADD THE ROW TO THE DETAIL SECTION
         memberMachinesParent.appendChild(divRow)
     }
+    var prtMemberBtn = document.createElement('button')
+    prtMemberBtn.innerHTML = 'PRINT'
+    prtMemberBtn.onclick=function() {prtMemberCertifications(m['machineID'])}
+    memberMachinesParent.appendChild(prtMemberBtn)
     return
     })
 }
 
+function prtMemberCertifications (machineID) {
+    alert('... prtMemberCertifications - '+ machineID)
+}
 
 function modalAlert(title,msg) {
 	document.getElementById("modalTitle").innerHTML = title
@@ -623,6 +630,10 @@ function certifyMember(e) {
     })
 }
 
-   
+function prtMemberCertifications(memberID) {
+    villageID = sessionStorage.getItem('villageID')
+    url = '/prtMemberCertifications?villageID='+villageID
+    window.location.href=url
+}   
 
 // END OF FUNCTIONS
