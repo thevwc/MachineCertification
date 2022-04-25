@@ -111,7 +111,7 @@
         background-color: aquamarine;
         padding-top:10px;
         margin-top:10px;
-        height:100%;
+        height:600px;
         width:300px;
         margin:auto;
         font-size:small;
@@ -242,6 +242,15 @@
     #instructorSelected {
         width:300px;
     }
+    #memberDetailSection {
+        height:600px;
+    }
+    #machineDetailSection {
+        height:600px;
+    }
+    #instructorDetailSection {
+        height:600px;
+    }
 }
 
 /* Laptop to monitor size */
@@ -342,7 +351,7 @@
         padding-top:10px;
         margin-top:0px;
         display:block;
-        height:100%;
+        height:600px;
         width:100%;
         overflow:auto;
     }
@@ -362,7 +371,7 @@
         margin-top:0px;
         display:block;
         font-size:large;
-        height:100%;
+        height:600px;
         width:100%;
         overflow:auto
     }
@@ -381,7 +390,7 @@
         padding-top:10px;
         margin:auto;
         margin-top:0px;
-        height:100%;
+        height:600px;
         width:100%;
         display:block;
         overflow:auto;

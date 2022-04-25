@@ -311,3 +311,88 @@ def displayMachineInstructors():
         msg="Success"
     return jsonify(msg=msg,status=200,instructorName=instructorName,mobilePhone=mobilePhone,\
         homePhone=homePhone,eMail=eMail,machineDict=machineDict)
+
+
+@app.route('/certifyMember',methods=['GET','POST'])
+def certifyMember():
+    print('... /certifyMember')
+    
+    req = request.get_json()
+    memberID = req["villageID"]
+    machineID = req["machineID"]
+    staffID = req["staffID"]
+    todaysDate = date.today().strftime('%Y-%m-%d')
+
+    print('memberID -',memberID)
+    print('machineID - ',machineID)
+    print('staffID - ',staffID)
+    print('todaysDate - ',todaysDate)
+
+    mbrCert = db.session.query(MemberMachineCertifications)\
+        .filter(MemberMachineCertifications.machineID == machineID)\
+        .filter(MemberMachineCertifications.member_ID == memberID).first()
+    if (mbrCert != None):
+        msg="Already certified."
+        return jsonify(msg=msg,status=201)
+    
+    
+    # add new record
+    sqlInsert = "INSERT INTO memberMachineCertifications (member_ID,dateCertified,certifiedBy,machineID)"
+    sqlInsert += " VALUES('" + memberID + "', '" + todaysDate + "', '" + staffID + "', '" + machineID + "')"
+    print('sqlInsert - ',sqlInsert)
+    try:
+        certification = db.engine.execute(sqlInsert)
+    except (SQLAlchemyError, DBAPIError) as e:
+        print("ERROR -",e)
+        flash("ERROR - DB error")
+        msg='Record could not be inserted'
+        return jsonify(msg=msg,status=201)
+    # sp = "EXEC newMemberMachineCertification '" + memberID + "', '" + todaysDate + "', '" + machineID + "', '" + staffID + "'"
+    # print('sp - ',sp)
+    # try:
+    #     sql = SQLQuery(sp)
+    #     certification = db.engine.execute(sql)
+    # except:
+    #     print('error on EXEC')
+    # if certification == None: 
+    #     print('certification - ',certification)
+    #     msg='Record could not be inserted'
+    #     return jsonify(msg=msg,status=201)
+    
+    msg='Success'
+    return jsonify(msg=msg,status=200)
+
+@app.route('/deCertifyMember',methods=['GET','POST'])
+def deCertifyMember():
+    print('... /deCertifyMember')
+    
+    req = request.get_json()
+    memberID = req["villageID"]
+    machineID = req["machineID"]
+    staffID = req["staffID"]
+    
+    print('memberID - ',memberID)
+    print('machineID - ',machineID)
+    print('staffID - ',staffID)
+    
+    sqlDelete = "DELETE FROM memberMachineCertifications "
+    sqlDelete += " WHERE member_ID = '" + memberID + "' and machineID = '" + machineID + "'"
+    print('sqlDelete - ',sqlDelete)
+    try:
+        certification = db.engine.execute(sqlDelete)
+    except (SQLAlchemyError, DBAPIError) as e:
+        print("ERROR -",e)
+        flash("ERROR - DB error")
+        msg='Record could not be deleted'
+        return jsonify(msg=msg,status=201)
+    # mbrCert = db.session.query(MemberMachineCertifications)\
+    #     .filter(MemberMachineCertifications.machineID == machineID)\
+    #     .filter(MemberMachineCertifications.memberID == memberID).first()
+    # if (mbrCert != None):
+    #     msg="Already certified."
+    #     return jsonify(msg=msg,status=200)
+    
+    # add new record
+    msg='Success'
+    return jsonify(msg=msg,status=200)
+    

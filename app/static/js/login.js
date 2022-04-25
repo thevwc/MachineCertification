@@ -37,6 +37,7 @@ function loginRtn(e) {
         console.log('data.msg - ' + data.msg)
         if (data.msg == "Authorized") {
             window.open("/index","_self")
+            sessionStorage.setItem('staffID',memberID)
             return
         }
         modalAlert("Login",data.msg)

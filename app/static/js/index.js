@@ -13,7 +13,7 @@ const largeScreen = window.matchMedia("(min-width: 992px)")
 const machineInstructorBtn = document.getElementById("machineInstructorBtn")
 const machineMemberBtn = document.getElementById("machineMemberBtn")
 const machineInstructorsAndMembers = document.getElementById("machineInstructorsAndMembers")
-console.log('... constants have been defined')
+//const certifyChkbox = document.getElementsByClassName('certifyChkbox')
 
 // EVENT LISTENERS
 //shopChoice.addEventListener("click",locationChange)
@@ -22,7 +22,10 @@ machineSelected.addEventListener("change",machineClicked)
 memberSelected.addEventListener("change",memberClicked)
 instructorSelected.addEventListener("change",instructorChange)
 largeScreen.addEventListener("change",handleMediaChange)
-console.log('... event listeners have been defined')
+// for (chkbox of certifyChkbox) {
+//     chkbox.addEventListener("change",certifyMember)
+// }
+
 
 // CODE EXECUTED EVERY TIME
 handleMediaChange(largeScreen)
@@ -101,7 +104,7 @@ function memberClicked() {
     // GET MEMBER CONTACT INFO TO DISPLAY
     let option = memberSelected.options[memberSelected.selectedIndex]; 
     villageID = memberSelected.options[memberSelected.selectedIndex].getAttribute('data-villageid')
-    
+    sessionStorage.setItem('villageID',villageID)
     // ...................................
     // ....PROGRAM ERRORS AT THE NEXT LINE  
     //location=shopChoice.value
@@ -358,63 +361,65 @@ function displayMemberCertifications(villageID,location) {
         return
     }
             
-        // BUILD HEADINGS FOR LIST OF MACHINES
-        var breakElement = document.createElement('br')
-        memberMachinesParent.appendChild(breakElement)
+    // BUILD HEADINGS FOR LIST OF MACHINES
+    var breakElement = document.createElement('br')
+    memberMachinesParent.appendChild(breakElement)
 
-        var divHdgRow = document.createElement('div')
-        divHdgRow.classList.add('row')
+    var divHdgRow = document.createElement('div')
+    divHdgRow.classList.add('row')
 
-        var divHdgCol = document.createElement('div')
-        divHdgCol.classList.add('col-2')
-        divHdgRow.appendChild(divHdgCol) 
+    var divHdgCol = document.createElement('div')
+    divHdgCol.classList.add('col-2')
+    divHdgRow.appendChild(divHdgCol) 
+    
+    var divHdgText = document.createElement('div')
+    divHdgText.classList.add('col-8')
+    divHdgText.innerHTML="<h6 style=text-align:left>Certified for the following -</h6>"
+    divHdgRow.appendChild(divHdgText)
+
+    memberMachinesParent.appendChild(divHdgRow)
+
+    for (m of machine) {
+        // BUILD THE ROW
+        var divRow = document.createElement('div')
+        divRow.classList.add('row', 'mbrMachRow')
         
-        var divHdgText = document.createElement('div')
-        divHdgText.classList.add('col-8')
-        divHdgText.innerHTML="<h6 style=text-align:left>Certified for the following -</h6>"
-        divHdgRow.appendChild(divHdgText)
+        var blankCol = document.createElement('div')
+        blankCol.classList.add('col-2')
+        divRow.appendChild(blankCol)
 
-        memberMachinesParent.appendChild(divHdgRow)
-
-        for (m of machine) {
-            // BUILD THE ROW
-            var divRow = document.createElement('div')
-            divRow.classList.add('row', 'mbrMachRow')
-            
-            var blankCol = document.createElement('div')
-            blankCol.classList.add('col-2')
-            divRow.appendChild(blankCol)
-
-            var chkInput = document.createElement('input')
-            chkInput.type="checkbox"
-            chkInput.id = m['machineID']
-            chkInput.classList.add('col-1')
-            if (m['memberCertified']) {
-                chkInput.checked = true
-                chkInput.innerHTML = 'True'
-            }
-            else {
-                chkInput.innerHTML = 'False'
-            }
-            divRow.appendChild(chkInput)
-
-            var divColMachineDesc = document.createElement('div')
-            divColMachineDesc.classList.add('col-6')
-            divColMachineDesc.classList.add('clsMachineDesc')
-            divColMachineDesc.innerHTML = m['machineDesc']
-            divColMachineDesc.style.textAlign='left'
-            divRow.appendChild(divColMachineDesc)
-
-            var divColMachineLoc = document.createElement('div')
-            divColMachineLoc.classList.add('col-1', 'clsMachineLocation')
-            divColMachineLoc.innerHTML = m['machineLocation']
-            divRow.appendChild(divColMachineLoc)
-
-            // ADD THE ROW TO THE DETAIL SECTION
-            memberMachinesParent.appendChild(divRow)
+        var chkInput = document.createElement('input')
+        chkInput.type="checkbox"
+        chkInput.onclick=function() {certifyMember(this.id)}
+        //chkInput.setAttribute('onclick',function() {certifyMember)
+        chkInput.id = m['machineID']
+        chkInput.classList.add('col-1')
+        chkInput.classList.add('certifyChkbox')
+        if (m['memberCertified']) {
+            chkInput.checked = true
+            chkInput.innerHTML = 'True'
         }
-   
-   
+        else {
+            chkInput.innerHTML = 'False'
+        }
+        
+        divRow.appendChild(chkInput)
+
+        var divColMachineDesc = document.createElement('div')
+        divColMachineDesc.classList.add('col-6')
+        divColMachineDesc.classList.add('clsMachineDesc')
+        divColMachineDesc.innerHTML = m['machineDesc']
+        divColMachineDesc.style.textAlign='left'
+        divRow.appendChild(divColMachineDesc)
+
+        var divColMachineLoc = document.createElement('div')
+        divColMachineLoc.classList.add('col-1', 'clsMachineLocation')
+        divColMachineLoc.innerHTML = m['machineLocation']
+        divRow.appendChild(divColMachineLoc)
+
+        // ADD THE ROW TO THE DETAIL SECTION
+        memberMachinesParent.appendChild(divRow)
+    }
     return
     })
 }
@@ -574,5 +579,50 @@ function displayMachineInstructorData() {
         return
     })
 }
+function certifyMember(e) {
+    machineID = e
+    selectedMachine = document.getElementById(e) 
+    if (selectedMachine.checked) {
+        url = window.location.origin + '/certifyMember'
+    }
+    else {
+        url = window.location.origin + '/deCertifyMember'
+    }
+    console.log('url - '+url)
+    
+    staffID = sessionStorage.getItem('staffID')
+    villageID = sessionStorage.getItem('villageID')
+    
+    console.log('machineID - '+machineID)
+    console.log('staffID - '+staffID)
+    console.log('villageID - '+villageID)
+
+    let dataToSend = {
+        staffID: staffID,
+        villageID: villageID,
+        machineID: machineID
+    };
+    fetch(url, {
+    //fetch(`${window.origin}/certifyMember`, {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify(dataToSend),
+        cache: "no-cache",
+        headers: new Headers({
+            "content-type": "application/json"
+        })
+    })
+    .then((res) => res.json())
+    .then((data) => {
+
+        if (data.status != 200) {
+            modalAlert('Member Certification',data.msg)
+            return
+        }
+    return
+    })
+}
+
+   
 
 // END OF FUNCTIONS
