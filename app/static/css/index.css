@@ -5,25 +5,31 @@
     --main-body-bg-color: lightgray;
   }
 /* Phone layout (default) */
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width:600px) {
     body {
         background-color: var(--main-body-bg-color);
         height:100%;
+        width:100%;
+        text-align:center;
+        background-color: aqua;
     }
 }
     .parent {
         display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: 40px 30px 30px 30px 30px 30px 1fr;
+        grid-template-columns: 375px;
+        grid-template-rows: 40px 30px 30px 30px 30px 30px 600px;
         grid-template-areas:"hdgArea" 
                             "versionArea"
                             "locationSelectorArea"
                             "machineSelectorArea"
                             "memberSelectorArea"
                             "instructorSelectorArea"
-                            "detailArea";
+                            "detailArea"
+                            "footerArea";
         grid-gap:0em;
-        background-color: lightgray;               
+        background-color: aqua; 
+        height:100%;
+        width:100%;              
     }
     .heading {
         grid-area: hdgArea;
@@ -33,6 +39,7 @@
         text-align: center;
         background-color:navy;
         color: var(--main-txt-color);
+        width:100%;
     }
 
     .version {
@@ -49,10 +56,12 @@
         padding-top:5px;
         padding-bottom:0px;
         padding-left:0px;
-        margin:auto;
+        text-align: center;
+        margin-left:200px;
+        border:2px solid yellow;
     }
     #locationSelected {
-        width:175px;
+        width:100px;
     }
     #machineSelector {
         grid-area:machineSelectorArea;
@@ -62,7 +71,7 @@
         margin:auto;
     }
     #machineSelected {
-        width:280px;
+        width:200px;
     }
     
     #memberSelector {
@@ -71,6 +80,7 @@
         padding-bottom:0px;
         padding-left:0px;
         margin:auto;
+        margin-top:5px;
     }                         
     #memberSelected {
         width:280px;
@@ -82,6 +92,7 @@
         padding-bottom:0px;
         padding-left:0px;
         margin:auto;
+        margin-top:5px;
     }                         
     #instructorSelected {
         width:280px;
@@ -93,26 +104,30 @@
         padding-top:10px;
         margin-top:10px;
         height:100%;
-        width:300px;
+        width:100%;
         margin:auto;
         overflow:auto;
         /* display:none; */
     }
-    /* #machineInstructorsAndMembers {
+    #machineInstructorsAndMembers {
         padding-top:20px;
-    } */
-
+        text-align: left;
+    }
+    .usageDate {
+        font-size: .75rem;
+    }
+/* 
     #InstructorListHdg {
         text-align: center;
         background-color: aqua;
-    }
+    } */
     #memberDetailSection {
         grid-area:detailArea;
         background-color: aquamarine;
         padding-top:10px;
         margin-top:10px;
         height:600px;
-        width:300px;
+        width:100%;
         margin:auto;
         font-size:small;
         overflow: auto;
@@ -128,23 +143,32 @@
         padding-top:10px;
         margin-top:10px;
         height:100%;
-        width:500px;
+        width:100%;
         margin:auto;
         overflow:auto;
+        font-size: .75rem;
         /* display:none; */
     }
     #instructorData {
         margin-left:100px;
     }
     #instructorMachines {
-        padding-left: 30px
+        padding-left: 30px;
+        margin-left: 40px;
     }
     #instructorMachinesDetail {
-        padding-left: 20px
+        padding-left: 20px;
+
     }
     .headings {
         text-align:center;
     }
+    #footer {
+        grid-area: footerArea;
+        background-color: navy;
+    }
+
+
 .modal-dialog {
     width:900px;
     height:600px !important;
@@ -159,21 +183,28 @@
 
 /* iPad portrait */
 @media (min-width: 768px) {
+    body {
+        background-color: var(--main-body-bg-color);
+        height:100%;
+        width:100%;
+        text-align:center;
+    }
     .parent {
         width:100%;
         display: grid;
         grid-template-columns:1fr;
-        grid-template-rows: 50px 30px 30px 30px 30px 30px 30px auto;
+        grid-template-rows: 40px 30px 30px 30px 30px 30px 1060px 30px;
         grid-template-areas: "hdgArea"
                             "versionArea"
                              "locationSelectorArea"
                              "machineSelectorArea"
                              "memberSelectorArea"
                              "instructorSelectorArea"
-                             "detailArea";  
+                             "detailArea"
+                             "footerArea";  
         gap:0px;
         margin:0 0; 
-        
+        background-color: lightcoral;
         
     }
     .heading {
@@ -182,7 +213,7 @@
         padding-top: 0px;
         padding-bottom:0px;
         padding-left:20px;
-        text-align: left;
+        text-align: center;
         background-color:navy;
         color: var(--main-txt-color);
     }
@@ -190,7 +221,7 @@
     .version {
         grid-area:versionArea;
         font-size:.75rem;
-        text-align:right;
+        text-align:center;
         padding-top:7px;
         background-color: navy;
         color:white;
@@ -198,16 +229,20 @@
     }
     #locationSelector {
         grid-area:locationSelectorArea;
-        padding-top:5px;
+        padding-top:15px;
         padding-bottom:0px;
-        margin:0px;
+        text-align: center;
+        margin:auto;
+        margin-left:200px;
+        margin-top:15px;
         
     }
     #machineSelector {
         grid-area:machineSelectorArea;
-        padding-top:5px;
+        padding-top:15px;
         padding-bottom:0px;
         margin:0px;
+        margin-top:15px;
         
     }
     /* #machineSelected {
@@ -216,10 +251,10 @@
     
     #memberSelector {
         grid-area:memberSelectorArea;
-        padding-top:5px;
+        padding-top:15px;
         padding-bottom:0px;
         margin:0px;
-        
+        margin-top:15px;
     }                         
     #memberSelected {
         width:300px;
@@ -234,22 +269,30 @@
     } */
     #instructorSelector {
         grid-area:instructorSelectorArea;
-        padding-top:0px;
+        padding-top:15px;
         padding-bottom:0px;
         padding-left:0px;
         margin:0;
+        margin-top:15px;
     }                         
     #instructorSelected {
         width:300px;
     }
     #memberDetailSection {
-        height:600px;
+        height:100%;
+        width:100%;
     }
     #machineDetailSection {
         height:600px;
+        width:100%;
     }
     #instructorDetailSection {
-        height:600px;
+        height:100%;
+        width:100%;
+    }
+    #footer {
+        grid-area: footerArea;
+        background-color: navy;
     }
 }
 
@@ -263,7 +306,8 @@
         grid-template-rows: 50px 50px 1fr;
         grid-template-areas:"hdgArea hdgArea hdgArea versionArea"
                             "locationSelectorArea machineSelectorArea memberSelectorArea instructorSelectorArea" 
-                            ".machineDetailArea memberDetailArea instructorDetailArea";
+                            ".machineDetailArea memberDetailArea instructorDetailArea"
+                            "footerArea footerArea footerArea footerArea";
         gap:0px;
         background-color:lightgray;
         top:0; bottom:0; left:0; right:0;
@@ -405,4 +449,166 @@
         padding-left:30px;
     }
     
+    #footer {
+        grid-area: footerArea;
+        background-color: navy;
+    }
+}
+/* Macbook Pro 2560 x 1600 */
+@media (min-width: 2560px) {
+    .parent {
+        width:100%;
+        height: 100%;
+        display: grid;
+        grid-template-columns:.5fr 1fr 1fr 1fr;
+        grid-template-rows: 50px 50px 1450px 50px;
+        grid-template-areas:"hdgArea hdgArea hdgArea versionArea"
+                            "locationSelectorArea machineSelectorArea memberSelectorArea instructorSelectorArea" 
+                            ".machineDetailArea memberDetailArea instructorDetailArea"
+                            "footerArea footerArea footerArea footerArea";
+        gap:0px;
+        background-color:lightgray;
+        top:0; bottom:0; left:0; right:0;
+    }
+    .heading {
+        grid-area: hdgArea;
+        padding-top: 3px;
+        padding-bottom:0px;
+        padding-left:10px;
+        text-align: left;
+        background-color:navy;
+        color: var(--main-txt-color);
+    }
+
+    .version {
+        grid-area:versionArea;
+        font-size:.75rem;
+        padding-top:10px;
+        padding-right:10px;
+        align-items: center;
+        text-align: right;
+        background-color: navy;
+        color:white;
+    }
+
+    .locationSelector {
+        grid-area:locationSelectorArea;
+        padding-top:10px;
+        padding-bottom:0px;
+        margin:0;
+        padding-left:5px;
+        width:100%;
+    }
+    .machineSelector {
+        grid-area:machineSelectorArea;
+        background-color: lightcoral;
+        padding-top:5px;
+        padding-bottom:0px;
+        margin:0;
+        width:100%;
+    }
+    /* #machineSelector {
+        background-color: lightcoral;
+    } */
+    
+
+    /* #machineSelected {
+        padding-left:100px;
+        width:500px;
+    } */
+    .memberSelector {
+        grid-area:memberSelectorArea;
+        background-color: lightblue;
+        padding-top:5px;
+        padding-bottom:0px;
+        margin:0;
+        width:100%;
+    }
+    /* #memberSelector {
+        grid-area:memberSelectorArea;
+        padding-top:0px;
+        padding-bottom:0px;
+        margin:0;
+        width:100%;
+    } */
+    #memberSelected {
+        width:300px;
+    }
+
+    .instructorSelector {
+        grid-area:instructorSelectorArea;
+        background-color: lightgreen;
+        padding-top:5px;
+        padding-bottom:0px;
+        margin:0;
+        width:100%;
+    }                         
+    #instructorSelected {
+        width:300px;
+    }
+    
+    #machineDetailSection {
+        grid-area:machineDetailArea;
+        background-color: lightcoral;
+        padding-top:10px;
+        margin-top:0px;
+        display:block;
+        height:1450px;
+        width:100%;
+        overflow:auto;
+    }
+    .usageDate {
+        width:400px;
+        margin-left:60px;
+    }
+    /* .usageMemberName {
+        width:200px;
+        color:red;
+    } */
+    #memberDetailSection {
+        grid-area:memberDetailArea;
+        background-color: lightblue;
+        text-align:center;
+        padding-top:10px;
+        margin-top:0px;
+        display:block;
+        font-size:large;
+        height:1450px;
+        width:100%;
+        overflow:auto
+    }
+    /* #memberMachines {
+        grid-area:detail2Area;
+        background-color: aliceblue;
+    } */
+
+    /* #memberData {
+        width:100%;
+    } */
+    #instructorDetailSection {
+        grid-area:instructorDetailArea;
+        background-color: lightgreen;
+        text-align:center;
+        padding-top:10px;
+        margin:auto;
+        margin-top:0px;
+        height:1450px;
+        width:100%;
+        display:block;
+        overflow:auto;
+    }
+    /* #instructorMachines {
+        margin-left:30px;
+        margin-right:0px;
+        padding-bottom: 200px;
+    } */
+
+    .instrMachRow {
+        padding-left:30px;
+    }
+    
+    #footer {
+        grid-area: footerArea;
+        background-color: navy
+    }
 }

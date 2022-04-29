@@ -187,8 +187,8 @@ function displayMachineInstructorsAndMembers() {
                 divName.classList.add('InstructorName')
                 divName.innerHTML = instructors[i]
                 divName.style.paddingLeft = '60px'
-                divName.style.width = '400px'
-            
+                divName.style.width = '300px'
+                divName.style.textAlign = 'left'
                 dtlParent.appendChild(divName)
             }
         }
@@ -250,6 +250,7 @@ function displayMachineInstructorsAndMembers() {
                 var divUsageDate = document.createElement('div')
                 divUsageDate.classList.add('usageDate')
                 divUsageDate.innerHTML = element['usageDate']
+                divUsageDate.style.marginLeft='60px'
                 dtlParent.appendChild(divUsageDate)
 
                 // var divUsageMemberName = document.createElement('div')
@@ -537,15 +538,15 @@ function displayMachineInstructorData() {
         var divHdgRow = document.createElement('div')
         divHdgRow.classList.add('row', 'headings')
 
-        var divHdgCol = document.createElement('div')
-        divHdgCol.classList.add('col-1')
-        divHdgRow.appendChild(divHdgCol) 
 
         var divHdgText = document.createElement('div')
         divHdgText.classList.add('col-8')
-        divHdgText.innerHTML="<h6 style=text-align:left>May certify the following -</h6>"
+        divHdgText.innerHTML="May certify the following -"
         divHdgRow.appendChild(divHdgText)
 
+        var divHdgCol = document.createElement('div')
+        divHdgCol.classList.add('col-2')
+        divHdgRow.appendChild(divHdgCol) 
         instructorMachinesParent.appendChild(divHdgRow)
 
         for (m of machine) {
