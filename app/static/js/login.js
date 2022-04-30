@@ -10,7 +10,9 @@ function loginRtn(e) {
     e.preventDefault();
     let memberID = document.getElementById("memberID").value
     let password = document.getElementById("password").value
-    
+    // let shopLocation = localStorage.getItem('shopLocation')
+    // console.log('localStorage - '+shopLocation)
+
     if (memberID == '') {
         modalAlert("Error","Missing village ID")
         return
@@ -45,8 +47,6 @@ function loginRtn(e) {
        
     })
 }    
-
-
 
 function modalAlert(title,msg) {
 	document.getElementById("modalTitle").innerHTML = title

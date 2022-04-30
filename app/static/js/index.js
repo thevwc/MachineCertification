@@ -1,7 +1,28 @@
 // index.js
+const shopChoice = document.getElementById('shopChoice')
+shopChoice.selectedIndex = 0
+
+// Establish shop location
+if (localStorage.getItem('shopLocation')) {
+    // Set location drop down default
+    if (localStorage.getItem('shopLocation') == 'RA'){
+        shopChoice.selectedIndex = 1
+    }
+    else {
+        shopChoice.selectedIndex = 2
+    }
+}
+else {
+    modalAlert('LOCATION CHECK','Please select a location.')
+}
+
 // const shopChoice = document.getElementById("shopChoice")
 // console.log('shopChoice - '+shopChoice.value)
 // shopChoice = 'BW'
+versionText = document.getElementById('versionText')
+console.log('screen width ='+screen.width)
+versionText.innerHTML='ver Apr 30, 2022  (' + screen.width + ')'
+//versionText.innerHTML='ver Apr 30, 2022'
 
 const machineSelected = document.getElementById("machineSelected")
 const memberSelected = document.getElementById("memberSelected")
@@ -16,7 +37,7 @@ const machineInstructorsAndMembers = document.getElementById("machineInstructors
 //const certifyChkbox = document.getElementsByClassName('certifyChkbox')
 
 // EVENT LISTENERS
-//shopChoice.addEventListener("click",locationChange)
+shopChoice.addEventListener("click",locationChange)
 machineSelected.addEventListener("change",machineClicked)
 //machineSelected.addEventListener("change",machineChanged)
 memberSelected.addEventListener("change",memberClicked)
@@ -34,11 +55,29 @@ handleMediaChange(largeScreen)
 // FUNCTIONS
 
 // SHOW/HIDE MACHINE LIST OPTIONS BASED ON LOCATION SELECTION
-// function locationChange() {
-//     // SHOW ALL MACHINES
-//     $('.optMachineName').each(function(){
-//         $(this).show();
-//     })
+function locationChange(e) {
+    console.log('shopChoice.value - '+shopChoice.value)
+    console.log('selectedIndex - '+shopChoice.selectedIndex)
+    console.log('e - ' + e)
+
+    if (shopChoice.value == '') {
+        return
+    }
+    if (shopChoice.value == 'RA') {
+        localStorage.setItem('shopLocation','RA')
+    }
+    else {
+        localStorage.setItem('shopLocation','BW')
+    }
+
+     // SHOW ALL MACHINES
+     $('.optMachineName').each(function(){
+         console.log('title - ' +$(this).title)
+         //console.log('innerHTML - ' +$(this).innerHTML)
+         $(this).show();
+     })
+
+}
 //     if (shopChoice.value != 'BOTH') {
 //         // HIDE OPTION IF THE data.location MATCHES THE SELECTED LOCATION
 //         let currentLocation = shopChoice.value
@@ -51,7 +90,7 @@ handleMediaChange(largeScreen)
 //             }
 //         })
 //     }
-// }
+
 
 function machineClicked() {
     console.log('... machineClicked rtn')
@@ -165,41 +204,41 @@ function displayMachineInstructorsAndMembers() {
 
         // Display Instructor heading
         var divInstructorHdg = document.createElement('div')
-        divInstructorHdg.classList.add('InstructorListHdg')
+        divInstructorHdg.classList.add('instructorListHdg')
         divInstructorHdg.innerHTML = "Instructors:"
-        divInstructorHdg.style.textAlign = 'left'
-        divInstructorHdg.style.marginLeft = '30px'
+        // divInstructorHdg.style.textAlign = 'left'
+        // divInstructorHdg.style.marginLeft = '30px'
         dtlParent.appendChild(divInstructorHdg)
 
         // Display List of Instructors
         instructors = data.instructorsList
         if (instructors.length == 0) {
             var divNoInstructors = document.createElement('div')
-            divNoInstructors.classList.add('NoInstructors')
+            divNoInstructors.classList.add('noInstructors')
             divNoInstructors.innerHTML = "No instructors assigned."
-            divNoInstructors.style.width = '400px'
-            divNoInstructors.style.paddingLeft = '60px'
+            //divNoInstructors.style.width = '400px'
+            //divNoInstructors.style.paddingLeft = '60px'
             dtlParent.appendChild(divNoInstructors)
         }
         else {
             for (i=0;i<instructors.length;i++) {
                 var divName = document.createElement('div')
-                divName.classList.add('InstructorName')
+                divName.classList.add('instructorName')
                 divName.innerHTML = instructors[i]
-                divName.style.paddingLeft = '60px'
-                divName.style.width = '300px'
-                divName.style.textAlign = 'left'
+                // divName.style.paddingLeft = '60px'
+                // divName.style.width = '300px'
+                // divName.style.textAlign = 'left'
                 dtlParent.appendChild(divName)
             }
         }
 
         // Display 'Certified Members' heading
         var divMemberHdg = document.createElement('div')
-        divMemberHdg.classList.add('MemberListHdg')
+        divMemberHdg.classList.add('memberListHdg')
         divMemberHdg.innerHTML = "Certified Members:"
-        divMemberHdg.style.textAlign = 'left'
-        divMemberHdg.style.paddingTop = '30px'
-        divMemberHdg.style.paddingLeft = '30px'
+        // divMemberHdg.style.textAlign = 'left'
+        // divMemberHdg.style.paddingTop = '30px'
+        // divMemberHdg.style.paddingLeft = '30px'
         dtlParent.appendChild(divMemberHdg)
 
         // Display list of members certified for this machine
@@ -207,30 +246,28 @@ function displayMachineInstructorsAndMembers() {
         if (certified.length == 0){
             // If no members, display message
             var divNoMembers = document.createElement('div')
-            divNoMembers.classList.add('NoMembers')
+            divNoMembers.classList.add('noMembers')
             divNoMembers.innerHTML = "No members have been certified."
-            divNoMembers.style.width = '400px'
-            divNoMembers.style.marginLeft = '60px'
+            //divNoMembers.style.width = '400px'
+            //divNoMembers.style.marginLeft = '60px'
             dtlParent.appendChild(divNoMembers)
         }
         else {
             for (var element of certified) {
                 var divMemberName = document.createElement('div')
-                divMemberName.classList.add('CertifiedMemberName')
+                divMemberName.classList.add('certifiedMemberName')
                 divMemberName.innerHTML = element['memberName']
-                divMemberName.style.width = '400px'
-                divMemberName.style.marginLeft = '60px'
                 dtlParent.appendChild(divMemberName)
             }
         }
 
         // Display 'Machine Usage' heading
         var divUsageHdg = document.createElement('div')
-        divUsageHdg.classList.add('MachineUsageHdg')
+        divUsageHdg.classList.add('machineUsageHdg')
         divUsageHdg.innerHTML = "Machine Usage:"
-        divUsageHdg.style.textAlign = 'left'
-        divUsageHdg.style.paddingTop = '30px'
-        divUsageHdg.style.paddingLeft = '30px'
+        // divUsageHdg.style.textAlign = 'left'
+        // divUsageHdg.style.paddingTop = '30px'
+        // divUsageHdg.style.paddingLeft = '30px'
         dtlParent.appendChild(divUsageHdg)
 
         // Display dates machine was used 
@@ -241,16 +278,16 @@ function displayMachineInstructorsAndMembers() {
             var divNoMembers = document.createElement('div')
             divNoMembers.classList.add('noUsage')
             divNoMembers.innerHTML = "No usage to date."
-            divNoMembers.style.width = '400px'
-            divNoMembers.style.marginLeft = '60px'
+            //divNoMembers.style.width = '400px'
+            //divNoMembers.style.marginLeft = '60px'
             dtlParent.appendChild(divNoMembers)
         }
         else {
             for (var element of machineUsage) {
                 var divUsageDate = document.createElement('div')
-                divUsageDate.classList.add('usageDate')
+                divUsageDate.classList.add('usageDateAndName')
                 divUsageDate.innerHTML = element['usageDate']
-                divUsageDate.style.marginLeft='60px'
+                //divUsageDate.style.marginLeft='60px'
                 dtlParent.appendChild(divUsageDate)
 
                 // var divUsageMemberName = document.createElement('div')
@@ -298,10 +335,10 @@ function displayMemberCertifications(villageID,location) {
     table = document.createElement('table')
     table.style="margin:auto"
 
-    tableCaption = document.createElement('caption')
-    tableCaption.style = "caption-side:top;text-align:center"
-    tableCaption.innerHTML = data.memberName
-    table.appendChild(tableCaption)
+    // tableCaption = document.createElement('caption')
+    // tableCaption.style = "caption-side:top;text-align:center"
+    // tableCaption.innerHTML = data.memberName
+    // table.appendChild(tableCaption)
 
     tableBody = document.createElement('tbody')
     table.appendChild(tableBody)
@@ -492,10 +529,11 @@ function displayMachineInstructorData() {
         }
         
         // Display Instructor Contact Data
-        var divInstructorName = document.createElement('div')
-        divInstructorName.innerHTML = data.instructorName
-        divInstructorName.style.textAlign='left'
-        dtlParent.appendChild(divInstructorName)
+        // var divInstructorName = document.createElement('div')
+        // divInstructorName.innerHTML = data.instructorName
+        // divInstructorName.style.textAlign='center'
+        // divInstructorName.style.fontWeight='bold'
+        // dtlParent.appendChild(divInstructorName)
 
         var divHomePhone = document.createElement('div')
         divHomePhone.innerHTML = "Home phone - " + data.homePhone

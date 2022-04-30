@@ -17,7 +17,7 @@
     .parent {
         display: grid;
         grid-template-columns: 375px;
-        grid-template-rows: 40px 30px 30px 30px 30px 30px 600px;
+        grid-template-rows: 40px 30px 30px 30px 30px 50px 550px 50px;
         grid-template-areas:"hdgArea" 
                             "versionArea"
                             "locationSelectorArea"
@@ -109,18 +109,52 @@
         overflow:auto;
         /* display:none; */
     }
-    #machineInstructorsAndMembers {
+    
+    .instructorListHdg {
+        text-align:left;
+        margin-left: 50px;
+    }
+    .noInstructors {
+        text-align: left;
+        margin-left:70px;
+    }
+    .instructorName {
+        text-align:left;
+        width:300px;
+        margin-left:70px; 
+    }
+    /* #machineInstructorsAndMembers {
         padding-top:20px;
         text-align: left;
-    }
-    .usageDate {
-        font-size: .75rem;
-    }
-/* 
-    #InstructorListHdg {
-        text-align: center;
-        background-color: aqua;
     } */
+    .memberListHdg {
+        text-align: left;
+        padding-top:30px;
+        margin-left:50px;
+    }
+    .noMembers {
+        text-align: left;
+        margin-left:70px;
+    }
+    .certifiedMemberName {
+        text-align: left;
+        margin-left:70px;
+    }
+    .machineUsageHdg {
+        text-align:left;
+        margin-top:20px;
+        margin-left:50px;
+    }
+    .noUsage {
+        text-align: left;
+        margin-left:70px;
+    }
+    .usageDateAndName {
+        text-align: left;
+        font-size: .75rem;
+        margin-left:20px;
+    } 
+    
     #memberDetailSection {
         grid-area:detailArea;
         background-color: aquamarine;
@@ -169,23 +203,11 @@
     }
 
 
-.modal-dialog {
-    width:900px;
-    height:600px !important;
-}
-.modal-content {
-    height:100%;
-    background-color:#BBD6EC;
-}
-.modal-body {
-    overflow: scroll;
-}
-
-/* iPad portrait */
+/* iPad portrait (810x1080) and Kindle fire (800x1280)*/
 @media (min-width: 768px) {
     body {
         background-color: var(--main-body-bg-color);
-        height:100%;
+        height:1280;
         width:100%;
         text-align:center;
     }
@@ -193,7 +215,7 @@
         width:100%;
         display: grid;
         grid-template-columns:1fr;
-        grid-template-rows: 40px 30px 30px 30px 30px 30px 1060px 30px;
+        grid-template-rows: 40px 30px 30px 30px 30px 50px 1040px 30px;
         grid-template-areas: "hdgArea"
                             "versionArea"
                              "locationSelectorArea"
@@ -205,6 +227,7 @@
         gap:0px;
         margin:0 0; 
         background-color: lightcoral;
+        overflow-y: hidden;
         
     }
     .heading {
@@ -289,14 +312,18 @@
     #instructorDetailSection {
         height:100%;
         width:100%;
+        font-size: 1rem;
+        margin-left: 20px;
+
     }
     #footer {
         grid-area: footerArea;
         background-color: navy;
+        color:white;
     }
 }
 
-/* Laptop to monitor size */
+/* Laptop size */
 @media (min-width: 1280px) {
     .parent {
         width:100%;
@@ -398,10 +425,18 @@
         height:1000px;
         width:100%;
         overflow:auto;
+        font-size: 1rem;
     }
-    .usageDate {
+    .certifiedMemberName {
+        text-align: left;
+        margin-left:70px;
+
+    }
+    .usageDateAndName {
+        text-align: left;
         width:400px;
         margin-left:60px;
+        font-size: 1rem;
     }
     /* .usageMemberName {
         width:200px;
@@ -414,7 +449,7 @@
         padding-top:10px;
         margin-top:0px;
         display:block;
-        font-size:large;
+        font-size:1rem;
         height:1000px;
         width:100%;
         overflow:auto
@@ -438,6 +473,7 @@
         width:100%;
         display:block;
         overflow:auto;
+        font-size: 1rem;
     }
     /* #instructorMachines {
         margin-left:30px;
@@ -454,14 +490,17 @@
         background-color: navy;
     }
 }
+
+
+
 /* Macbook Pro 2560 x 1600 */
-@media (min-width: 2560px) {
+@media (min-width: 1440px) {
     .parent {
         width:100%;
-        height: 100%;
+        height: 780px;
         display: grid;
         grid-template-columns:.5fr 1fr 1fr 1fr;
-        grid-template-rows: 50px 50px 1450px 50px;
+        grid-template-rows: 50px 50px 665px 20px;
         grid-template-areas:"hdgArea hdgArea hdgArea versionArea"
                             "locationSelectorArea machineSelectorArea memberSelectorArea instructorSelectorArea" 
                             ".machineDetailArea memberDetailArea instructorDetailArea"
@@ -469,6 +508,7 @@
         gap:0px;
         background-color:lightgray;
         top:0; bottom:0; left:0; right:0;
+        overflow-y:hidden;
     }
     .heading {
         grid-area: hdgArea;
@@ -557,7 +597,8 @@
         width:100%;
         overflow:auto;
     }
-    .usageDate {
+    .usageDateAndName {
+        text-align:left;
         width:400px;
         margin-left:60px;
     }
@@ -609,6 +650,225 @@
     
     #footer {
         grid-area: footerArea;
+        color:white;
         background-color: navy
     }
+}
+
+/* Monitor 1920x1080 */
+@media (min-width: 1920px) {
+    .parent {
+        width:100%;
+        height: 980px;
+        display: grid;
+        grid-template-columns:.5fr 1fr 1fr 1fr;
+        grid-template-rows: 50px 50px 840px 40px;
+        grid-template-areas:"hdgArea hdgArea hdgArea versionArea"
+                            "locationSelectorArea machineSelectorArea memberSelectorArea instructorSelectorArea" 
+                            ".machineDetailArea memberDetailArea instructorDetailArea"
+                            "footerArea footerArea footerArea footerArea";
+        gap:0px;
+        background-color:lightgray;
+        top:0; bottom:0; left:0; right:0;
+        overflow-y:hidden;
+    }
+    .heading {
+        grid-area: hdgArea;
+        padding-top: 3px;
+        padding-bottom:0px;
+        padding-left:10px;
+        text-align: left;
+        background-color:navy;
+        color: var(--main-txt-color);
+    }
+
+    .version {
+        grid-area:versionArea;
+        font-size:.75rem;
+        padding-top:10px;
+        padding-right:10px;
+        align-items: center;
+        text-align: right;
+        background-color: navy;
+        color:white;
+    }
+
+    .locationSelector {
+        grid-area:locationSelectorArea;
+        padding-top:10px;
+        padding-bottom:0px;
+        margin:0;
+        padding-left:5px;
+        width:100%;
+    }
+    .machineSelector {
+        grid-area:machineSelectorArea;
+        background-color: lightcoral;
+        padding-top:5px;
+        padding-bottom:0px;
+        margin:0;
+        width:100%;
+    }
+    /* #machineSelector {
+        background-color: lightcoral;
+    } */
+    
+
+    /* #machineSelected {
+        padding-left:100px;
+        width:500px;
+    } */
+    .memberSelector {
+        grid-area:memberSelectorArea;
+        background-color: lightblue;
+        padding-top:5px;
+        padding-bottom:0px;
+        margin:0;
+        width:100%;
+    }
+    /* #memberSelector {
+        grid-area:memberSelectorArea;
+        padding-top:0px;
+        padding-bottom:0px;
+        margin:0;
+        width:100%;
+    } */
+    #memberSelected {
+        width:300px;
+    }
+
+    .instructorSelector {
+        grid-area:instructorSelectorArea;
+        background-color: lightgreen;
+        padding-top:5px;
+        padding-bottom:0px;
+        margin:0;
+        width:100%;
+    }                         
+    #instructorSelected {
+        width:300px;
+    }
+    
+    #machineDetailSection {
+        grid-area:machineDetailArea;
+        background-color: lightcoral;
+        padding-top:10px;
+        margin-top:0px;
+        display:block;
+        width:100%;
+        height:1000px;
+        overflow:auto;
+        font-size: 1rem;
+    }
+    .instructorListHdg {
+        text-align:left;
+        margin-left: 90px;
+    }
+    .noInstructors {
+        text-align: left;
+        margin-left:110px;
+    }
+    .instructorName {
+        text-align:left;
+        width:300px;
+        margin-left:110px; 
+    }
+    .memberListHdg {
+        text-align: left;
+        padding-top:30px;
+        margin-left:90px;
+    }
+    .noMembers {
+        text-align: left;
+        margin-left:110px;
+    }
+    .certifiedMemberName {
+        text-align: left;
+        margin-left:110px;
+
+    }
+    .machineUsageHdg {
+        text-align:left;
+        margin-top:20px;
+        margin-left:90px;
+    }
+    .noUsage {
+        text-align: left;
+        margin-left:110px;
+    }
+    .usageDateAndName {
+        text-align: left;
+        width:400px;
+        margin-left:110px;
+        font-size: 1rem;
+    }
+    /* .usageMemberName {
+        width:200px;
+        color:red;
+    } */
+    #memberDetailSection {
+        grid-area:memberDetailArea;
+        background-color: lightblue;
+        text-align:center;
+        padding-top:10px;
+        margin-top:0px;
+        display:block;
+        font-size:1rem;
+        width:100%;
+        height:1100px;
+        overflow:auto
+    }
+    /* #memberMachines {
+        grid-area:detail2Area;
+        background-color: aliceblue;
+    } */
+
+    /* #memberData {
+        width:100%;
+    } */
+    #instructorDetailSection {
+        grid-area:instructorDetailArea;
+        background-color: lightgreen;
+        text-align:center;
+        padding-top:10px;
+        margin:auto;
+        margin-top:0px;
+        width:100%;
+        display:block;
+        overflow:auto;
+        font-size: 1rem;
+    }
+    #instructorData {
+        margin-left:150px;
+    }
+    #instructorMachines {
+        padding-left: 30px;
+        margin-left: 40px;
+    }
+    /* #instructorMachines {
+        margin-left:30px;
+        margin-right:0px;
+        padding-bottom: 200px;
+    } */
+
+    .instrMachRow {
+        padding-left:30px;
+    }
+    
+    #footer {
+        grid-area: footerArea;
+        background-color: navy;
+    }
+}
+/* MODAL CSS */
+.modal-dialog {
+    width:900px;
+    height:600px !important;
+}
+.modal-content {
+    height:100%;
+    background-color:#BBD6EC;
+}
+.modal-body {
+    overflow: scroll;
 }
