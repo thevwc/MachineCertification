@@ -1,29 +1,8 @@
 // index.js
+
+
+// CONSTANTS
 const shopChoice = document.getElementById('shopChoice')
-shopChoice.selectedIndex = 0
-
-// Establish shop location
-if (localStorage.getItem('shopLocation')) {
-    // Set location drop down default
-    if (localStorage.getItem('shopLocation') == 'RA'){
-        shopChoice.selectedIndex = 1
-    }
-    else {
-        shopChoice.selectedIndex = 2
-    }
-}
-else {
-    modalAlert('LOCATION CHECK','Please select a location.')
-}
-
-// const shopChoice = document.getElementById("shopChoice")
-// console.log('shopChoice - '+shopChoice.value)
-// shopChoice = 'BW'
-versionText = document.getElementById('versionText')
-console.log('screen width ='+screen.width)
-versionText.innerHTML='ver Apr 30, 2022  (' + screen.width + ')'
-//versionText.innerHTML='ver Apr 30, 2022'
-
 const machineSelected = document.getElementById("machineSelected")
 const memberSelected = document.getElementById("memberSelected")
 const instructorSelected = document.getElementById("instructorSelected")
@@ -39,45 +18,169 @@ const machineInstructorsAndMembers = document.getElementById("machineInstructors
 // EVENT LISTENERS
 shopChoice.addEventListener("click",locationChange)
 machineSelected.addEventListener("change",machineClicked)
-//machineSelected.addEventListener("change",machineChanged)
 memberSelected.addEventListener("change",memberClicked)
 instructorSelected.addEventListener("change",instructorChange)
 largeScreen.addEventListener("change",handleMediaChange)
-// for (chkbox of certifyChkbox) {
-//     chkbox.addEventListener("change",certifyMember)
-// }
 
+// PAGE LOAD ROUTINES
 
-// CODE EXECUTED EVERY TIME
+// RETRIEVE COOKIE WITH LAST USED SHOP LOCATION
+if (localStorage.getItem('shopLocation')) {
+    // Set location drop down starting value
+    if (localStorage.getItem('shopLocation') == 'BOTH'){
+        shopChoice.selectedIndex = 0
+    }
+    else {
+        if (localStorage.getItem('shopLocation') == 'RA'){
+        shopChoice.selectedIndex = 1
+        }
+        else {
+            shopChoice.selectedIndex = 2
+        }
+    }
+}
+else {
+    localStorage.setItem('shopLocation','BOTH')
+    shopChoice.selectedIndex = 0
+}
+
+// CALL ROUTINE TO FILTER MACHINE DROPDOWN LIST BASED ON LOCATION
+filterMachineDropdown(shopChoice.value)
+
+// SET VERSION OF APP AND CURRENT SCREEN SIZE (FOR DEVELOPMENT PURPOSES)
+versionText = document.getElementById('versionText')
+console.log('screen width ='+screen.width)
+versionText.innerHTML='ver May 2, 2022  (' + screen.width + ')'
+//versionText.innerHTML='ver Apr 30, 2022'
+
+// IF NOT A LARGE SCREEN DISPLAY ONLY 1 PANEL AT A TIME INSTEAD OF ALL 3
 handleMediaChange(largeScreen)
 
-
+// END OF PAGE LOAD ROUTINES
+// -------------
 // FUNCTIONS
 
 // SHOW/HIDE MACHINE LIST OPTIONS BASED ON LOCATION SELECTION
 function locationChange(e) {
-    console.log('shopChoice.value - '+shopChoice.value)
-    console.log('selectedIndex - '+shopChoice.selectedIndex)
-    console.log('e - ' + e)
+
+    selectedLocation = shopChoice.value
+    console.log('.... locationChange .... '+selectedLocation)
 
     if (shopChoice.value == '') {
         return
     }
-    if (shopChoice.value == 'RA') {
-        localStorage.setItem('shopLocation','RA')
-    }
-    else {
-        localStorage.setItem('shopLocation','BW')
-    }
-
-     // SHOW ALL MACHINES
-     $('.optMachineName').each(function(){
-         console.log('title - ' +$(this).title)
-         //console.log('innerHTML - ' +$(this).innerHTML)
-         $(this).show();
-     })
-
+    // STORE THE LOCATION
+    localStorage.setItem('shopLocation',selectedLocation)
+    filterMachineDropdown(selectedLocation)
 }
+
+function filterMachineDropdown(selectedLocation) {
+    console.log('.... filterMachineDropdown ....'+ selectedLocation)
+    if (selectedLocation == 'BOTH') {
+        optMachineName = document.getElementsByClassName('optMachineName')
+        for (opt of optMachineName) {
+            opt.style.display = 'block'
+            //opt.hidden = false
+        }
+        $('.selectpicker')('refresh')
+        return
+    }
+
+    if (selectedLocation == 'RA') {
+        RAclass = document.getElementsByClassName ('RA')
+        for (RA of RAclass) {
+            RA.style.display = 'block'
+        } 
+        BWclass = document.getElementsByClassName ('BW')
+        for (BW of BWclass) {
+            BW.style.display = 'none'
+        } 
+        $('.selectpicker')('refresh')
+    }
+
+    if (selectedLocation == 'BW') {
+        BWclass = document.getElementsByClassName ('BW')
+        for (BW of BWclass) {
+            BW.style.display = 'block'
+        } 
+        RAclass = document.getElementsByClassName ('RA')
+        for (RA of RAclass) {
+            RA.style.display = 'none'
+        }
+
+    }
+
+    if (selectedLocation == 'RA') {
+        const RAclass = document.querySelectorAll('.RA');
+        RAclass.forEach(RAitem => {
+            RAitem.style.display = 'block'
+            
+        });
+        const BWclass = document.querySelectorAll('.BW');
+        BWclass.forEach(BWitem => {
+            //BWitem.style.display = 'none'
+            BWitem.hidden = true
+        });
+        $('.selectpicker')('refresh')
+    }
+}
+    //         el.style.display = 'block'
+    //     })
+    //     document.querySelectorAll('.BW').forEach(function(el) {
+    //         el.style.display = 'none'
+    //     })
+    // }
+    // if (selectedLocation == 'BW') {
+    //     document.querySelectorAll('.BW').forEach(function(el) {
+    //         el.style.display = 'block'
+    //     })
+    //     document.querySelectorAll('.RA').forEach(function(el) {
+    //         el.style.display = 'none'
+    //     })
+    // }
+
+
+    // if (selectedLocation == 'RA'){
+    //     document.getElementsByClassName("RA").style.display = "block";  
+    //     document.getElementsByClassName("BW").style.display = "none";  
+    // }
+    // else {
+    //     if (selectedLocation == 'BW'){
+    //         document.getElementsByClassName("RA").style.display = "none";  
+    //         document.getElementsByClassName("BW").style.display = "block";  
+    //     }
+    // }
+    // FILTER THE MACHINE LIST BASED ON THE NEW LOCATION
+//     console.log('-------------------------------------------')
+//     console.log('selectedLocation - '+selectedLocation)
+    
+//         //console.log('innerHTML - '+opt.innerHTML)
+//         console.log('dataset - '+opt.dataset.location)
+//         console.log('current hidden value -  '+ opt.hidden)
+//         if (opt.dataset.location == 'BOTH' || opt.dataset.location == selectedLocation){
+//             //opt.style.display = 'block'
+//             opt.hidden = false
+//             //opt.style.visibility = 'hidden'
+//             console.log('included')
+//         }
+//         else {
+//             opt.hidden = true
+//             //opt.style.display = 'none'
+//             console.log('hidden')
+//         }    
+//     }
+// }
+//document.querySelectorAll('.child1')[0].
+//            style.visibility = 'hidden';
+
+// SHOW ALL MACHINES
+    //  $('.optMachineName').each(function(){
+    //      console.log('title - ' +$(this).title)
+    //      //console.log('innerHTML - ' +$(this).innerHTML)
+    //      $(this).show();
+    //  })
+
+//}
 //     if (shopChoice.value != 'BOTH') {
 //         // HIDE OPTION IF THE data.location MATCHES THE SELECTED LOCATION
 //         let currentLocation = shopChoice.value

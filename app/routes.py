@@ -49,14 +49,14 @@ def login():
 @app.route('/index')
 def index():
     # get shop location from URL
-    shopLocation = 'BW'
+    #shopLocation = 'BW'
 
      # BUILD ARRAY OF MACHINE NAMES FOR DROPDOWN LIST OF MACHINES
     #machineNames=[]
     sqlMachines = "SELECT machineID, machineDesc, machineLocation + ' - ' + machineDesc + ' (' + machineID + ')' as machineDisplayName, machineLocation "
     sqlMachines += "FROM MachinesRequiringCertification "
-    sqlMachines += "WHERE machineLocation = '" + shopLocation + "' "
-    sqlMachines += "ORDER BY machineDesc, machineLocation "
+    #sqlMachines += "WHERE machineLocation = '" + shopLocation + "' "
+    sqlMachines += "ORDER BY machineLocation, machineDesc "
 
     machineList = db.engine.execute(sqlMachines)
     if machineList == None:

@@ -4,6 +4,7 @@
     {{super()}}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
+    
 {% endblock %}
 {% block app_content %}
 
@@ -25,7 +26,8 @@
         <form class = "filterItems ">
             <label for="shopChoice">Location: </label>
             <select id="shopChoice" name="shopList" style="height:25px; width:150px; font-size: 1em;">
-                <option id="selectLocation" value="" >Select a location ...</option>
+                <!-- <option id="selectLocation" value="" >Select a location ...</option> -->
+                <option id='BOTH' value="BOTH">Both</option>
                 <option id='RA' value="RA">Rolling Acres</option>
                 <option id='BW' value="BW">Brownwood</option>   
             </select>
@@ -44,7 +46,7 @@
             <option class="optMachines" value="">Select a machine ...</option>
             {% for m in machineList %}
                 <option 
-                    class="optMachineName" 
+                    class="optMachineName {{m.machineLocation}}" 
                     data-machineID={{m.machineID}} 
                     data-location={{m.machineLocation}} 
                     value='{{m.machineDisplayName}}'>
