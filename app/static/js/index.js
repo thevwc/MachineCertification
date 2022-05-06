@@ -777,4 +777,12 @@ function prtMemberCertifications(memberID) {
     window.location.href=url
 }   
 
+function showNewMachineModal() {
+    document.getElementById('newDescription').innerHTML = ''
+    $('#newMachineModal').modal('show')
+}
+function saveNewMachine() {
+    alert('save new machine')
+    $('#newMachineModal').modal('hide')
+}
 // END OF FUNCTIONS

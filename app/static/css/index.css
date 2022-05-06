@@ -861,7 +861,7 @@
     }
 }
 /* MODAL CSS */
-.modal-dialog {
+/* .modal-dialog {
     width:900px;
     height:600px !important;
 }
@@ -871,4 +871,12 @@
 }
 .modal-body {
     overflow: scroll;
+} */
+
+.newMachineLabel {
+    text-align:right;
+    margin-left:30px;
+}
+.newMachineData {
+    text-align:left;
 }

@@ -58,9 +58,8 @@
                 </select>      
             </div>
             <div class="col-1">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newMachineModal">
-                    NEW
-                </button>
+                <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newMachineModal"> -->
+                <button type="'button" class="btn btn-primary" onclick="showNewMachineModal()">NEW</button>
             </div>
         </div>
     </div>
@@ -159,12 +158,46 @@
   
         <!-- Modal body -->
         <div class="modal-body">
-          Modal body..
-        </div>
+            <div class="row">
+                <div class="col-4 newMachineLabel">
+                    <label for="newDescription">Description</label>
+                </div>
+                <div class="col-5 newMachineData">
+                    <input type="text" id="newDescription" size="30" >
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4 newMachineLabel">
+                    <label for="newLocation">Location</label>
+                </div>
+                <div class="col-5 newMachineData">
+                    <select name="" id="newLocation">
+                        <option value="RA">Rolling Acres</option>
+                        <option value="BW">Brownwood</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4 newMachineLabel">
+                    <label for="newDuration">Suggested Duration</label>
+                </div>
+                <div class="col-5 newMachineData">
+                    <select name="" id="newDuration">
+                        <option value="UNL">Unlimited</option>
+                        <option value="365 days">365 days</option>
+                        <option value="180 days">180 days</option>
+                        <option value="90 days">90 days</option>
+                        <option value="30 days">30 days</option>
+                        <option value="7 days">7 days</option>
+                    </select>
+                </div>
+            </div>
+        </div> 
   
         <!-- Modal footer -->
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+          <button id='closeNewMachineModal' type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+          <button id='saveNewMachineModal' type="button" class="btn btn-danger" onclick="saveNewMachine()">Save</button>
         </div>
   
       </div>
