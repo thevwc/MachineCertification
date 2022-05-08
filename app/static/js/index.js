@@ -2,7 +2,8 @@
 
 
 // CONSTANTS
-const shopChoice = document.getElementById('shopChoice')
+const shopChoice = document.querySelector('.shopChoice')
+//const shopSelection = document.getElementsByClassName('locationOption')
 const machineSelected = document.getElementById("machineSelected")
 const memberSelected = document.getElementById("memberSelected")
 const instructorSelected = document.getElementById("instructorSelected")
@@ -16,10 +17,15 @@ const machineInstructorsAndMembers = document.getElementById("machineInstructors
 //const certifyChkbox = document.getElementsByClassName('certifyChkbox')
 
 // EVENT LISTENERS
-shopChoice.addEventListener("click",locationChange)
+shopChoice.addEventListener("change",locationClicked)
+//shopSelection.addEventListener('click',locationClicked)
+//machineSelected.addEventListener("click",machineClicked)
 machineSelected.addEventListener("change",machineClicked)
+
+//memberSelected.addEventListener("click",memberClicked)
 memberSelected.addEventListener("change",memberClicked)
-instructorSelected.addEventListener("change",instructorChange)
+instructorSelected.addEventListener("click",instructorClicked)
+instructorSelected.addEventListener("change",instructorClicked)
 largeScreen.addEventListener("change",handleMediaChange)
 
 // PAGE LOAD ROUTINES
@@ -59,11 +65,17 @@ handleMediaChange(largeScreen)
 // -------------
 // FUNCTIONS
 
+
 // SHOW/HIDE MACHINE LIST OPTIONS BASED ON LOCATION SELECTION
-function locationChange(e) {
+function locationListClicked() {
+    console.log('.. locationListClicked ..')
+}
+function locationClicked() {
+
+    console.log('window.event - '+window.event)
 
     selectedLocation = shopChoice.value
-    console.log('.... locationChange .... '+selectedLocation)
+    console.log('.... locationClicked .... '+selectedLocation)
 
     if (shopChoice.value == '') {
         return
@@ -76,123 +88,53 @@ function locationChange(e) {
 function filterMachineDropdown(selectedLocation) {
     console.log('.... filterMachineDropdown ....'+ selectedLocation)
     if (selectedLocation == 'BOTH') {
+        console.log('.. BOTH ..')
         optMachineName = document.getElementsByClassName('optMachineName')
         for (opt of optMachineName) {
             opt.style.display = 'block'
-            //opt.hidden = false
         }
-        $('.selectpicker')('refresh')
         return
-    }
-
-    if (selectedLocation == 'RA') {
-        RAclass = document.getElementsByClassName ('RA')
-        for (RA of RAclass) {
-            RA.style.display = 'block'
-        } 
-        BWclass = document.getElementsByClassName ('BW')
-        for (BW of BWclass) {
-            BW.style.display = 'none'
-        } 
-        $('.selectpicker')('refresh')
-    }
-
-    if (selectedLocation == 'BW') {
-        BWclass = document.getElementsByClassName ('BW')
-        for (BW of BWclass) {
-            BW.style.display = 'block'
-        } 
-        RAclass = document.getElementsByClassName ('RA')
-        for (RA of RAclass) {
-            RA.style.display = 'none'
         }
-
-    }
-
-    if (selectedLocation == 'RA') {
-        const RAclass = document.querySelectorAll('.RA');
-        RAclass.forEach(RAitem => {
-            RAitem.style.display = 'block'
-            
-        });
-        const BWclass = document.querySelectorAll('.BW');
-        BWclass.forEach(BWitem => {
-            //BWitem.style.display = 'none'
-            BWitem.hidden = true
-        });
-        $('.selectpicker')('refresh')
+    else {
+        if (selectedLocation == 'RA') {
+            console.log('.. RA ..')
+            RAclass = document.getElementsByClassName ('RA')
+            for (RA of RAclass) {
+                RA.style.display = 'block'
+            } 
+            BWclass = document.getElementsByClassName ('BW')
+            for (BW of BWclass) {
+                BW.style.display = 'none'
+            } 
+        }
+        else {
+        if (selectedLocation == 'BW') {
+            console.log('.. BW ..')
+            BWclass = document.getElementsByClassName ('BW')
+            for (BW of BWclass) {
+                BW.style.display = 'block'
+            } 
+            RAclass = document.getElementsByClassName ('RA')
+            for (RA of RAclass) {
+                RA.style.display = 'none'
+            }
+        }
     }
 }
-    //         el.style.display = 'block'
-    //     })
-    //     document.querySelectorAll('.BW').forEach(function(el) {
-    //         el.style.display = 'none'
-    //     })
+
+    // if (selectedLocation == 'RA') {
+    //     const RAclass = document.querySelectorAll('.RA');
+    //     RAclass.forEach(RAitem => {
+    //         RAitem.style.display = 'block'
+            
+    //     });
+    //     const BWclass = document.querySelectorAll('.BW');
+    //     BWclass.forEach(BWitem => {
+    //         //BWitem.style.display = 'none'
+    //         BWitem.hidden = true
+    //     });
     // }
-    // if (selectedLocation == 'BW') {
-    //     document.querySelectorAll('.BW').forEach(function(el) {
-    //         el.style.display = 'block'
-    //     })
-    //     document.querySelectorAll('.RA').forEach(function(el) {
-    //         el.style.display = 'none'
-    //     })
-    // }
-
-
-    // if (selectedLocation == 'RA'){
-    //     document.getElementsByClassName("RA").style.display = "block";  
-    //     document.getElementsByClassName("BW").style.display = "none";  
-    // }
-    // else {
-    //     if (selectedLocation == 'BW'){
-    //         document.getElementsByClassName("RA").style.display = "none";  
-    //         document.getElementsByClassName("BW").style.display = "block";  
-    //     }
-    // }
-    // FILTER THE MACHINE LIST BASED ON THE NEW LOCATION
-//     console.log('-------------------------------------------')
-//     console.log('selectedLocation - '+selectedLocation)
-    
-//         //console.log('innerHTML - '+opt.innerHTML)
-//         console.log('dataset - '+opt.dataset.location)
-//         console.log('current hidden value -  '+ opt.hidden)
-//         if (opt.dataset.location == 'BOTH' || opt.dataset.location == selectedLocation){
-//             //opt.style.display = 'block'
-//             opt.hidden = false
-//             //opt.style.visibility = 'hidden'
-//             console.log('included')
-//         }
-//         else {
-//             opt.hidden = true
-//             //opt.style.display = 'none'
-//             console.log('hidden')
-//         }    
-//     }
-// }
-//document.querySelectorAll('.child1')[0].
-//            style.visibility = 'hidden';
-
-// SHOW ALL MACHINES
-    //  $('.optMachineName').each(function(){
-    //      console.log('title - ' +$(this).title)
-    //      //console.log('innerHTML - ' +$(this).innerHTML)
-    //      $(this).show();
-    //  })
-
-//}
-//     if (shopChoice.value != 'BOTH') {
-//         // HIDE OPTION IF THE data.location MATCHES THE SELECTED LOCATION
-//         let currentLocation = shopChoice.value
-//         console.log('currentLocation - '+currentLocation)
-
-//         $('.optMachineName').each(function(){
-//             let sData = $(this).data('location');
-//             if (sData != currentLocation){
-//                 $(this).hide();
-//             }
-//         })
-//     }
-
+}
 
 function machineClicked() {
     console.log('... machineClicked rtn')
@@ -220,9 +162,9 @@ function machineClicked() {
     displayMachineInstructorsAndMembers()
 }
 
-function machineChanged() {
-    console.log('... machine changed rt')
-}
+// function machineChanged() {
+//     console.log('... machine changed rt')
+// }
 
 function memberClicked() {
     console.log('... memberClicked rtn')
@@ -257,7 +199,7 @@ function memberClicked() {
     displayMemberCertifications(villageID,"RA")
 }
 
-function instructorChange() {
+function instructorClicked() {
     console.log('... instructorClicked rtn')
     // CLEAR OTHER SELECTIONS
     if (instructorSelected.selectedIndex != 0) {
@@ -303,6 +245,12 @@ function displayMachineInstructorsAndMembers() {
         while (dtlParent.firstChild) {
             dtlParent.removeChild(dtlParent.lastChild);
         }
+
+        // Display full description
+        var divDescription = document.createElement('div')
+        divDescription.classList.add('machineDescription')
+        divDescription.innerHTML = data.machineDesc
+        dtlParent.appendChild(divDescription)
 
         // Display Instructor heading
         var divInstructorHdg = document.createElement('div')
@@ -433,6 +381,12 @@ function displayMemberCertifications(villageID,location) {
     while (memberData.firstChild) {
         memberData.removeChild(memberData.lastChild)
     }
+    // DISPLAY MEMBER NAME
+    var memberNameHdg = document.createElement('div')
+    memberNameHdg.classList.add('memberNameHdg')
+    memberNameHdg.innerHTML = data.memberName
+    memberData.appendChild(memberNameHdg)
+
     // Create table
     table = document.createElement('table')
     table.style="margin:auto"
@@ -636,18 +590,26 @@ function displayMachineInstructorData() {
         // divInstructorName.style.textAlign='center'
         // divInstructorName.style.fontWeight='bold'
         // dtlParent.appendChild(divInstructorName)
+        // Display full description
+        var divDescription = document.createElement('div')
+        divDescription.classList.add('instructorNameHdg')
+        divDescription.innerHTML = data.instructorName
+        dtlParent.appendChild(divDescription)
 
         var divHomePhone = document.createElement('div')
+        divHomePhone.classList.add('contactData')
         divHomePhone.innerHTML = "Home phone - " + data.homePhone
         divHomePhone.style.textAlign='left'
         dtlParent.appendChild(divHomePhone)
 
         var divMobilePhone = document.createElement('div')
+        divMobilePhone.classList.add('contactData')
         divMobilePhone.innerHTML = "Mobile phone - " + data.mobilePhone
         divMobilePhone.style.textAlign='left'
         dtlParent.appendChild(divMobilePhone)
 
         var divEmail = document.createElement('div')
+        divEmail.classList.add('contactData')
         divEmail.innerHTML = "Email - " + data.eMail
         divEmail.style.textAlign='left'
         dtlParent.appendChild(divEmail)
@@ -778,11 +740,44 @@ function prtMemberCertifications(memberID) {
 }   
 
 function showNewMachineModal() {
-    document.getElementById('newDescription').innerHTML = ''
+    document.getElementById('newMachineDescription').innerHTML = ''
+    document.getElementById('newMachineLocation').value = localStorage.getItem('shopLocation')
+    document.getElementById('newCertificationDuration').value = '180 days'
     $('#newMachineModal').modal('show')
 }
 function saveNewMachine() {
-    alert('save new machine')
-    $('#newMachineModal').modal('hide')
+    machineDesc = document.getElementById('newMachineDescription').innerHTML
+    machineLocation = document.getElementById('newMachineLocation').innerHTML
+    certificationDuration = document.getElementById('newCertificationDuration').innerHTML
+    console.log('machineDesc - '+machineDesc)
+    console.log('machineLocation - '+machineLocation)
+    console.log('certificationDuration - '+certificationDuration)
+
+    url = window.location.origin + '/newMachine'  
+    console.log('url - '+url)
+        
+    let dataToSend = {
+        machineDesc: machineDesc,
+        machineLocation: machineLocation,
+        certificationDuration:certificationDuration
+    };
+    fetch(url, {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify(dataToSend),
+        cache: "no-cache",
+        headers: new Headers({
+            "content-type": "application/json"
+        })
+    })
+    .then((res) => res.json())
+    .then((data) => {
+        if (data.status != 200) {
+            modalAlert('New machine',data.msg)
+        }
+        modalAlert('New Machine','Add successful.')
+        $('#newMachineModal').modal('hide')
+        return
+    })
 }
 // END OF FUNCTIONS

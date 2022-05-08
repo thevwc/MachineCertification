@@ -123,7 +123,7 @@ def displayMachineData():
     if machine == None:
         msg = "Machine ID " + machineID + " was not found."
         return jsonify(msg=msg,status=400)
-    machineDesc = machine.machineDesc
+    machineDesc = machine.machineDesc + ' (' + machineID + ') at ' + machine.machineLocation
     machineLocation = machine.machineLocation
     
     # GET INSTRUCTORS FOR THIS MACHINE
@@ -459,3 +459,31 @@ def prtMemberCertifications():
     return render_template("memberCerts.html",todaysDate=todaysDate,\
             memberName=memberName,villageID=villageID,\
             machinesCertifiedDict=machinesCertifiedDict)
+
+@app.route('/newMachine',methods=['GET','POST'])
+def newMachine():
+    print('... /newMachine')
+    
+    req = request.get_json()
+    machineDesc = req["machineDesc"]
+    machineLocation = req["machineLocation"]
+    certificationDuration = req["certificationDuration"]
+    machineID = getNextMachineID()
+
+    print('machineDesc -',machineDesc)
+    print('machineLocation - ',machineLocation)
+    print('certificationDuration - ',certificationDuration)
+    print('machineID - ',machineID)
+
+    sp = "EXEC newMachine '" + machineID + "', " + machineDesc + "', '" + machineLocation + "', '" + certificationDuration + "'"
+    sql = SQLQuery(sp)
+    result = db.engine.execute(sql)
+    if result == 0:
+        msg = "Add failed"
+        status = 400
+    else:
+        msg = "Add succeeded"
+        status = 200
+
+    return jsonify(msg=msg,status=status)
+    

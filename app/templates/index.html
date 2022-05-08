@@ -23,28 +23,28 @@
     
     <!-- locations -->
     <div class="locationSelector">
-        <form class = "filterItems ">
+        <!-- <form class = "filterItems "> -->
             <label for="shopChoice">Location: </label>
-            <select id="shopChoice" name="shopList" style="height:25px; width:150px; font-size: 1em;">
-                <!-- <option id="selectLocation" value="" >Select a location ...</option> -->
-                <option id='BOTH' value="BOTH">Both</option>
-                <option id='RA' value="RA">Rolling Acres</option>
-                <option id='BW' value="BW">Brownwood</option>   
+            <select id="shopChoice" class="shopChoice" name="shopList" style="height:25px; width:125px; font-size: 1em;">
+                <option id='BOTH' class="locationOption" value="BOTH">Both</option>
+                <option id='RA' class="locationOption" value="RA">Rolling Acres</option>
+                <option id='BW' class="locationOption" value="BW">Brownwood</option>   
             </select>
-        </form>
+        <!-- </form> -->
     </div>
 
     <!--list of machines -->
     <div class="machineSelector">
         <div class="row">
-            <div class="col-8">
+            <div class="col-1"></div>
+            <div class="col-5">
                 <select 
                     id='machineSelected' 
                     class="selectpicker"
                     title='Select a machine ...' 
                     data-live-search=true 
                     data-live-search-style="contains" 
-                    data-width='350px'>
+                    data-width='250px'>
                     <option class="optMachines" value="">Select a machine ...</option>
                     {% for m in machineList %}
                         <option 
@@ -57,10 +57,12 @@
                     {% endfor %}
                 </select>      
             </div>
-            <div class="col-1">
+            <div class="col-2"></div>
+            <div class="col-2" style="align-content:right">
                 <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newMachineModal"> -->
-                <button type="'button" class="btn btn-primary" onclick="showNewMachineModal()">NEW</button>
+                <button type="'button" class="btn btn-primary" style="margin-left:20px;margin-right:10px" onclick="showNewMachineModal()">NEW</button>
             </div>
+            <div class="col-1"></div>
         </div>
     </div>
 
@@ -160,18 +162,18 @@
         <div class="modal-body">
             <div class="row">
                 <div class="col-4 newMachineLabel">
-                    <label for="newDescription">Description</label>
+                    <label for="newMachineDescription">Description</label>
                 </div>
                 <div class="col-5 newMachineData">
-                    <input type="text" id="newDescription" size="30" >
+                    <input type="text" id="newMachineDescription" size="30" >
                 </div>
             </div>
             <div class="row">
                 <div class="col-4 newMachineLabel">
-                    <label for="newLocation">Location</label>
+                    <label for="newMachineLocation">Location</label>
                 </div>
                 <div class="col-5 newMachineData">
-                    <select name="" id="newLocation">
+                    <select name="" id="newMachineLocation">
                         <option value="RA">Rolling Acres</option>
                         <option value="BW">Brownwood</option>
                     </select>
@@ -179,10 +181,10 @@
             </div>
             <div class="row">
                 <div class="col-4 newMachineLabel">
-                    <label for="newDuration">Suggested Duration</label>
+                    <label for="newCertificationDuration">Suggested Duration</label>
                 </div>
                 <div class="col-5 newMachineData">
-                    <select name="" id="newDuration">
+                    <select name="" id="newCertificationDuration">
                         <option value="UNL">Unlimited</option>
                         <option value="365 days">365 days</option>
                         <option value="180 days">180 days</option>
