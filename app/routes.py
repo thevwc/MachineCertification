@@ -480,22 +480,62 @@ def newMachine():
     print('keyProvider - ',type(keyProvider),keyProvider)
     print('machineID - ',machineID)
 
-    sp = "EXEC newMachine '" + machineID + "', '" + machineDesc + "', '" + machineLocation + "', '" + certificationDuration + "'"
-    sql = SQLQuery(sp)
+    # newMachine = Machines(
+    #     machineID=machineID,
+    #     machineDesc=machineDesc,
+    #     machineLocation=machineLocation,
+    #     certificationDuration=certificationDuration,
+    #     keyInToolCrib=keyInToolCrib,
+    #     callKeyProvider=keyProvider
+    # )
+    # try:
+    #     db.session.add(newMachine)
+    #     db.session.commit()
+    #     msg("Success")
+    #     return jsonify(msg=msg,status=200)
+    # except:
+    #     db.session.rollback()
+    #     msg='Add machine failed.'
+    #     return jsonify(msg=msg,status=201)
+
+    sqlInsert = "INSERT INTO [machinesRequiringCertification] ([machineID],[machineDesc], [machineLocation],"
+    sqlInsert += "certificationDuration,keyInToolCrib,callKeyProvider) "
+    sqlInsert += " VALUES ('" + machineID + "', '" +  machineDesc +"', '" + machineLocation + "', '" 
+    sqlInsert += certificationDuration + "'," + str(keyInToolCrib) + "," + str(keyProvider) + ")"
+    
+    print('sqlInsert - ',sqlInsert)
     try:
-        result = db.engine.execute(sql)
-        if result == 0:
-            msg = "Add failed"
-            status = 400
+        result = db.engine.execute(sqlInsert)
+        if result != 0:
+            return jsonify(msg="Machine added.",status=200)
         else:
-            msg = "Add succeeded"
-            status = 200
-        return jsonify(msg=msg,status=status)
+            return jsonify(msg="Add failed.",status=201)
     except (SQLAlchemyError, DBAPIError) as e:
         print("ERROR -",e)
         flash("ERROR - DB error")
-        msg='Record could not be deleted'
+        msg='Record could not be inserted'
         return jsonify(msg=msg,status=201)
+
+    # sp = "EXEC newMachine '" + machineID + "', '" + machineDesc + "', '" 
+    # sp += "" + machineLocation + "', '" + certificationDuration + "', " 
+    # sp += "" + str(keyInToolCrib) + "," + str(keyProvider) 
+    # print('sp - ',sp)
+
+    # sql = SQLQuery(sp)
+    # try:
+    #     result = db.engine.execute(sql)
+    #     if result == 0:
+    #         msg = "Add failed"
+    #         status = 400
+    #     else:
+    #         msg = "Add succeeded"
+    #         status = 200
+    #     return jsonify(msg=msg,status=status)
+    # except (SQLAlchemyError, DBAPIError) as e:
+    #     print("ERROR -",e)
+    #     flash("ERROR - DB error")
+    #     msg='Record could not be added'
+    #     return jsonify(msg=msg,status=201)
     
 def getNextMachineID():
     lastUsedID = db.session.query(func.max(Machines.machineID)).scalar() 

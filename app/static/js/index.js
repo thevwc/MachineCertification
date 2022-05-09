@@ -798,9 +798,9 @@ function saveNewMachine() {
         if (data.status != 200) {
             modalAlert('New machine',data.msg)
         }
-        modalAlert('New Machine','Add successful.')
+        modalAlert('New Machine',data.msg)
         $('#newMachineModal').modal('hide')
-        return
+        window.location.href = "/index"
     })
 }
 function keyChangeTC() {
