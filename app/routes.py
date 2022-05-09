@@ -468,26 +468,41 @@ def newMachine():
     machineDesc = req["machineDesc"]
     machineLocation = req["machineLocation"]
     certificationDuration = req["certificationDuration"]
+    keyInToolCrib = req["keyInToolCrib"]
+    keyProvider = req["keyProvider"]
     machineID = getNextMachineID()
+    
 
     print('machineDesc -',machineDesc)
     print('machineLocation - ',machineLocation)
     print('certificationDuration - ',certificationDuration)
+    print('keyInToolCrib - ',type(keyInToolCrib),keyInToolCrib)
+    print('keyProvider - ',type(keyProvider),keyProvider)
     print('machineID - ',machineID)
 
     sp = "EXEC newMachine '" + machineID + "', '" + machineDesc + "', '" + machineLocation + "', '" + certificationDuration + "'"
     sql = SQLQuery(sp)
-    result = db.engine.execute(sql)
-    if result == 0:
-        msg = "Add failed"
-        status = 400
-    else:
-        msg = "Add succeeded"
-        status = 200
-
-    return jsonify(msg=msg,status=status)
+    try:
+        result = db.engine.execute(sql)
+        if result == 0:
+            msg = "Add failed"
+            status = 400
+        else:
+            msg = "Add succeeded"
+            status = 200
+        return jsonify(msg=msg,status=status)
+    except (SQLAlchemyError, DBAPIError) as e:
+        print("ERROR -",e)
+        flash("ERROR - DB error")
+        msg='Record could not be deleted'
+        return jsonify(msg=msg,status=201)
     
 def getNextMachineID():
-    maxID = db.session.query(func.max(Machines.machineID)).scalar()
-    print('maxID - ',maxID)
-    return maxID
+    lastUsedID = db.session.query(func.max(Machines.machineID)).scalar() 
+    strNumber = (lastUsedID[1:5])
+    intNumber = int(strNumber)+1
+    id = f'{intNumber:04d}'
+    sum = (int(id[0]) * 13) + (int(id[1]) * 7) + (int(id[2]) * 5) + (int(id[3]) * 3)
+    chkdigits = sum % 11 
+    newMachineID = 'E' + id + f'{chkdigits:02d}'
+    return newMachineID

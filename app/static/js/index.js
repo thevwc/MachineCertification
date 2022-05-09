@@ -61,7 +61,7 @@ filterMachineDropdown(shopChoice.value)
 // SET VERSION OF APP AND CURRENT SCREEN SIZE (FOR DEVELOPMENT PURPOSES)
 versionText = document.getElementById('versionText')
 console.log('screen width ='+screen.width)
-versionText.innerHTML='ver May 6, 2022  (' + screen.width + ')'
+versionText.innerHTML='ver May 9, 2022  (' + screen.width + ')'
 
 // IF NOT A LARGE SCREEN DISPLAY ONLY 1 PANEL AT A TIME INSTEAD OF ALL 3
 handleMediaChange(largeScreen)
@@ -756,17 +756,33 @@ function saveNewMachine() {
     machineDesc = document.getElementById('newMachineDescription').value
     machineLocation = document.getElementById('newMachineLocation').value
     certificationDuration = document.getElementById('newCertificationDuration').value
-    console.log('machineDesc - '+machineDesc)
-    console.log('machineLocation - '+machineLocation)
-    console.log('certificationDuration - '+certificationDuration)
-
+    // console.log('machineDesc - '+machineDesc)
+    // console.log('machineLocation - '+machineLocation)
+    // console.log('certificationDuration - '+certificationDuration)
+    newKeyInToolCribID = document.getElementById('newKeyInToolCrib')
+    if (newKeyInToolCribID.checked==true){
+        keyInToolCrib = 1
+    }
+    else {
+        keyInToolCrib = 0
+    }
+    newKeyProviderID = document.getElementById('newKeyProvider')
+    if (newKeyProviderID.checked==true){
+        keyProvider = 1
+    }
+    else {
+        keyProvider = 0
+    }
+ 
     url = window.location.origin + '/newMachine'  
     console.log('url - '+url)
         
     let dataToSend = {
         machineDesc: machineDesc,
         machineLocation: machineLocation,
-        certificationDuration:certificationDuration
+        certificationDuration:certificationDuration,
+        keyInToolCrib:keyInToolCrib,
+        keyProvider:keyProvider
     };
     fetch(url, {
         method: "POST",
