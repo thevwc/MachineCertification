@@ -881,10 +881,22 @@
     overflow: scroll;
 } */
 
-.newMachineLabel {
+/* .newMachineLabel {
     text-align:right;
     margin-left:30px;
 }
 .newMachineData {
     text-align:left;
-}
+} */
+/* #newMachine .modal-header {
+    background-color: green;
+    color:white;
+
+} */
+/* #newMachine .modal-footer {
+    background-color: green;
+} */
+/* #closeNewMachineModal {
+    padding-top:0px;
+    margin-top:0px;
+} */

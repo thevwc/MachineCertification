@@ -14,6 +14,9 @@ const largeScreen = window.matchMedia("(min-width: 992px)")
 const machineInstructorBtn = document.getElementById("machineInstructorBtn")
 const machineMemberBtn = document.getElementById("machineMemberBtn")
 const machineInstructorsAndMembers = document.getElementById("machineInstructorsAndMembers")
+const newKeyInToolCrib = document.getElementById("newKeyInToolCrib")
+const newKeyProvider = document.getElementById("newKeyProvider")
+
 //const certifyChkbox = document.getElementsByClassName('certifyChkbox')
 
 // EVENT LISTENERS
@@ -27,6 +30,8 @@ memberSelected.addEventListener("change",memberClicked)
 instructorSelected.addEventListener("click",instructorClicked)
 instructorSelected.addEventListener("change",instructorClicked)
 largeScreen.addEventListener("change",handleMediaChange)
+newKeyInToolCrib.addEventListener("change",keyChangeTC)
+newKeyProvider.addEventListener("change",keyChangeProvider)
 
 // PAGE LOAD ROUTINES
 
@@ -93,6 +98,7 @@ function filterMachineDropdown(selectedLocation) {
         for (opt of optMachineName) {
             opt.style.display = 'block'
         }
+        $('.selectpicker').selectpicker('refresh');
         return
         }
     else {
@@ -120,6 +126,7 @@ function filterMachineDropdown(selectedLocation) {
             }
         }
     }
+    $('.selectpicker').selectpicker('refresh');
 }
 
     // if (selectedLocation == 'RA') {
@@ -746,9 +753,9 @@ function showNewMachineModal() {
     $('#newMachineModal').modal('show')
 }
 function saveNewMachine() {
-    machineDesc = document.getElementById('newMachineDescription').innerHTML
-    machineLocation = document.getElementById('newMachineLocation').innerHTML
-    certificationDuration = document.getElementById('newCertificationDuration').innerHTML
+    machineDesc = document.getElementById('newMachineDescription').value
+    machineLocation = document.getElementById('newMachineLocation').value
+    certificationDuration = document.getElementById('newCertificationDuration').value
     console.log('machineDesc - '+machineDesc)
     console.log('machineLocation - '+machineLocation)
     console.log('certificationDuration - '+certificationDuration)
@@ -779,5 +786,21 @@ function saveNewMachine() {
         $('#newMachineModal').modal('hide')
         return
     })
+}
+function keyChangeTC() {
+    if (newKeyInToolCrib.checked == true) {
+        newKeyProvider.checked = false
+    }
+    else {
+        newKeyProvider.checked = true
+    }
+}
+function keyChangeProvider() {
+    if (newKeyProvider.checked == true) {
+        newKeyInToolCrib.checked = false
+    }
+    else {
+        newKeyInToolCrib.checked = true
+    }
 }
 // END OF FUNCTIONS

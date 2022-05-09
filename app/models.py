@@ -302,7 +302,10 @@ class Machines(db.Model):
     machineID = db.Column(db.String(20), primary_key=True)
     machineDesc = db.Column(db.String(50))
     machineLocation = db.Column(db.String(2))
-    
+    certificationDuration = db.Column(db.String(10))
+    keyInToolCrib = db.Column(db.Boolean)
+    callKeyProvider = db.Column(db.Boolean)
+
 class MemberMachineCertifications(db.Model):
     __tablename__ = 'memberMachineCertifications'
     __table_args__ = {"schema": "dbo"}
@@ -316,8 +319,12 @@ class MachineInstructors(db.Model):
     __tablename__ = 'machineInstructors'
     __table_args__ = {"schema": "dbo"}
     ID = db.Column(db.Integer,autoincrement=True)
-    member_ID = db.Column(db.String(6), primary_key=True)
     machineID = db.Column(db.String(20), primary_key=True)
+    member_ID = db.Column(db.String(6), primary_key=True)
+    canCertify = db.Column(db.Boolean)
+    canAssist = db.Column(db.Boolean)
+    keyProvider = db.Column(db.Boolean)
+    
     
 class MachineActivity(db.Model):
     __tablename__ = 'machineActivity'

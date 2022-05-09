@@ -475,7 +475,7 @@ def newMachine():
     print('certificationDuration - ',certificationDuration)
     print('machineID - ',machineID)
 
-    sp = "EXEC newMachine '" + machineID + "', " + machineDesc + "', '" + machineLocation + "', '" + certificationDuration + "'"
+    sp = "EXEC newMachine '" + machineID + "', '" + machineDesc + "', '" + machineLocation + "', '" + certificationDuration + "'"
     sql = SQLQuery(sp)
     result = db.engine.execute(sql)
     if result == 0:
@@ -487,3 +487,7 @@ def newMachine():
 
     return jsonify(msg=msg,status=status)
     
+def getNextMachineID():
+    maxID = db.session.query(func.max(Machines.machineID)).scalar()
+    print('maxID - ',maxID)
+    return maxID

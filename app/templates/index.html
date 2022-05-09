@@ -153,8 +153,8 @@
       <div class="modal-content">
   
         <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">Modal Heading</h4>
+        <div class="modal-header newMachineModalHeader">
+          <h4 class="modal-title">NEW MACHINE</h4>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
   
@@ -194,12 +194,28 @@
                     </select>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-4 newMachineLabel">
+                    <label for="newKeyInToolCrib">Key in tool crib</label>
+                </div>
+                <div class="col-5 newMachineData">
+                    <input type="checkbox" id="newKeyInToolCrib">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4 newMachineLabel">
+                    <label for="newKeyProvider">Call key provider</label>
+                </div>
+                <div class="col-5 newMachineData">
+                    <input type="checkbox" id="newKeyProvider">
+                </div>
+            </div>
         </div> 
-  
+       
         <!-- Modal footer -->
-        <div class="modal-footer">
-          <button id='closeNewMachineModal' type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-          <button id='saveNewMachineModal' type="button" class="btn btn-danger" onclick="saveNewMachine()">Save</button>
+        <div class="modal-footer newMachineModalFooter">
+          <button id='closeNewMachineModal' type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
+          <button id='saveNewMachineModal' type="button" class="btn btn-success" onclick="saveNewMachine()">Save</button>
         </div>
   
       </div>

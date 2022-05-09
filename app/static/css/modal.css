@@ -15,6 +15,10 @@
   background-color: red;
   color:white;
 }
+
+
+
+
 .modal-header button {
   float: right;
   }
@@ -82,7 +86,7 @@ input[type='radio']:checked:after {
 } 
 
 .modal-footer {
-  height:50px;
+  height:60px;
   margin:0px;
   padding-top:0px;
   padding-bottom:0px;
@@ -135,3 +139,24 @@ input[type='radio']:checked:after {
     width:100px;
   }
   
+/* EXCEPTIONS FOR NEW MACHINE MODAL FORM */
+.newMachineModalHeader{
+    background-color: navy;
+}
+.newMachineLabel {
+  text-align:right;
+  margin-left:30px;
+}
+.newMachineData {
+  text-align:left;
+}
+.newMachineModalFooter {
+  background-color: navy;
+}
+
+#closeNewMachineModal {
+  margin-top:0px;
+}
+#saveNewMachineModal {
+  margin-top:0px;
+}
