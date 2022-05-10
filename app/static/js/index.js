@@ -70,7 +70,7 @@ filterMachineDropdown(shopChoice.value)
 // SET VERSION OF APP AND CURRENT SCREEN SIZE (FOR DEVELOPMENT PURPOSES)
 versionText = document.getElementById('versionText')
 console.log('screen width ='+screen.width)
-versionText.innerHTML='ver May 9, 2022  (' + screen.width + ')'
+versionText.innerHTML='ver May 11, 2022  (' + screen.width + ')'
 
 // IF NOT A LARGE SCREEN DISPLAY ONLY 1 PANEL AT A TIME INSTEAD OF ALL 3
 handleMediaChange(largeScreen)
@@ -713,13 +713,13 @@ function displayMachineInstructorData() {
             divRow.classList.add('row', 'instrMachRow')
             divRow.id = 'R' + m['machineID']
 
-            // Instructor checkbox
+            // Certify checkbox
             var chkInput = document.createElement('input')
             chkInput.type="checkbox"
-            chkInput.id = m['machineID']
+            chkInput.id = 'C' + m['machineID']
             chkInput.classList.add('col-1')
             chkInput.classList.add('canCertify','instrChkbox')
-            chkInput.setAttribute("onclick","certifyFunction(m['machineID'])")
+            chkInput.setAttribute("onclick","certifyFunction(this)")
             if (m['instructorCertified']) {
                 chkInput.checked = true
                 chkInput.innerHTML = 'True'
@@ -732,10 +732,10 @@ function displayMachineInstructorData() {
             // Assist checkbox
             var chkInput = document.createElement('input')
             chkInput.type="checkbox"
-            chkInput.id = "I" + m['machineID']
+            chkInput.id = "A" + m['machineID']
             chkInput.classList.add('col-1')
             chkInput.classList.add('canAssist','instrChkbox')
-            chkInput.setAttribute("onclick","assistFunction(m['machineID'])")
+            chkInput.setAttribute("onclick","assistFunction(this)")
             if (m['canAssist']) {
                 chkInput.checked = true
                 chkInput.innerHTML = 'True'
@@ -751,7 +751,7 @@ function displayMachineInstructorData() {
             chkInput.id = 'K' + m['machineID']
             chkInput.classList.add('col-1')
             chkInput.classList.add('keyProvider','instrChkbox')
-            chkInput.setAttribute("onclick","keyProviderFunction(m['machineID'])")
+            chkInput.setAttribute("onclick","keyProviderFunction(this)")
             if (m['keyProvider']) {
                 chkInput.checked = true
                 chkInput.innerHTML = 'True'
@@ -763,7 +763,7 @@ function displayMachineInstructorData() {
 
             // Machine Description
             var divColMachineDesc = document.createElement('div')
-            divColMachineDesc.classList.add('col-6')
+            divColMachineDesc.classList.add('col-5')
             divColMachineDesc.classList.add('clsMachineDesc')
             divColMachineDesc.innerHTML = m['machineDesc']
             divColMachineDesc.style.textAlign='left'
@@ -775,44 +775,56 @@ function displayMachineInstructorData() {
             divColMachineLoc.innerHTML = m['machineLocation']
             divRow.appendChild(divColMachineLoc)
 
+            // COL FOR SAVE BTN
+            var divBtnCol0 = document.createElement('div')
+            divBtnCol0.classList.add('col-1')
+
+            var btnSaveRow = document.createElement('button')
+            btnSaveRow.className="btn btn-primary btn-sm"
+            btnSaveRow.style.fontSize='.5rem'
+            btnSaveRow.style.display='none'
+            btnSaveRow.id = 'S' + m['machineID']
+            btnSaveRow.setAttribute("onclick","saveCheckedBoxes(this)")
+            btnSaveRow.textContent='SAVE'
+            divBtnCol0.appendChild(btnSaveRow)
+            divRow.appendChild(divBtnCol0)
+
             // ADD THE ROW TO THE DETAIL SECTION
             instructorMachinesParent.appendChild(divRow)
         }
         // Add 'CANCEL' and 'SAVE' buttons
-        var divBtnRow = document.createElement('div')
-        divBtnRow.style.marginTop="10px"
-        divBtnRow.id= 'instructorMachinebtnRow'
-        divBtnRow.classList.add('row', 'instructorMachinebtnRow')
-        divBtnRow.style.display='none'
+        // var divBtnRow = document.createElement('div')
+        // divBtnRow.style.marginTop="10px"
+        // divBtnRow.id= 'instructorMachinebtnRow'
+        // divBtnRow.classList.add('row', 'instructorMachinebtnRow')
+        // divBtnRow.style.display='none'
 
         // BLANK COL
-        var divBtnCol0 = document.createElement('div')
-        divBtnCol0.classList.add('col-3')
-        divBtnRow.appendChild(divBtnCol0)
+        
 
         // COL FOR CANCEL BTN
-        var divBtnCol1 = document.createElement('div')
-        divBtnCol1.classList.add('col-3')
+        // var divBtnCol1 = document.createElement('div')
+        // divBtnCol1.classList.add('col-3')
 
-        var btnCancel = document.createElement('button')
-        btnCancel.textContent='CANCEL'
-        btnCancel.className="btn btn-secondary btn-sm"
-        divBtnCol1.appendChild(btnCancel)
+        // var btnCancel = document.createElement('button')
+        // btnCancel.textContent='CANCEL'
+        // btnCancel.className="btn btn-secondary btn-sm"
+        // divBtnCol1.appendChild(btnCancel)
 
-        divBtnRow.appendChild(divBtnCol1)
+        // divBtnRow.appendChild(divBtnCol1)
 
         // COL FOR SAVE BTN
-        var divBtnCol2 = document.createElement('div')
-        divBtnCol2.classList.add('col-3')
+        // var divBtnCol2 = document.createElement('div')
+        // divBtnCol2.classList.add('col-3')
 
-        var btnSave = document.createElement('button')
-        btnSave.className="btn btn-primary btn-sm"
-        btnSave.textContent='SAVE'
-        divBtnCol2.appendChild(btnSave)
+        // var btnSave = document.createElement('button')
+        // btnSave.className="btn btn-primary btn-sm"
+        // btnSave.textContent='SAVE'
+        // divBtnCol2.appendChild(btnSave)
 
-        divBtnRow.appendChild(divBtnCol2)
+        // divBtnRow.appendChild(divBtnCol2)
 
-        instructorMachinesParent.appendChild(divBtnRow)
+        // instructorMachinesParent.appendChild(divBtnRow)
 
    
         return
@@ -947,14 +959,78 @@ function keyChangeProvider() {
 //     document.getElementById("instructorMachinebtnRow").style.display='block'
 // }
 
-function certifyFunction(id) {
-    console.log('certifyFunction - ',id)
-    console.log('e - ',e.id,e.checked)
+function certifyFunction(el) {
+    // machineID = el.id.substring(1,8)
+    // saveID = 'S'+machineID
+    document.getElementById('S'+el.id.substring(1,8)).style.display='block'
 }
-function assistFunction(e) {
-    console.log('assistFunction - ',e)
+function assistFunction(el) {
+    document.getElementById('S'+el.id.substring(1,8)).style.display='block'
 }
-function keyProviderFunction(e) {
-    console.log('keyProviderFunction - ',e)
+function keyProviderFunction(el) {
+    document.getElementById('S'+el.id.substring(1,8)).style.display='block'
 }
+function saveCheckedBoxes(el) {
+    let e = document.getElementById("instructorSelected");
+    memberID = e.options[e.selectedIndex].getAttribute('data-villageid')
+    console.log('memberID - '+memberID)
+    machineID = el.id.substring(1,8)
+    
+    // GET canCertify STATUS
+    certifyID = 'C' +  machineID
+    if (document.getElementById(certifyID).checked) {
+        canCertify = 1
+    }
+    else {
+        canCertify = 0
+    }
+
+    // GET canAssist STATUS
+    assistID = 'A' +  machineID
+    if (document.getElementById(assistID).checked) {
+        canAssist = 1
+    }
+    else {
+        canAssist = 0
+    }
+
+    // GET keyProvider STATUS
+    keyProviderID = 'K' +  machineID
+    if (document.getElementById(keyProviderID).checked) {
+        keyProvider = 1
+    }
+    else {
+        keyProvider = 0
+    }
+
+    // CALL UPDATE ROUTINE
+    console.log(machineID,canCertify,canAssist,keyProvider)
+    
+    let dataToSend = {
+        memberID: memberID,
+        machineID: machineID,
+        canCertify:canCertify,
+        canAssist:canAssist,
+        keyProvider:keyProvider
+    };
+    fetch(`${window.origin}/updateInstructorMachineSettings`, {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify(dataToSend),
+        cache: "no-cache",
+        headers: new Headers({
+            "content-type": "application/json"
+        })
+    })
+    .then((res) => res.json())
+    .then((data) => {
+        if (data.status != 200) {
+            modalAlert('New machine',data.msg)
+            return
+        }
+        // hide current SAVE button
+        document.getElementById('S'+machineID).style.display='none'
+    })
+}
+
 // END OF FUNCTIONS

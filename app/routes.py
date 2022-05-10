@@ -556,3 +556,51 @@ def getNextMachineID():
     chkdigits = sum % 11 
     newMachineID = 'E' + id + f'{chkdigits:02d}'
     return newMachineID
+
+@app.route('/updateInstructorMachineSettings',methods=['GET','POST'])
+def updateInstructorMachineSettings():
+    print('... /updateInstructorMachineSettings')
+    req = request.get_json()
+    memberID=req["memberID"]
+    machineID = req["machineID"]
+    canCertify=req["canCertify"]
+    canAssist=req["canCertify"]
+    keyProvider=req["keyProvider"]
+
+    print(memberID,machineID,canCertify,canAssist,keyProvider)
+
+    # LOOK UP MACHINE INSTRUCTORS RECORD    
+    machineInstructor = db.session.query(MachineInstructors).filter(MachineInstructors.member_ID == memberID)\
+        .filter(MachineInstructors.machineID == machineID).first()
+    if machineInstructor != None:
+        machineInstructor.canCertify = canCertify
+        machineInstructor.canAssist = canAssist
+        machineInstructor.keyProvider = keyProvider
+        try:
+            print('try update')
+            db.session.commit()
+            return jsonify(msg="Update succeeded",status=200)
+        except:
+            print('except update')
+            db.session.rollback()
+            return jsonify(msg="Update failed.",status=201)
+    else:
+        newRecord = MachineInstructors (
+            member_ID = memberID,
+            machineID = machineID,
+            canCertify=canCertify,
+            canAssist=canAssist,
+            keyProvider=keyProvider
+        )
+        try:
+            print("try add")
+            db.session.add(newRecord)
+            db.session.commit()
+            msg("Success")
+            return jsonify(msg=msg,status=200)
+        except:
+            print("except add")
+            db.session.rollback()
+            msg='Add machineInstructor failed.'
+            return jsonify(msg=msg,status=201)
+    
