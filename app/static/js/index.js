@@ -16,6 +16,8 @@ const machineMemberBtn = document.getElementById("machineMemberBtn")
 const machineInstructorsAndMembers = document.getElementById("machineInstructorsAndMembers")
 const newKeyInToolCrib = document.getElementById("newKeyInToolCrib")
 const newKeyProvider = document.getElementById("newKeyProvider")
+//const instrChkbox = document.querySelectorAll(".instrChkbox")
+//const instrMachRow = document.getElementById('instrMachRow')
 
 //const certifyChkbox = document.getElementsByClassName('certifyChkbox')
 
@@ -32,6 +34,13 @@ instructorSelected.addEventListener("change",instructorClicked)
 largeScreen.addEventListener("change",handleMediaChange)
 newKeyInToolCrib.addEventListener("change",keyChangeTC)
 newKeyProvider.addEventListener("change",keyChangeProvider)
+// add event listener to each element of class instrChkbox
+// instrChkbox.forEach(box => {
+//     box.addEventListener('click',function handleClick(event) {
+//         console.log('box clicked', event);
+//         instrMachRow.style.display='block'
+//     })
+// })
 
 // PAGE LOAD ROUTINES
 
@@ -644,30 +653,73 @@ function displayMachineInstructorData() {
         var breakElement = document.createElement('br')
         instructorMachinesParent.appendChild(breakElement)
 
-        var divHdgRow = document.createElement('div')
-        divHdgRow.classList.add('row', 'headings')
+        var divHdgRow1 = document.createElement('div')
+        divHdgRow1.classList.add('row', 'headings')
 
+        // HEADINGS FOR MACHINE LIST
+        var divHdgCol1 = document.createElement('div')
+        divHdgCol1.classList.add('col-1')
+        divHdgCol1.classList.add('instrMachHdg')
+        divHdgCol1.innerHTML="Can"
+        divHdgRow1.appendChild(divHdgCol1)
 
-        var divHdgText = document.createElement('div')
-        divHdgText.classList.add('col-8')
-        divHdgText.innerHTML="May certify the following -"
-        divHdgRow.appendChild(divHdgText)
+        var divHdgCol2 = document.createElement('div')
+        divHdgCol2.classList.add('col-1')
+        divHdgCol2.classList.add('instrMachHdg')
+        divHdgCol2.innerHTML="Can"
+        divHdgRow1.appendChild(divHdgCol2)
 
-        var divHdgCol = document.createElement('div')
-        divHdgCol.classList.add('col-2')
-        divHdgRow.appendChild(divHdgCol) 
-        instructorMachinesParent.appendChild(divHdgRow)
+        var divHdgCol3 = document.createElement('div')
+        divHdgCol3.classList.add('col-1')
+        divHdgCol3.classList.add('instrMachHdg')
+        divHdgCol3.innerHTML="Has"
+        divHdgRow1.appendChild(divHdgCol3)
+        // Add row with 'Can  Can  Has'
+        instructorMachinesParent.appendChild(divHdgRow1)
 
+        var divHdgRow2 = document.createElement('div')
+        divHdgRow2.classList.add('row', 'headings')
+        var divHdgColA = document.createElement('div')
+        divHdgColA.classList.add('col-1')
+        divHdgColA.classList.add('instrMachHdg')
+        divHdgColA.innerHTML="Certify"
+        divHdgRow2.appendChild(divHdgColA)
+
+        var divHdgColB = document.createElement('div')
+        divHdgColB.classList.add('col-1')
+        divHdgColB.classList.add('instrMachHdg')
+        divHdgColB.innerHTML="Assist"
+        divHdgRow2.appendChild(divHdgColB)
+
+        var divHdgColC = document.createElement('div')
+        divHdgColC.classList.add('col-1')
+        divHdgColC.classList.add('instrMachHdg')
+        divHdgColC.innerHTML="Key"
+        divHdgRow2.appendChild(divHdgColC)
+
+        // Add row with 'Certify   Assist   Key'
+        instructorMachinesParent.appendChild(divHdgRow2)
+        
+        // BLANK SPACE BEFORE FIRST CHECK BOX
+        // var divHdgCol = document.createElement('div')
+        // divHdgCol.classList.add('col-2')
+        // divHdgRow.appendChild(divHdgCol) 
+        // instructorMachinesParent.appendChild(divHdgRow)
+
+        //  ROWS OF MACHINES
         for (m of machine) {
             // BUILD THE ROW
             var divRow = document.createElement('div')
             divRow.classList.add('row', 'instrMachRow')
-            
+            divRow.id = 'R' + m['machineID']
+
+            // Instructor checkbox
             var chkInput = document.createElement('input')
             chkInput.type="checkbox"
             chkInput.id = m['machineID']
             chkInput.classList.add('col-1')
-            chkInput.classList.add('canCertify')
+            chkInput.classList.add('canCertify','instrChkbox')
+            chkInput.setAttribute("onclick","certifyFunction(m['machineID'])")
             if (m['instructorCertified']) {
                 chkInput.checked = true
                 chkInput.innerHTML = 'True'
@@ -676,7 +728,40 @@ function displayMachineInstructorData() {
                 chkInput.innerHTML = 'False'
             }
             divRow.appendChild(chkInput)
+            
+            // Assist checkbox
+            var chkInput = document.createElement('input')
+            chkInput.type="checkbox"
+            chkInput.id = "I" + m['machineID']
+            chkInput.classList.add('col-1')
+            chkInput.classList.add('canAssist','instrChkbox')
+            chkInput.setAttribute("onclick","assistFunction(m['machineID'])")
+            if (m['canAssist']) {
+                chkInput.checked = true
+                chkInput.innerHTML = 'True'
+            }
+            else {
+                chkInput.innerHTML = 'False'
+            }
+            divRow.appendChild(chkInput)
 
+            // Key Provider checkbox
+            var chkInput = document.createElement('input')
+            chkInput.type="checkbox"
+            chkInput.id = 'K' + m['machineID']
+            chkInput.classList.add('col-1')
+            chkInput.classList.add('keyProvider','instrChkbox')
+            chkInput.setAttribute("onclick","keyProviderFunction(m['machineID'])")
+            if (m['keyProvider']) {
+                chkInput.checked = true
+                chkInput.innerHTML = 'True'
+            }
+            else {
+                chkInput.innerHTML = 'False'
+            }
+            divRow.appendChild(chkInput)
+
+            // Machine Description
             var divColMachineDesc = document.createElement('div')
             divColMachineDesc.classList.add('col-6')
             divColMachineDesc.classList.add('clsMachineDesc')
@@ -684,6 +769,7 @@ function displayMachineInstructorData() {
             divColMachineDesc.style.textAlign='left'
             divRow.appendChild(divColMachineDesc)
 
+            // Machine Location
             var divColMachineLoc = document.createElement('div')
             divColMachineLoc.classList.add('col-1', 'clsMachineLocation')
             divColMachineLoc.innerHTML = m['machineLocation']
@@ -692,6 +778,42 @@ function displayMachineInstructorData() {
             // ADD THE ROW TO THE DETAIL SECTION
             instructorMachinesParent.appendChild(divRow)
         }
+        // Add 'CANCEL' and 'SAVE' buttons
+        var divBtnRow = document.createElement('div')
+        divBtnRow.style.marginTop="10px"
+        divBtnRow.id= 'instructorMachinebtnRow'
+        divBtnRow.classList.add('row', 'instructorMachinebtnRow')
+        divBtnRow.style.display='none'
+
+        // BLANK COL
+        var divBtnCol0 = document.createElement('div')
+        divBtnCol0.classList.add('col-3')
+        divBtnRow.appendChild(divBtnCol0)
+
+        // COL FOR CANCEL BTN
+        var divBtnCol1 = document.createElement('div')
+        divBtnCol1.classList.add('col-3')
+
+        var btnCancel = document.createElement('button')
+        btnCancel.textContent='CANCEL'
+        btnCancel.className="btn btn-secondary btn-sm"
+        divBtnCol1.appendChild(btnCancel)
+
+        divBtnRow.appendChild(divBtnCol1)
+
+        // COL FOR SAVE BTN
+        var divBtnCol2 = document.createElement('div')
+        divBtnCol2.classList.add('col-3')
+
+        var btnSave = document.createElement('button')
+        btnSave.className="btn btn-primary btn-sm"
+        btnSave.textContent='SAVE'
+        divBtnCol2.appendChild(btnSave)
+
+        divBtnRow.appendChild(divBtnCol2)
+
+        instructorMachinesParent.appendChild(divBtnRow)
+
    
         return
     })
@@ -751,6 +873,7 @@ function showNewMachineModal() {
     document.getElementById('newMachineLocation').value = localStorage.getItem('shopLocation')
     document.getElementById('newCertificationDuration').value = '180 days'
     $('#newMachineModal').modal('show')
+    document.getElementById('newMachineDescription').focus()
 }
 function saveNewMachine() {
     machineDesc = document.getElementById('newMachineDescription').value
@@ -818,5 +941,20 @@ function keyChangeProvider() {
     else {
         newKeyInToolCrib.checked = true
     }
+}
+
+// function instrMachChange() {
+//     document.getElementById("instructorMachinebtnRow").style.display='block'
+// }
+
+function certifyFunction(id) {
+    console.log('certifyFunction - ',id)
+    console.log('e - ',e.id,e.checked)
+}
+function assistFunction(e) {
+    console.log('assistFunction - ',e)
+}
+function keyProviderFunction(e) {
+    console.log('keyProviderFunction - ',e)
 }
 // END OF FUNCTIONS

@@ -293,18 +293,29 @@ def displayMachineInstructors():
     # Get all machines and mark those this instructor may certifify
     machineDict = []
     machineItem = []
-    machines = db.session.query(Machines)
+    machines = db.session.query(Machines).order_by(Machines.machineDesc)
     #.order(Machines.machineLocation,Machines.machineDesc)
     for m in machines:
-        instructorCertified = db.session.query(MachineInstructors)\
+        machInstr = db.session.query(MachineInstructors)\
             .filter(MachineInstructors.machineID == m.machineID)\
-            .filter(MachineInstructors.member_ID == instructorID).scalar() is not None
-        
+            .filter(MachineInstructors.member_ID == instructorID).first()
+    
+        if machInstr == None:
+            canCertify = 0
+            canAssist = 0
+            keyProvider = 0
+        else:
+            canCertify = machInstr.canCertify
+            canAssist = machInstr.canAssist
+            keyProvider = machInstr.keyProvider
+
         machineItem = {
             'machineID': m.machineID,
             'machineDesc': m.machineDesc,  # + ' ('+m.machineID + ')',
             'machineLocation': m.machineLocation,
-            'instructorCertified':instructorCertified
+            'canCertify':canCertify,
+            'canAssist':canAssist,
+            'keyProvider':keyProvider
         }
         
         machineDict.append(machineItem)
@@ -473,12 +484,12 @@ def newMachine():
     machineID = getNextMachineID()
     
 
-    print('machineDesc -',machineDesc)
-    print('machineLocation - ',machineLocation)
-    print('certificationDuration - ',certificationDuration)
-    print('keyInToolCrib - ',type(keyInToolCrib),keyInToolCrib)
-    print('keyProvider - ',type(keyProvider),keyProvider)
-    print('machineID - ',machineID)
+    # print('machineDesc -',machineDesc)
+    # print('machineLocation - ',machineLocation)
+    # print('certificationDuration - ',certificationDuration)
+    # print('keyInToolCrib - ',type(keyInToolCrib),keyInToolCrib)
+    # print('keyProvider - ',type(keyProvider),keyProvider)
+    # print('machineID - ',machineID)
 
     # newMachine = Machines(
     #     machineID=machineID,
@@ -503,7 +514,6 @@ def newMachine():
     sqlInsert += " VALUES ('" + machineID + "', '" +  machineDesc +"', '" + machineLocation + "', '" 
     sqlInsert += certificationDuration + "'," + str(keyInToolCrib) + "," + str(keyProvider) + ")"
     
-    print('sqlInsert - ',sqlInsert)
     try:
         result = db.engine.execute(sqlInsert)
         if result != 0:
