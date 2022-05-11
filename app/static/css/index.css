@@ -674,10 +674,19 @@
     .contactData {
         margin-left:100px;
     }
-    .instrMachRow {
-        padding-left:30px;
+    .instrMachHdg {
+        font-size:.6rem;
+        text-align: center;
+        margin-left:2px;
     }
-    
+    .instrMachRow {
+        padding-left:10px;
+    }
+    #instructorMachines {
+        padding-left: 10px;
+        margin-left: 10px;
+        font-size: .75rem;
+    }
     #footer {
         grid-area: footerArea;
         color:white;

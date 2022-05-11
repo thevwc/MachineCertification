@@ -75,7 +75,7 @@ def index():
     # CREATE OBJECT OF NAMES FOR DROPDOWN LIST OF INSTRUCTORS
     sqlNames = "SELECT Last_Name + ', ' + First_Name + ' (' + Member_ID + ')' as instructorDisplayName,"
     sqlNames += " Member_ID as villageID FROM tblMember_Data "
-    sqlNames += "WHERE machineCertificationStaff = 1 "
+    # sqlNames += "WHERE machineCertificationStaff = 1 "
     sqlNames += "ORDER BY Last_Name, First_Name "
 
     instructorList = db.engine.execute(sqlNames)
@@ -270,12 +270,11 @@ def displayMemberData():
 
 @app.route('/displayMachineInstructors',methods=['GET','POST'])
 def displayMachineInstructors():
-    #print('... displayMachineInstructors')
     
     req = request.get_json()
     instructorID = req["instructorID"]
-    #print('instructorID - ',instructorID)
-
+    shopLocation = req["shopLocation"]
+    
     instructor = db.session.query(Member).filter(Member.Member_ID == instructorID).first()
     if instructor == None:
         msg = "Instructor ID " + instructorID + " was not found."
@@ -294,12 +293,12 @@ def displayMachineInstructors():
     machineDict = []
     machineItem = []
     machines = db.session.query(Machines).order_by(Machines.machineDesc)
-    #.order(Machines.machineLocation,Machines.machineDesc)
+    
     for m in machines:
         machInstr = db.session.query(MachineInstructors)\
             .filter(MachineInstructors.machineID == m.machineID)\
             .filter(MachineInstructors.member_ID == instructorID).first()
-    
+        
         if machInstr == None:
             canCertify = 0
             canAssist = 0
@@ -309,16 +308,16 @@ def displayMachineInstructors():
             canAssist = machInstr.canAssist
             keyProvider = machInstr.keyProvider
 
-        machineItem = {
-            'machineID': m.machineID,
-            'machineDesc': m.machineDesc,  # + ' ('+m.machineID + ')',
-            'machineLocation': m.machineLocation,
-            'canCertify':canCertify,
-            'canAssist':canAssist,
-            'keyProvider':keyProvider
-        }
-        
-        machineDict.append(machineItem)
+        if m.machineLocation == shopLocation or shopLocation == 'BOTH':
+            machineItem = {
+                'machineID': m.machineID,
+                'machineDesc': m.machineDesc,
+                'machineLocation': m.machineLocation,
+                'canCertify':canCertify,
+                'canAssist':canAssist,
+                'keyProvider':keyProvider
+            }
+            machineDict.append(machineItem)
         msg="Success"
     return jsonify(msg=msg,status=200,instructorName=instructorName,mobilePhone=mobilePhone,\
         homePhone=homePhone,eMail=eMail,machineDict=machineDict)
@@ -564,7 +563,7 @@ def updateInstructorMachineSettings():
     memberID=req["memberID"]
     machineID = req["machineID"]
     canCertify=req["canCertify"]
-    canAssist=req["canCertify"]
+    canAssist=req["canAssist"]
     keyProvider=req["keyProvider"]
 
     print(memberID,machineID,canCertify,canAssist,keyProvider)
@@ -576,31 +575,30 @@ def updateInstructorMachineSettings():
         machineInstructor.canCertify = canCertify
         machineInstructor.canAssist = canAssist
         machineInstructor.keyProvider = keyProvider
+        print('try update - ',machineInstructor.canCertify,machineInstructor.canAssist,machineInstructor.keyProvider)
         try:
-            print('try update')
             db.session.commit()
             return jsonify(msg="Update succeeded",status=200)
+        except (SQLAlchemyError, DBAPIError) as e:
+            return jsonify(msg='SQLAlchemyError, DPAPIError' + e)
         except:
-            print('except update')
             db.session.rollback()
             return jsonify(msg="Update failed.",status=201)
     else:
-        newRecord = MachineInstructors (
-            member_ID = memberID,
-            machineID = machineID,
-            canCertify=canCertify,
-            canAssist=canAssist,
-            keyProvider=keyProvider
-        )
+        sqlInsert = "INSERT INTO machineInstructors (machineID, member_ID, canCertify, canAssist, keyProvider) "
+        sqlInsert += "VALUES ('" + machineID + "', '" + memberID + "'," + str(canCertify) + "," + str(canAssist) + "," + str(keyProvider) + ")"
+        
         try:
-            print("try add")
-            db.session.add(newRecord)
-            db.session.commit()
-            msg("Success")
-            return jsonify(msg=msg,status=200)
+            result = db.engine.execute(sqlInsert)
+            print('result - ',result)
+            if result != 0:
+                return jsonify(msg="Add successful.",status=200)
+            else:
+                return jsonify(msg="Add NOT successful.",status=201) 
+        except (SQLAlchemyError, DBAPIError) as e:
+            print("ERROR -",e)
+            return jsonify(msg='SQLAlchemyError, DPAPIError')
         except:
-            print("except add")
-            db.session.rollback()
+            print("unknown add error")
             msg='Add machineInstructor failed.'
             return jsonify(msg=msg,status=201)
-    

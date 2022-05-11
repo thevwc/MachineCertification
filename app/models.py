@@ -318,7 +318,6 @@ class MemberMachineCertifications(db.Model):
 class MachineInstructors(db.Model):
     __tablename__ = 'machineInstructors'
     __table_args__ = {"schema": "dbo"}
-    ID = db.Column(db.Integer,autoincrement=True)
     machineID = db.Column(db.String(20), primary_key=True)
     member_ID = db.Column(db.String(6), primary_key=True)
     canCertify = db.Column(db.Boolean)

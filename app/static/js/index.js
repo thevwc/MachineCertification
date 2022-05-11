@@ -70,7 +70,7 @@ filterMachineDropdown(shopChoice.value)
 // SET VERSION OF APP AND CURRENT SCREEN SIZE (FOR DEVELOPMENT PURPOSES)
 versionText = document.getElementById('versionText')
 console.log('screen width ='+screen.width)
-versionText.innerHTML='ver May 11, 2022  (' + screen.width + ')'
+versionText.innerHTML='ver May 12, 2022  (' + screen.width + ')'
 
 // IF NOT A LARGE SCREEN DISPLAY ONLY 1 PANEL AT A TIME INSTEAD OF ALL 3
 handleMediaChange(largeScreen)
@@ -572,8 +572,11 @@ function displayMachineInstructorData() {
     if (instructorID == null) {
         return
     } 
+    shopLocation = shopChoice.value
+    console.log('shopLocation - '+ shopLocation)
     let dataToSend = {
-        instructorID: instructorID
+        instructorID: instructorID,
+        shopLocation: shopLocation
     };
     fetch(`${window.origin}/displayMachineInstructors`, {
         method: "POST",
@@ -720,7 +723,7 @@ function displayMachineInstructorData() {
             chkInput.classList.add('col-1')
             chkInput.classList.add('canCertify','instrChkbox')
             chkInput.setAttribute("onclick","certifyFunction(this)")
-            if (m['instructorCertified']) {
+            if (m['canCertify']) {
                 chkInput.checked = true
                 chkInput.innerHTML = 'True'
             }
@@ -1013,6 +1016,8 @@ function saveCheckedBoxes(el) {
         canAssist:canAssist,
         keyProvider:keyProvider
     };
+    console.log('dataToSend - '+dataToSend)
+
     fetch(`${window.origin}/updateInstructorMachineSettings`, {
         method: "POST",
         credentials: "include",
@@ -1024,11 +1029,15 @@ function saveCheckedBoxes(el) {
     })
     .then((res) => res.json())
     .then((data) => {
+        console.log('after then')
         if (data.status != 200) {
-            modalAlert('New machine',data.msg)
-            return
+            modalAlert('NEW MACHINE FOR INSTRUCTOR',data.msg)
+        }
+        else {
+            modalAlert('NEW MACHINE FOR INSTRUCTOR',data.msg)
         }
         // hide current SAVE button
+        console.log('before hide modal')
         document.getElementById('S'+machineID).style.display='none'
     })
 }
