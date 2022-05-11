@@ -211,8 +211,8 @@ function memberClicked() {
     //shopLocation = document.getElementById("shopChoice")
     //location=shopLocation.value
     // ....................................
-    
-    displayMemberCertifications(villageID,"RA")
+    shopLocation = shopChoice.value
+    displayMemberCertifications(villageID,shopLocation)
 }
 
 function instructorClicked() {
@@ -367,14 +367,12 @@ function displayMachineInstructorsAndMembers() {
     })
 }
 function displayMemberCertifications(villageID,location) {
-    console.log('villageID - '+villageID)
-    console.log('location - '+location)
     if (villageID == null) {
         return
     } 
     let dataToSend = {
         villageID: villageID,
-        location: location
+        shopLocation: location
     };
     fetch(`${window.origin}/displayMemberData`, {
         method: "POST",
@@ -413,6 +411,7 @@ function displayMemberCertifications(villageID,location) {
     // table.appendChild(tableCaption)
 
     tableBody = document.createElement('tbody')
+    //tableBody.id = 'memberMachineList'
     table.appendChild(tableBody)
 
 
@@ -484,7 +483,7 @@ function displayMemberCertifications(villageID,location) {
     
     var divHdgText = document.createElement('div')
     divHdgText.classList.add('col-8')
-    divHdgText.innerHTML="<h6 style=text-align:left>Certified for the following -</h6>"
+    divHdgText.innerHTML="<h6 style=text-align:left>Authorized for the following -</h6>"
     divHdgRow.appendChild(divHdgText)
 
     memberMachinesParent.appendChild(divHdgRow)
@@ -495,7 +494,7 @@ function displayMemberCertifications(villageID,location) {
         divRow.classList.add('row', 'mbrMachRow')
         
         var blankCol = document.createElement('div')
-        blankCol.classList.add('col-2')
+        blankCol.classList.add('col-1')
         divRow.appendChild(blankCol)
 
         var chkInput = document.createElement('input')
@@ -514,18 +513,46 @@ function displayMemberCertifications(villageID,location) {
         }
         
         divRow.appendChild(chkInput)
-
+        // MACHINE DESCRIPTION (LOCATION)
         var divColMachineDesc = document.createElement('div')
-        divColMachineDesc.classList.add('col-6')
+        divColMachineDesc.classList.add('col-8')
         divColMachineDesc.classList.add('clsMachineDesc')
         divColMachineDesc.innerHTML = m['machineDesc']
         divColMachineDesc.style.textAlign='left'
+        if (m['certificationExpired']){
+            console.log('... expired ...'+ m['certificationExpired'])
+            divColMachineDesc.style.textDecoration = 'line-through'
+        }
         divRow.appendChild(divColMachineDesc)
 
-        var divColMachineLoc = document.createElement('div')
-        divColMachineLoc.classList.add('col-1', 'clsMachineLocation')
-        divColMachineLoc.innerHTML = m['machineLocation']
-        divRow.appendChild(divColMachineLoc)
+        // AUTHORIZATION DURATION
+        // var divColCertDuration = document.createElement('div')
+        // divColCertDuration.classList.add('col-1')
+        // divColCertDuration.innerHTML = m['certificationDuration']
+        // divRow.appendChild(divColCertDuration)
+
+        // AUTHORIZATION DATE
+        // var divColCertDate = document.createElement('div')
+        // divColCertDate.classList.add('col-1')
+        // divColCertDate.innerHTML = m['dateCertified']
+        // divRow.appendChild(divColCertDate)
+
+        // CERTIFIED BY
+        // var divColCertBy = document.createElement('div')
+        // divColCertBy.classList.add('col-1')
+        // divColCertBy.innerHTML = m['certifiedBy']
+        // divRow.appendChild(divColCertBy)
+
+        // EDIT AUTHORIZATION
+        var divColEditBtn = document.createElement('div')
+        divColEditBtn.classList.add('col-1')
+
+        var editBtn = document.createElement('button')
+        editBtn.innerHTML = 'EDIT'
+        editBtn.onclick=function() {editMemberCertifications(m['machineID'])}
+        divColEditBtn.appendChild(editBtn)
+
+        divRow.appendChild(divColEditBtn)
 
         // ADD THE ROW TO THE DETAIL SECTION
         memberMachinesParent.appendChild(divRow)
@@ -936,7 +963,7 @@ function saveNewMachine() {
         if (data.status != 200) {
             modalAlert('New machine',data.msg)
         }
-        modalAlert('New Machine',data.msg)
+        //modalAlert('New Machine',data.msg)
         $('#newMachineModal').modal('hide')
         window.location.href = "/index"
     })
@@ -1033,11 +1060,10 @@ function saveCheckedBoxes(el) {
         if (data.status != 200) {
             modalAlert('NEW MACHINE FOR INSTRUCTOR',data.msg)
         }
-        else {
-            modalAlert('NEW MACHINE FOR INSTRUCTOR',data.msg)
-        }
+        // else {
+        //     modalAlert('NEW MACHINE FOR INSTRUCTOR',data.msg)
+        // }
         // hide current SAVE button
-        console.log('before hide modal')
         document.getElementById('S'+machineID).style.display='none'
     })
 }

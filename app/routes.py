@@ -228,10 +228,10 @@ def displayMachineData():
 @app.route('/displayMemberData',methods=['POST'])
 def displayMemberData():
     #print('... displayMemberData')
-
+    
     req = request.get_json() 
     villageID = req["villageID"]
-    location = req["location"]
+    shopLocation = req["shopLocation"]
     mbr = db.session.query(Member).filter(Member.Member_ID == villageID).first()
     if (mbr == None):
         msg="Member not found"
@@ -254,18 +254,73 @@ def displayMemberData():
     machines = db.session.query(Machines)
     #.order(Machines.machineLocation,Machines.machineDesc)
     for m in machines:
-        memberCertified = db.session.query(MemberMachineCertifications)\
-            .filter(MemberMachineCertifications.machineID == m.machineID)\
-            .filter(MemberMachineCertifications.member_ID == villageID).scalar() is not None
-        
-        machineItem = {
-            'machineID': m.machineID,
-            'machineDesc': m.machineDesc,   #+ ' ('+m.machineID + ')',
-            'machineLocation': m.machineLocation,
-            'memberCertified':memberCertified
-        }
-        
-        machineDict.append(machineItem)
+        certificationExpired = False 
+        if m.machineLocation == shopLocation or shopLocation == 'BOTH':
+            # GET MEMBER DATA FOR THIS MACHINE, IF ANY
+            mbrCert = db.session.query(MemberMachineCertifications)\
+                .filter(MemberMachineCertifications.machineID == m.machineID)\
+                .filter(MemberMachineCertifications.member_ID == villageID).first()
+            if mbrCert == None:
+                memberCertified = False
+                certificationDuration = ''
+                dateCertified = ''
+                certifiedBy = ''
+            else:
+                memberCertified = True
+                
+                certificationDuration = mbrCert.certificationDuration
+                if certificationDuration == None: 
+                    certificationDuration = ''
+
+                # HAS CERTIFICATION EXPIRED?
+                dateCertified = mbrCert.dateCertified.strftime("%m/%d/%Y")
+                if dateCertified == None:
+                    dateCertified = ''
+                    daysElapsed = 0
+                else:
+                    today=date.today()
+                    delta = today - mbrCert.dateCertified
+                    daysElapsed = delta.days  
+                print('elapsed days - ',today,mbrCert.dateCertified,daysElapsed)
+                certificationExpired = False
+
+                if certificationDuration == 'UNL':
+                    certificationExpired = False
+                if certificationDuration == '365 days':
+                    if daysElapsed > 365:
+                        certificationExpired = True
+                if certificationDuration == '180 days':
+                    if daysElapsed > 180:
+                        certificationExpired = True
+                if certificationDuration == '90 days':
+                    if daysElapsed > 90:
+                        certificationExpired = True
+                if certificationDuration == '60 days':
+                    if daysElapsed > 60:
+                        certificationExpired = True
+                if certificationDuration == '30 days':
+                    if daysElapsed > 30:
+                        certificationExpired = True
+                if certificationDuration == '7 days':
+                    if daysElapsed > 7:
+                        certificationExpired = True
+
+                certifiedBy = mbrCert.certifiedBy
+                if certifiedBy == None:
+                    certifiedBy = ''
+                
+            machineItem = {
+                'machineID': m.machineID,
+                'machineDesc': m.machineDesc + ' ('+m.machineLocation + ')', #- '+ dateCertified + ' ['+certificationDuration + '] '+certifiedBy,
+                'machineLocation': m.machineLocation,
+                'memberCertified':memberCertified,
+                'certificationExpired':certificationExpired
+                # 'certificationDuration': certificationDuration,
+                # 'dateCertified': dateCertified,
+                # 'certifiedBy': certifiedBy
+            }
+            print(machineItem)
+            machineDict.append(machineItem)
     return jsonify(msg=msg,memberName=memberName,mobilePhone=mobilePhone,homePhone=homePhone,eMail=eMail,machineDict=machineDict)
 
 @app.route('/displayMachineInstructors',methods=['GET','POST'])
@@ -558,15 +613,12 @@ def getNextMachineID():
 
 @app.route('/updateInstructorMachineSettings',methods=['GET','POST'])
 def updateInstructorMachineSettings():
-    print('... /updateInstructorMachineSettings')
     req = request.get_json()
     memberID=req["memberID"]
     machineID = req["machineID"]
     canCertify=req["canCertify"]
     canAssist=req["canAssist"]
     keyProvider=req["keyProvider"]
-
-    print(memberID,machineID,canCertify,canAssist,keyProvider)
 
     # LOOK UP MACHINE INSTRUCTORS RECORD    
     machineInstructor = db.session.query(MachineInstructors).filter(MachineInstructors.member_ID == memberID)\
@@ -575,7 +627,7 @@ def updateInstructorMachineSettings():
         machineInstructor.canCertify = canCertify
         machineInstructor.canAssist = canAssist
         machineInstructor.keyProvider = keyProvider
-        print('try update - ',machineInstructor.canCertify,machineInstructor.canAssist,machineInstructor.keyProvider)
+        
         try:
             db.session.commit()
             return jsonify(msg="Update succeeded",status=200)
@@ -590,7 +642,6 @@ def updateInstructorMachineSettings():
         
         try:
             result = db.engine.execute(sqlInsert)
-            print('result - ',result)
             if result != 0:
                 return jsonify(msg="Add successful.",status=200)
             else:

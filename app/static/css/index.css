@@ -649,6 +649,14 @@
         margin-left:10px;
         margin-right:10px;
     }
+    /* #memberMachineList {
+        font-size: .75rem;
+    } */
+    .mbrMachRow {
+        margin-left:10px;
+        padding-left:0px;
+        font-size: .75rem;
+    }
     #instructorDetailSection {
         grid-area:instructorDetailArea;
         background-color: lightgreen;
