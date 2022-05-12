@@ -257,7 +257,7 @@
                     <label for="certifyDateCertified">Date certified</label>
                 </div>
                 <div class="col-5 certifyData">
-                    <input type="text" id="certifyDateCertified" size="30">                  
+                    <input type="date" id="certifyDateCertified"  size="30">                  
                 </div>
             </div>
             <div class="row">
@@ -295,7 +295,7 @@
           <!-- reconsider how to decertify or delete a memberMachineCertifications record; when unchecked? via EDIT? -->
           <!-- can dateCertified be changed? can a member be recertified -->
           <!-- should we have a 'CERTIFY' button? -->
-          <button id='deletecertifyModal' type="button" onclick=window.location.origin + '/decertifyMember' class="btn btn-primary" data-bs-dismiss="modal">Delete</button>
+          <button id='deletecertifyModal' type="button" onclick=window.location.origin + '/decertifyMember' class="btn btn-danger" data-bs-dismiss="modal">Remove Authorization</button>
         </div>
   
       </div>

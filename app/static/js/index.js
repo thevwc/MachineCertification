@@ -503,7 +503,7 @@ function displayMemberCertifications(villageID,location) {
         chkInput.type="checkbox"
         chkInput.onclick=function() {newMemberCertification(this.id)}
         //chkInput.setAttribute('onclick',function() {certifyMember)
-        chkInput.id = m['machineID']
+        chkInput.id = 'C' + m['machineID']
         chkInput.classList.add('col-1')
         chkInput.classList.add('certifyChkbox')
         if (m['memberCertified']) {
@@ -555,7 +555,9 @@ function displayMemberCertifications(villageID,location) {
 
         var editBtn = document.createElement('button')
         editBtn.innerHTML = 'EDIT'
-        editBtn.onclick=function() {editMemberCertifications(m['machineID'])}
+        // editBtn.onclick=function() {editMemberCertifications(m['machineID'])}
+        editBtn.id = 'E' + m['machineID']
+        editBtn.onclick=function() {newMemberCertification(this.id)}
         divColEditBtn.appendChild(editBtn)
 
         divRow.appendChild(divColEditBtn)
@@ -869,13 +871,23 @@ function displayMachineInstructorData() {
 
 // CALL ROUTINE TO GET LIST OF INSTRUCTORS FOR THIS MACHINE AND TO SHOW THE MODAL 'certifyModal'
 // POPULATE MACHINE ID, DESCRIPTION, DATE CERTIFIED, SET DURATION TO DEFAULT FOR THIS MACHINE
-function newMemberCertification(machineID) {
-    //machineID = e
+function newMemberCertification(el) {
+    if (el.slice(0,1) == 'C') {
+        console.log('... from chkbox ...')
+    }
+    if (el.slice(0,1) == 'E') {
+        console.log(' ... from EDIT btn ...')
+    }
+
+
+
+    machineID = el.slice(1,8)
     console.log('machineID - '+machineID)
-    selectedMachine = document.getElementById(machineID) 
+    selectedMachine = document.getElementById("C" +machineID) 
     if (!selectedMachine.checked) {
+        //  ?????//  process as EDIT ??  DELETE ???  prompt for Remove authorization?
        console.log('... NOT checked')
-       return
+       //return
     }
     else {
         console.log('... checked')
@@ -911,9 +923,19 @@ function newMemberCertification(machineID) {
             return
         }
         // POPULATE certifyModal WITH INSTRUCTORS
+        //document.getElementById('certifyMachineID').innerHTML = machineID
+        document.getElementById('certifyMachineID').value = machineID
         var descID = 'D' + machineID
-        document.getElementById('certifyDescription').innerHTML = machineID
-        document.getElementById('certifyDescription').value = document.getElementById(descID)
+        console.log('descID - '+ descID)
+        document.getElementById('certifyDescription').value = machineID
+        console.log('description - '+document.getElementById(descID).innerHTML)
+
+        document.getElementById('certifyDescription').value = document.getElementById(descID).innerHTML
+        
+        console.log('todaysDisplayDate - '+data.todaysDisplayDate)
+        document.getElementById('certifyDateCertified').value = data.todaysDisplayDate
+        
+        document.getElementById('certifyDuration').innerHTML = data.defaultDuration
         var certificationModalInstructors = document.getElementById('certificationModalInstructors')
         while (certificationModalInstructors.firstChild) {
             certificationModalInstructors.removeChild(certificationModalInstructors.lastChild);

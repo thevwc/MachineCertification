@@ -251,7 +251,7 @@ def displayMemberData():
     # Get all machines and mark those this member is certified
     machineDict = []
     machineItem = []
-    machines = db.session.query(Machines)
+    machines = db.session.query(Machines).order_by(Machines.machineDesc)
     #.order(Machines.machineLocation,Machines.machineDesc)
     for m in machines:
         certificationExpired = False 
@@ -660,6 +660,16 @@ def updateInstructorMachineSettings():
 def getMachineInstructorsList():
     req = request.get_json()
     machineID = req["machineID"]
+
+    #  Todays date for certification
+    todaysDate = date.today()
+    print('todaysDate - ',todaysDate)
+
+    #  Default duration for this machine
+    defaultDuration = db.session.query(Machines.certificationDuration).filter(Machines.machineID == machineID).scalar()
+    print('defaultDuration - ',defaultDuration)
+
+    #  Instructors assigned to this machine
     instructorsDict = []
     instructorItem = []
     sp = "EXEC instructorsForSpecificMachine '" + machineID + "'"
@@ -668,16 +678,21 @@ def getMachineInstructorsList():
     if instructors == None:
         instructorItem = {
             'machineID': '',
-            'instructorName': "No instructors assigned."
+            'instructorName': "No instructors assigned.",
+            'todaysDate':todaysDate,
+            'defaultDuration':defaultDuration
         }
         instructorsDict.append(instructorItem)
     else:
         for i in instructors:
             instructorItem = {
                 'machineID': i.machineID,
-                'instructorName': i.LFN_Name
+                'instructorName': i.LFN_Name,
+                'todaysDate':todaysDate,
+                'defaultDuration':defaultDuration
             }
             print(i.machineID,i.LFN_Name)
+            print(instructorItem)
             instructorsDict.append(instructorItem)
             
     return jsonify(msg='No msg',status=200,instructorsDict=instructorsDict)    
