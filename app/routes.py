@@ -265,6 +265,7 @@ def displayMemberData():
                 certificationDuration = ''
                 dateCertified = ''
                 certifiedBy = ''
+                certificationExpired = False
             else:
                 memberCertified = True
                 
@@ -281,27 +282,27 @@ def displayMemberData():
                     today=date.today()
                     delta = today - mbrCert.dateCertified
                     daysElapsed = delta.days  
-                print('elapsed days - ',today,mbrCert.dateCertified,daysElapsed)
+                
                 certificationExpired = False
-
-                if certificationDuration == 'UNL':
+                
+                if certificationDuration.rstrip() == 'UNL':
                     certificationExpired = False
-                if certificationDuration == '365 days':
+                if certificationDuration.rstrip() == '365 days':
                     if daysElapsed > 365:
                         certificationExpired = True
-                if certificationDuration == '180 days':
+                if certificationDuration.rstrip() == '180 days':
                     if daysElapsed > 180:
                         certificationExpired = True
-                if certificationDuration == '90 days':
+                if certificationDuration.rstrip() == '90 days':
                     if daysElapsed > 90:
                         certificationExpired = True
-                if certificationDuration == '60 days':
+                if certificationDuration.rstrip() == '60 days':
                     if daysElapsed > 60:
                         certificationExpired = True
-                if certificationDuration == '30 days':
+                if certificationDuration.rstrip() == '30 days':
                     if daysElapsed > 30:
                         certificationExpired = True
-                if certificationDuration == '7 days':
+                if certificationDuration.rstrip() == '7 days':
                     if daysElapsed > 7:
                         certificationExpired = True
 
@@ -314,13 +315,13 @@ def displayMemberData():
                 'machineDesc': m.machineDesc + ' ('+m.machineLocation + ')', #- '+ dateCertified + ' ['+certificationDuration + '] '+certifiedBy,
                 'machineLocation': m.machineLocation,
                 'memberCertified':memberCertified,
-                'certificationExpired':certificationExpired
-                # 'certificationDuration': certificationDuration,
-                # 'dateCertified': dateCertified,
-                # 'certifiedBy': certifiedBy
+                'certificationExpired':certificationExpired,
+                'certificationDuration': certificationDuration,
+                'dateCertified': dateCertified,
+                'certifiedBy': certifiedBy
             }
-            print(machineItem)
             machineDict.append(machineItem)
+        # END OF FOR LOOP
     return jsonify(msg=msg,memberName=memberName,mobilePhone=mobilePhone,homePhone=homePhone,eMail=eMail,machineDict=machineDict)
 
 @app.route('/displayMachineInstructors',methods=['GET','POST'])
@@ -385,12 +386,12 @@ def certifyMember():
     req = request.get_json()
     memberID = req["villageID"]
     machineID = req["machineID"]
-    staffID = req["staffID"]
+    #staffID = req["staffID"]
     todaysDate = date.today().strftime('%Y-%m-%d')
 
     print('memberID -',memberID)
     print('machineID - ',machineID)
-    print('staffID - ',staffID)
+    #print('staffID - ',staffID)
     print('todaysDate - ',todaysDate)
 
     mbrCert = db.session.query(MemberMachineCertifications)\
@@ -653,3 +654,30 @@ def updateInstructorMachineSettings():
             print("unknown add error")
             msg='Add machineInstructor failed.'
             return jsonify(msg=msg,status=201)
+
+# GET MACHINE INSTRUCTORS LIST
+@app.route('/getMachineInstructorsList',methods=['GET','POST'])
+def getMachineInstructorsList():
+    req = request.get_json()
+    machineID = req["machineID"]
+    instructorsDict = []
+    instructorItem = []
+    sp = "EXEC instructorsForSpecificMachine '" + machineID + "'"
+    sql = SQLQuery(sp)
+    instructors = db.engine.execute(sql)
+    if instructors == None:
+        instructorItem = {
+            'machineID': '',
+            'instructorName': "No instructors assigned."
+        }
+        instructorsDict.append(instructorItem)
+    else:
+        for i in instructors:
+            instructorItem = {
+                'machineID': i.machineID,
+                'instructorName': i.LFN_Name
+            }
+            print(i.machineID,i.LFN_Name)
+            instructorsDict.append(instructorItem)
+            
+    return jsonify(msg='No msg',status=200,instructorsDict=instructorsDict)    

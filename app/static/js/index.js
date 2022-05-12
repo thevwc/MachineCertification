@@ -489,6 +489,8 @@ function displayMemberCertifications(villageID,location) {
     memberMachinesParent.appendChild(divHdgRow)
 
     for (m of machine) {
+        console.log('machine ID - '+ m['machineID'])
+
         // BUILD THE ROW
         var divRow = document.createElement('div')
         divRow.classList.add('row', 'mbrMachRow')
@@ -499,7 +501,7 @@ function displayMemberCertifications(villageID,location) {
 
         var chkInput = document.createElement('input')
         chkInput.type="checkbox"
-        chkInput.onclick=function() {certifyMember(this.id)}
+        chkInput.onclick=function() {newMemberCertification(this.id)}
         //chkInput.setAttribute('onclick',function() {certifyMember)
         chkInput.id = m['machineID']
         chkInput.classList.add('col-1')
@@ -515,14 +517,18 @@ function displayMemberCertifications(villageID,location) {
         divRow.appendChild(chkInput)
         // MACHINE DESCRIPTION (LOCATION)
         var divColMachineDesc = document.createElement('div')
+        divColMachineDesc.id = "D" + m['machineID']
         divColMachineDesc.classList.add('col-8')
         divColMachineDesc.classList.add('clsMachineDesc')
         divColMachineDesc.innerHTML = m['machineDesc']
         divColMachineDesc.style.textAlign='left'
-        if (m['certificationExpired']){
-            console.log('... expired ...'+ m['certificationExpired'])
-            divColMachineDesc.style.textDecoration = 'line-through'
+
+        console.log('certificationExpired - '+m['certificationExpired'])
+        if (m['certificationExpired']) {
+            divColMachineDesc.classList.add('expired')
+            //divColMachineDesc.style.textDecoration = 'line-through'
         }
+
         divRow.appendChild(divColMachineDesc)
 
         // AUTHORIZATION DURATION
@@ -860,31 +866,36 @@ function displayMachineInstructorData() {
         return
     })
 }
-function certifyMember(e) {
-    machineID = e
-    selectedMachine = document.getElementById(e) 
-    if (selectedMachine.checked) {
-        url = window.location.origin + '/certifyMember'
+
+// CALL ROUTINE TO GET LIST OF INSTRUCTORS FOR THIS MACHINE AND TO SHOW THE MODAL 'certifyModal'
+// POPULATE MACHINE ID, DESCRIPTION, DATE CERTIFIED, SET DURATION TO DEFAULT FOR THIS MACHINE
+function newMemberCertification(machineID) {
+    //machineID = e
+    console.log('machineID - '+machineID)
+    selectedMachine = document.getElementById(machineID) 
+    if (!selectedMachine.checked) {
+       console.log('... NOT checked')
+       return
     }
     else {
-        url = window.location.origin + '/deCertifyMember'
+        console.log('... checked')
     }
+    url = window.location.origin + '/getMachineInstructorsList'
     console.log('url - '+url)
     
-    staffID = sessionStorage.getItem('staffID')
+    //staffID = sessionStorage.getItem('staffID')
     villageID = sessionStorage.getItem('villageID')
     
     console.log('machineID - '+machineID)
-    console.log('staffID - '+staffID)
+    //console.log('staffID - '+staffID)
     console.log('villageID - '+villageID)
 
     let dataToSend = {
-        staffID: staffID,
+        //staffID: staffID,
         villageID: villageID,
         machineID: machineID
     };
     fetch(url, {
-    //fetch(`${window.origin}/certifyMember`, {
         method: "POST",
         credentials: "include",
         body: JSON.stringify(dataToSend),
@@ -895,11 +906,35 @@ function certifyMember(e) {
     })
     .then((res) => res.json())
     .then((data) => {
-
         if (data.status != 200) {
             modalAlert('Member Certification',data.msg)
             return
         }
+        // POPULATE certifyModal WITH INSTRUCTORS
+        var descID = 'D' + machineID
+        document.getElementById('certifyDescription').innerHTML = machineID
+        document.getElementById('certifyDescription').value = document.getElementById(descID)
+        var certificationModalInstructors = document.getElementById('certificationModalInstructors')
+        while (certificationModalInstructors.firstChild) {
+            certificationModalInstructors.removeChild(certificationModalInstructors.lastChild);
+        }
+        instructors = data.instructorsDict
+        // IF NO INSTRUCTORS ASSIGNED BUILD OPTION LINE WITH MSG
+        if (instructors.length == 0){
+            optionLine = document.createElement("option")
+            optionLine.innerHTML = "No instructors assigned."
+            certificationModalInstructors.appendChild(optionLine)
+            $('#certifyModal').modal('show')
+            return
+        }
+        // BUILD AN OPTION LINE FOR EACH INSTRUCTOR
+        for (var element of instructors) {
+            var optionLine = document.createElement('option')
+            optionLine.innerHTML = element.instructorName
+            optionLine.value = element.instructorID
+            certificationModalInstructors.appendChild(optionLine)
+        }
+        $('#certifyModal').modal('show')
     return
     })
 }

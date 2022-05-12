@@ -147,7 +147,7 @@
 	</div>
 </div>
 
-<!-- The newMachineModal -->
+<!-- newMachineModal -->
 <div class="modal" id="newMachineModal">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -221,7 +221,88 @@
       </div>
     </div>
   </div>
-{% endblock %}
+
+<!-- CERTIFY MEMBER MODAL -->
+<div class="modal" id="certifyModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+  
+        <!-- Modal Header -->
+        <div class="modal-header certifyModalHeader">
+          <h4 class="modal-title">MEMBER AUTHORIZATION FOR A SPECIFIC MACHINE</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-4 certifyLabel">
+                    <label for="certifyMachineID">Machine ID</label>
+                </div>
+                <div class="col-5 certifyData">
+                    <input type="text" id="certifyMachineID" size="30" >
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4 certifyLabel">
+                    <label for="certifyDateCertified">Description</label>
+                </div>
+                <!-- show description (location) readonly -->
+                <div class="col-5 certifyData">
+                    <input type="text" id="certifyDescription" size="30" readonly>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4 certifyLabel">
+                    <label for="certifyDateCertified">Date certified</label>
+                </div>
+                <div class="col-5 certifyData">
+                    <input type="text" id="certifyDateCertified" size="30">                  
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4 certifyLabel">
+                    <label for="certifyDuration">Suggested Duration</label>
+                </div>
+                <div class="col-5 certifyData">
+                    <select name="" id="certifyDuration">
+                        <option value="UNL">Unlimited</option>
+                        <option value="365 days">365 days</option>
+                        <option value="180 days">180 days</option>
+                        <option value="90 days">90 days</option>
+                        <option value="30 days">30 days</option>
+                        <option value="7 days">7 days</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4 certifyLabel">
+                    <label for="certifyCertifiedBy">Certified by</label>
+                </div>
+                <div class="col-5 certifyData">
+                    <select name="" id="certificationModalInstructors">
+                        <!-- for loop of instructors for this machine -->
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+        </div> 
+       
+        <!-- Modal footer -->
+        <div class="modal-footer certifyModalFooter">
+          <button id='closecertifyModal' type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
+          <button id='savecertifyModal' type="button" class="btn btn-success" onclick="saveCertification()">Save</button>
+          <!-- reconsider how to decertify or delete a memberMachineCertifications record; when unchecked? via EDIT? -->
+          <!-- can dateCertified be changed? can a member be recertified -->
+          <!-- should we have a 'CERTIFY' button? -->
+          <button id='deletecertifyModal' type="button" onclick=window.location.origin + '/decertifyMember' class="btn btn-primary" data-bs-dismiss="modal">Delete</button>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+
+  {% endblock %}
 
 {% block scripts %}
     {{super()}}
