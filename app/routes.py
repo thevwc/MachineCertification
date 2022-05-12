@@ -663,12 +663,10 @@ def getMachineInstructorsList():
 
     #  Todays date for certification
     todaysDate = date.today()
-    print('todaysDate - ',todaysDate)
-
+    
     #  Default duration for this machine
     defaultDuration = db.session.query(Machines.certificationDuration).filter(Machines.machineID == machineID).scalar()
-    print('defaultDuration - ',defaultDuration)
-
+    
     #  Instructors assigned to this machine
     instructorsDict = []
     instructorItem = []
@@ -691,8 +689,6 @@ def getMachineInstructorsList():
                 'todaysDate':todaysDate,
                 'defaultDuration':defaultDuration
             }
-            print(i.machineID,i.LFN_Name)
-            print(instructorItem)
             instructorsDict.append(instructorItem)
             
     return jsonify(msg='No msg',status=200,instructorsDict=instructorsDict)    

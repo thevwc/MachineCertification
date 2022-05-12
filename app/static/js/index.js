@@ -482,8 +482,9 @@ function displayMemberCertifications(villageID,location) {
     divHdgRow.appendChild(divHdgCol) 
     
     var divHdgText = document.createElement('div')
-    divHdgText.classList.add('col-8')
-    divHdgText.innerHTML="<h6 style=text-align:left>Authorized for the following -</h6>"
+    divHdgText.classList.add('col-3')
+    divHdgText.innerHTML="Certified"
+    divHdgText.style.fontSize=".75rem"
     divHdgRow.appendChild(divHdgText)
 
     memberMachinesParent.appendChild(divHdgRow)
@@ -499,11 +500,25 @@ function displayMemberCertifications(villageID,location) {
         blankCol.classList.add('col-1')
         divRow.appendChild(blankCol)
 
+        // 'CERTIFY' BUTTON
+        var divColCertifyBtn = document.createElement('div')
+        divColCertifyBtn.classList.add('col-1')
+
+        var certifyBtn = document.createElement('button')
+        certifyBtn.innerHTML = 'CERTIFY'
+        certifyBtn.id = 'CERTIFY' + m['machineID']
+        certifyBtn.onclick=function() {memberCertification(this.id)}
+        divColCertifyBtn.appendChild(certifyBtn)
+        divRow.appendChild(divColCertifyBtn)
+
+        var blankCol = document.createElement('div')
+        blankCol.classList.add('col-1')
+        divRow.appendChild(blankCol)
+
         var chkInput = document.createElement('input')
         chkInput.type="checkbox"
-        chkInput.onclick=function() {newMemberCertification(this.id)}
-        //chkInput.setAttribute('onclick',function() {certifyMember)
-        chkInput.id = 'C' + m['machineID']
+        chkInput.onclick=function() {certifyChkbox(this.id)}
+        //chkInput.disabled = true
         chkInput.classList.add('col-1')
         chkInput.classList.add('certifyChkbox')
         if (m['memberCertified']) {
@@ -518,7 +533,7 @@ function displayMemberCertifications(villageID,location) {
         // MACHINE DESCRIPTION (LOCATION)
         var divColMachineDesc = document.createElement('div')
         divColMachineDesc.id = "D" + m['machineID']
-        divColMachineDesc.classList.add('col-8')
+        divColMachineDesc.classList.add('col-6')
         divColMachineDesc.classList.add('clsMachineDesc')
         divColMachineDesc.innerHTML = m['machineDesc']
         divColMachineDesc.style.textAlign='left'
@@ -556,8 +571,8 @@ function displayMemberCertifications(villageID,location) {
         var editBtn = document.createElement('button')
         editBtn.innerHTML = 'EDIT'
         // editBtn.onclick=function() {editMemberCertifications(m['machineID'])}
-        editBtn.id = 'E' + m['machineID']
-        editBtn.onclick=function() {newMemberCertification(this.id)}
+        editBtn.id = 'EDIT' + m['machineID']
+        editBtn.onclick=function() {memberCertification(this.id)}
         divColEditBtn.appendChild(editBtn)
 
         divRow.appendChild(divColEditBtn)
@@ -869,38 +884,35 @@ function displayMachineInstructorData() {
     })
 }
 
+function certifyChkbox() {
+    alert("Click on 'CERTIFY' or 'EDIT' to change data.")
+    return
+}
+
 // CALL ROUTINE TO GET LIST OF INSTRUCTORS FOR THIS MACHINE AND TO SHOW THE MODAL 'certifyModal'
 // POPULATE MACHINE ID, DESCRIPTION, DATE CERTIFIED, SET DURATION TO DEFAULT FOR THIS MACHINE
-function newMemberCertification(el) {
-    if (el.slice(0,1) == 'C') {
-        console.log('... from chkbox ...')
+function memberCertification(el) {
+    machineID = ''
+    
+    if (el.slice(0,7) == 'CERTIFY') {
+        machineID = el.slice(7,14)
+        console.log(' ... from CERTIFY btn ...'+ machineID)
+        transactionType = 'CERTIFY'
+        document.getElementById('deleteAuthorizationModal').style.display="none"
     }
-    if (el.slice(0,1) == 'E') {
-        console.log(' ... from EDIT btn ...')
+    if (el.slice(0,4) == 'EDIT') {
+        machineID = el.slice(4,11)
+        console.log(' ... from EDIT btn ...'+ machineID)
+        transactionType = 'EDIT'
     }
+    //  add 'CERTIFY' button and logic ...
+    //  chkbox - readonly, no click event
+    //  if 'EDIT' then ...
 
-
-
-    machineID = el.slice(1,8)
-    console.log('machineID - '+machineID)
-    selectedMachine = document.getElementById("C" +machineID) 
-    if (!selectedMachine.checked) {
-        //  ?????//  process as EDIT ??  DELETE ???  prompt for Remove authorization?
-       console.log('... NOT checked')
-       //return
-    }
-    else {
-        console.log('... checked')
-    }
     url = window.location.origin + '/getMachineInstructorsList'
     console.log('url - '+url)
     
-    //staffID = sessionStorage.getItem('staffID')
     villageID = sessionStorage.getItem('villageID')
-    
-    console.log('machineID - '+machineID)
-    //console.log('staffID - '+staffID)
-    console.log('villageID - '+villageID)
 
     let dataToSend = {
         //staffID: staffID,
@@ -926,15 +938,9 @@ function newMemberCertification(el) {
         //document.getElementById('certifyMachineID').innerHTML = machineID
         document.getElementById('certifyMachineID').value = machineID
         var descID = 'D' + machineID
-        console.log('descID - '+ descID)
         document.getElementById('certifyDescription').value = machineID
-        console.log('description - '+document.getElementById(descID).innerHTML)
-
         document.getElementById('certifyDescription').value = document.getElementById(descID).innerHTML
-        
-        console.log('todaysDisplayDate - '+data.todaysDisplayDate)
         document.getElementById('certifyDateCertified').value = data.todaysDisplayDate
-        
         document.getElementById('certifyDuration').innerHTML = data.defaultDuration
         var certificationModalInstructors = document.getElementById('certificationModalInstructors')
         while (certificationModalInstructors.firstChild) {
