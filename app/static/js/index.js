@@ -154,8 +154,11 @@ function filterMachineDropdown(selectedLocation) {
 
 function machineClicked() {
     console.log('... machineClicked rtn')
+    console.log('selectedIndex - '+machineSelected.selectedIndex)
     // CLEAR OTHER SELECTIONS
-    if (machineSelected.selectedIndex != 0) {
+    if (machineSelected.selectedIndex > 1) {
+        document.getElementById('btnEditMachine').style.display='block'
+        document.getElementById('btnNewMachine').style.display='none'
         $('.selectpicker').selectpicker('refresh');
         memberSelected.selectedIndex = 0
         instructorSelected.selectedIndex = 0
@@ -165,6 +168,8 @@ function machineClicked() {
         instructorSelected.setAttribute('selectedIndex',0)
     }
     else {
+        document.getElementById('btnEditMachine').style.display='none'
+        document.getElementById('btnNewMachine').style.display='block'
         return
     }
     // HIDE MEMBER AND INSTRUCTOR SECTIONS IF NOT ON LARGE SCREEN
@@ -573,7 +578,13 @@ function displayMemberCertifications(villageID,location) {
         editBtn.innerHTML = 'EDIT'
         // editBtn.onclick=function() {editMemberCertifications(m['machineID'])}
         editBtn.id = 'EDIT' + m['machineID']
-        editBtn.onclick=function() {memberCertification(this.id)}
+        editBtn.onclick=function() {editMemberCertification(this)}
+        if (m['memberCertified']) {
+            editBtn.style.display='block'
+        }
+        else {
+            editBtn.style.display='none'
+        }
         divColEditBtn.appendChild(editBtn)
 
         divRow.appendChild(divColEditBtn)
@@ -905,7 +916,6 @@ function certifyMember(e) {
     //villageID = sessionStorage.getItem('villageID')
 function editMemberCertification(e) {
     machineID = e.id.slice(4,11)
-
     populateMemberCertificationModal("EDIT",machineID)
 
 }
@@ -938,7 +948,7 @@ function old(){
         document.getElementById('certifyDescription').value = machineID
         document.getElementById('certifyDescription').value = document.getElementById(descID).innerHTML
         document.getElementById('certifyDateCertified').value = data.todaysDisplayDate
-        document.getElementById('certifyDuration').innerHTML = data.defaultDuration
+        //document.getElementById('certifyDuration').innerHTML = data.defaultDuration
         var certificationModalInstructors = document.getElementById('certificationModalInstructors')
         while (certificationModalInstructors.firstChild) {
             certificationModalInstructors.removeChild(certificationModalInstructors.lastChild);
@@ -971,6 +981,11 @@ function populateMemberCertificationModal(transactionType,machineID) {
     villageID = sessionStorage.getItem('villageID')
     if (transactionType == 'CERTIFY') {
         document.getElementById('deleteAuthorizationModal').style.display="none"
+        document.getElementById('transactionType').innerHTML='CERTIFY'
+    }
+    else {
+        document.getElementById('deleteAuthorizationModal').style.display="block"
+        document.getElementById('transactionType').innerHTML='EDIT'
     }
 
 
@@ -1020,7 +1035,12 @@ function populateMemberCertificationModal(transactionType,machineID) {
         document.getElementById('certifyDescription').value = machineID
         document.getElementById('certifyDescription').value = document.getElementById(descID).innerHTML
         document.getElementById('certifyDateCertified').value = data.todaysDisplayDate
-        document.getElementById('certifyDuration').innerHTML = data.defaultDuration
+        
+        console.log('defaultDuration - '+data.defaultDuration)
+        if (data.defaultDuration !== undefined){
+            document.getElementById('certifyDuration').value = data.defaultDuration
+        }
+
         var certificationModalInstructors = document.getElementById('certificationModalInstructors')
         while (certificationModalInstructors.firstChild) {
             certificationModalInstructors.removeChild(certificationModalInstructors.lastChild);
@@ -1053,6 +1073,17 @@ function prtMemberCertifications(memberID) {
 }   
 
 function showNewMachineModal() {
+    document.getElementById('machineModalTitle').innerHTML = 'ADD NEW MACHINE'
+    document.getElementById('newMachineDescription').innerHTML = ''
+    document.getElementById('newMachineLocation').value = localStorage.getItem('shopLocation')
+    document.getElementById('newCertificationDuration').value = '180 days'
+    $('#newMachineModal').modal('show')
+    document.getElementById('newMachineDescription').focus()
+}
+function showEditMachineModal() {
+    // nothing selected, return
+    //  add code to fetch machine data
+    document.getElementById('machineModalTitle').innerHTML = 'EDIT MACHINE DATA'
     document.getElementById('newMachineDescription').innerHTML = ''
     document.getElementById('newMachineLocation').value = localStorage.getItem('shopLocation')
     document.getElementById('newCertificationDuration').value = '180 days'
@@ -1212,5 +1243,6 @@ function saveCheckedBoxes(el) {
 
 function saveCertification(transactionType) {
     console.log('... saveCertification ...')
+    //call certify or call save edit ?
 }
 // END OF FUNCTIONS

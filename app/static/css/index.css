@@ -4,6 +4,13 @@
     --main-padding: 10px;  
     --main-body-bg-color: lightgray;
   }
+input:read-only {
+    /* background-color: #ccc; */
+    color:green;
+}
+input:read-write {
+    color:blue;
+}
 /* Phone layout (default) */
 @media only screen and (max-width:600px) {
     body {

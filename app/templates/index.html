@@ -58,10 +58,12 @@
                 </select>      
             </div>
             <div class="col-2"></div>
-            <div class="col-2" style="align-content:right">
+            <div class="col-2" >
                 <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newMachineModal"> -->
-                <button type="'button" class="btn btn-primary" style="margin-left:20px;margin-right:10px" onclick="showNewMachineModal()">NEW</button>
-            </div>
+                <button type="'button" id='btnEditMachine' class="btn btn-secondary btn-sm" 
+                    style="display:none;margin-left:2px;margin-right:1px" onclick="showEditMachineModal()">EDIT</button>
+                <button type="'button" id='btnNewMachine' class="btn btn-primary btn-sm" style="margin-left:2px;margin-right:1px" onclick="showNewMachineModal()">NEW</button>
+        </div>
             <div class="col-1"></div>
         </div>
     </div>
@@ -154,7 +156,7 @@
   
         <!-- Modal Header -->
         <div class="modal-header newMachineModalHeader">
-          <h4 class="modal-title">NEW MACHINE</h4>
+          <h4 class="modal-title" id="machineModalTitle"></h4>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
   
@@ -240,7 +242,7 @@
                     <label for="certifyMachineID">Machine ID</label>
                 </div>
                 <div class="col-5 certifyData">
-                    <input type="text" id="certifyMachineID" size="30" >
+                    <input type="text" id="certifyMachineID" readonly size="6" >
                 </div>
             </div>
             <div class="row">
@@ -265,7 +267,7 @@
                     <label for="certifyDuration">Suggested Duration</label>
                 </div>
                 <div class="col-5 certifyData">
-                    <select name="" id="certifyDuration">
+                    <select name="">
                         <option value="UNL">Unlimited</option>
                         <option value="365 days">365 days</option>
                         <option value="180 days">180 days</option>
@@ -274,7 +276,9 @@
                         <option value="7 days">7 days</option>
                     </select>
                 </div>
+                
             </div>
+            
             <div class="row">
                 <div class="col-4 certifyLabel">
                     <label for="certifyCertifiedBy">Certified by</label>
@@ -290,12 +294,13 @@
        
         <!-- Modal footer -->
         <div class="modal-footer certifyModalFooter">
-          <button id='closecertifyModal' type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
-          <button id='savecertifyModal' type="button" class="btn btn-success" onclick="saveCertification()">Save</button>
+            <div id="transactionType" style="display:none"></div>
+            <button id='closecertifyModal' type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
+            <button id='savecertifyModal' type="button" class="btn btn-success" onclick="saveCertification()">Save</button>
           <!-- reconsider how to decertify or delete a memberMachineCertifications record; when unchecked? via EDIT? -->
           <!-- can dateCertified be changed? can a member be recertified -->
           <!-- should we have a 'CERTIFY' button? -->
-          <button id='deleteAuthorizationModal' type="button" onclick=window.location.origin + '/decertifyMember' class="btn btn-danger" data-bs-dismiss="modal">Remove Authorization</button>
+            <button id='deleteAuthorizationModal' type="button" onclick=window.location.origin + '/decertifyMember' class="btn btn-danger" data-bs-dismiss="modal">Remove Authorization</button>
         </div>
   
       </div>
