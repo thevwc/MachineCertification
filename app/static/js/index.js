@@ -70,7 +70,7 @@ filterMachineDropdown(shopChoice.value)
 // SET VERSION OF APP AND CURRENT SCREEN SIZE (FOR DEVELOPMENT PURPOSES)
 versionText = document.getElementById('versionText')
 console.log('screen width ='+screen.width)
-versionText.innerHTML='ver May 12, 2022  (' + screen.width + ')'
+versionText.innerHTML='ver May 13, 2022  (' + screen.width + ')'
 
 // IF NOT A LARGE SCREEN DISPLAY ONLY 1 PANEL AT A TIME INSTEAD OF ALL 3
 handleMediaChange(largeScreen)
@@ -490,26 +490,26 @@ function displayMemberCertifications(villageID,location) {
     memberMachinesParent.appendChild(divHdgRow)
 
     for (m of machine) {
-        console.log('machine ID - '+ m['machineID'])
+        //console.log('machine ID - '+ m['machineID'])
 
         // BUILD THE ROW
         var divRow = document.createElement('div')
         divRow.classList.add('row', 'mbrMachRow')
         
-        var blankCol = document.createElement('div')
-        blankCol.classList.add('col-1')
-        divRow.appendChild(blankCol)
+        // var blankCol = document.createElement('div')
+        // blankCol.classList.add('col-1')
+        // divRow.appendChild(blankCol)
 
         // 'CERTIFY' BUTTON
-        var divColCertifyBtn = document.createElement('div')
-        divColCertifyBtn.classList.add('col-1')
+        // var divColCertifyBtn = document.createElement('div')
+        // divColCertifyBtn.classList.add('col-1')
 
-        var certifyBtn = document.createElement('button')
-        certifyBtn.innerHTML = 'CERTIFY'
-        certifyBtn.id = 'CERTIFY' + m['machineID']
-        certifyBtn.onclick=function() {memberCertification(this.id)}
-        divColCertifyBtn.appendChild(certifyBtn)
-        divRow.appendChild(divColCertifyBtn)
+        // var certifyBtn = document.createElement('button')
+        // certifyBtn.innerHTML = 'CERTIFY'
+        // certifyBtn.id = 'CERTIFY' + m['machineID']
+        // certifyBtn.onclick=function() {memberCertification(this.id)}
+        // divColCertifyBtn.appendChild(certifyBtn)
+        // divRow.appendChild(divColCertifyBtn)
 
         var blankCol = document.createElement('div')
         blankCol.classList.add('col-1')
@@ -517,7 +517,8 @@ function displayMemberCertifications(villageID,location) {
 
         var chkInput = document.createElement('input')
         chkInput.type="checkbox"
-        chkInput.onclick=function() {certifyChkbox(this.id)}
+        chkInput.id = "CERTIFY" + m['machineID']
+        chkInput.onclick=function() {certifyMember(this)}
         //chkInput.disabled = true
         chkInput.classList.add('col-1')
         chkInput.classList.add('certifyChkbox')
@@ -532,13 +533,13 @@ function displayMemberCertifications(villageID,location) {
         divRow.appendChild(chkInput)
         // MACHINE DESCRIPTION (LOCATION)
         var divColMachineDesc = document.createElement('div')
-        divColMachineDesc.id = "D" + m['machineID']
+        divColMachineDesc.id = "Desc" + m['machineID']
         divColMachineDesc.classList.add('col-6')
         divColMachineDesc.classList.add('clsMachineDesc')
         divColMachineDesc.innerHTML = m['machineDesc']
         divColMachineDesc.style.textAlign='left'
 
-        console.log('certificationExpired - '+m['certificationExpired'])
+        // console.log('certificationExpired - '+m['certificationExpired'])
         if (m['certificationExpired']) {
             divColMachineDesc.classList.add('expired')
             //divColMachineDesc.style.textDecoration = 'line-through'
@@ -884,36 +885,32 @@ function displayMachineInstructorData() {
     })
 }
 
-function certifyChkbox() {
-    alert("Click on 'CERTIFY' or 'EDIT' to change data.")
-    return
+
+// ROUTINE FOR NEW CERTIFICATIONS
+function certifyMember(e) {
+    machineID = e.id.slice(7,14)
+    //console.log('machineID - '+machineID)
+    //console.log('e.id - '+e.id)
+    selectedMachine = document.getElementById(e.id) 
+    if (!selectedMachine.checked) {
+        alert("Click on 'EDIT' to change or delete certification data.")
+        selectedMachine.checked = true
+        return
+    }
+    populateMemberCertificationModal('CERTIFY',machineID)
+
+    return 
+}
+    //url = window.location.origin + '/certifyMember'
+    //villageID = sessionStorage.getItem('villageID')
+function editMemberCertification(e) {
+    machineID = e.id.slice(4,11)
+
+    populateMemberCertificationModal("EDIT",machineID)
+
 }
 
-// CALL ROUTINE TO GET LIST OF INSTRUCTORS FOR THIS MACHINE AND TO SHOW THE MODAL 'certifyModal'
-// POPULATE MACHINE ID, DESCRIPTION, DATE CERTIFIED, SET DURATION TO DEFAULT FOR THIS MACHINE
-function memberCertification(el) {
-    machineID = ''
-    
-    if (el.slice(0,7) == 'CERTIFY') {
-        machineID = el.slice(7,14)
-        console.log(' ... from CERTIFY btn ...'+ machineID)
-        transactionType = 'CERTIFY'
-        document.getElementById('deleteAuthorizationModal').style.display="none"
-    }
-    if (el.slice(0,4) == 'EDIT') {
-        machineID = el.slice(4,11)
-        console.log(' ... from EDIT btn ...'+ machineID)
-        transactionType = 'EDIT'
-    }
-    //  add 'CERTIFY' button and logic ...
-    //  chkbox - readonly, no click event
-    //  if 'EDIT' then ...
-
-    url = window.location.origin + '/getMachineInstructorsList'
-    console.log('url - '+url)
-    
-    villageID = sessionStorage.getItem('villageID')
-
+function old(){
     let dataToSend = {
         //staffID: staffID,
         villageID: villageID,
@@ -931,13 +928,95 @@ function memberCertification(el) {
     .then((res) => res.json())
     .then((data) => {
         if (data.status != 200) {
-            modalAlert('Member Certification',data.msg)
+            modalAlert('Machine Authorization',data.msg)
+            return
+        }
+    // POPULATE certifyModal WITH INSTRUCTORS
+        //document.getElementById('certifyMachineID').innerHTML = machineID
+        document.getElementById('certifyMachineID').value = machineID
+        var descID = 'Desc' + machineID
+        document.getElementById('certifyDescription').value = machineID
+        document.getElementById('certifyDescription').value = document.getElementById(descID).innerHTML
+        document.getElementById('certifyDateCertified').value = data.todaysDisplayDate
+        document.getElementById('certifyDuration').innerHTML = data.defaultDuration
+        var certificationModalInstructors = document.getElementById('certificationModalInstructors')
+        while (certificationModalInstructors.firstChild) {
+            certificationModalInstructors.removeChild(certificationModalInstructors.lastChild);
+        }
+        instructors = data.instructorsDict
+        // IF NO INSTRUCTORS ASSIGNED BUILD OPTION LINE WITH MSG
+        if (instructors.length == 0){
+            optionLine = document.createElement("option")
+            optionLine.innerHTML = "No instructors assigned."
+            certificationModalInstructors.appendChild(optionLine)
+            $('#certifyModal').modal('show')
+            return
+        }
+        // BUILD AN OPTION LINE FOR EACH INSTRUCTOR
+        for (var element of instructors) {
+            var optionLine = document.createElement('option')
+            optionLine.innerHTML = element.instructorName
+            optionLine.value = element.instructorID
+            certificationModalInstructors.appendChild(optionLine)
+        }
+        $('#certifyModal').modal('show')
+    return
+    })
+}
+
+// CALL ROUTINE TO GET LIST OF INSTRUCTORS FOR THIS MACHINE AND TO SHOW THE MODAL 'certifyModal'
+// POPULATE MACHINE ID, DESCRIPTION, DATE CERTIFIED, SET DURATION TO DEFAULT FOR THIS MACHINE
+//function editMemberCertification(el) {
+function populateMemberCertificationModal(transactionType,machineID) {
+    villageID = sessionStorage.getItem('villageID')
+    if (transactionType == 'CERTIFY') {
+        document.getElementById('deleteAuthorizationModal').style.display="none"
+    }
+
+
+    // if (el.slice(0,7) == 'CERTIFY') {
+    //     machineID = el.slice(7,14)
+    //     console.log(' ... from CERTIFY btn ...'+ machineID)
+    //     transactionType = 'CERTIFY'
+    //     
+    // }
+    // if (el.slice(0,4) == 'EDIT') {
+    //     machineID = el.slice(4,11)
+    //     console.log(' ... from EDIT btn ...'+ machineID)
+    //     transactionType = 'EDIT'
+    // }
+    //  add 'CERTIFY' button and logic ...
+    //  chkbox - readonly, no click event
+    //  if 'EDIT' then ...
+
+    url = window.location.origin + '/getMachineInstructorsList'
+    console.log('url - '+url)
+    
+    villageID = sessionStorage.getItem('villageID')
+
+    let dataToSend = {
+        villageID: villageID,
+        machineID: machineID
+    };
+    fetch(url, {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify(dataToSend),
+        cache: "no-cache",
+        headers: new Headers({
+            "content-type": "application/json"
+        })
+    })
+    .then((res) => res.json())
+    .then((data) => {
+        if (data.status != 200) {
+            modalAlert('Machine Authorization',data.msg)
             return
         }
         // POPULATE certifyModal WITH INSTRUCTORS
         //document.getElementById('certifyMachineID').innerHTML = machineID
         document.getElementById('certifyMachineID').value = machineID
-        var descID = 'D' + machineID
+        var descID = 'Desc' + machineID
         document.getElementById('certifyDescription').value = machineID
         document.getElementById('certifyDescription').value = document.getElementById(descID).innerHTML
         document.getElementById('certifyDateCertified').value = data.todaysDisplayDate
@@ -1131,4 +1210,7 @@ function saveCheckedBoxes(el) {
     })
 }
 
+function saveCertification(transactionType) {
+    console.log('... saveCertification ...')
+}
 // END OF FUNCTIONS

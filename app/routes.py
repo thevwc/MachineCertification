@@ -386,6 +386,9 @@ def certifyMember():
     req = request.get_json()
     memberID = req["villageID"]
     machineID = req["machineID"]
+    certifyBy = req["certifyBy"]
+    duration = req["duration"]
+    dateCertified = req["dateCertified"]
     #staffID = req["staffID"]
     todaysDate = date.today().strftime('%Y-%m-%d')
 
@@ -403,8 +406,8 @@ def certifyMember():
     
     
     # add new record
-    sqlInsert = "INSERT INTO memberMachineCertifications (member_ID,dateCertified,certifiedBy,machineID)"
-    sqlInsert += " VALUES('" + memberID + "', '" + todaysDate + "', '" + staffID + "', '" + machineID + "')"
+    sqlInsert = "INSERT INTO memberMachineCertifications (member_ID,dateCertified,certifiedBy,machineID,certificationDuration)"
+    sqlInsert += " VALUES('" + memberID + "', '" + dateCertified + "', '" + certifiedBy + "', '" + machineID + "', '" + duration + "')"
     print('sqlInsert - ',sqlInsert)
     try:
         certification = db.engine.execute(sqlInsert)
