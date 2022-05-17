@@ -658,19 +658,44 @@ def updateInstructorMachineSettings():
             msg='Add machineInstructor failed.'
             return jsonify(msg=msg,status=201)
 
-# GET MACHINE INSTRUCTORS LIST
-@app.route('/getMachineInstructorsList',methods=['GET','POST'])
-def getMachineInstructorsList():
+# GET DATA FOR MEMBER CERTIFICATION MODAL
+@app.route('/getDataForCertificationModal',methods=['GET','POST'])
+def getDataForCertificationModal():
     req = request.get_json()
     machineID = req["machineID"]
+    villageID = req["villageID"]
+    transactionType = req["transactionType"]
 
-    #  Todays date for certification
-    todaysDate = date.today()
+    # DATA COMMON TO BOTH 'NEW' AND 'EDIT'
+    machine = db.session.query(Machines).filter(Machines.machineID == machineID).first()
+    if machine == None:
+            msg = 'Missing record in Machines table'
+            flash(msg,'danger')
+            return jsonify(msg=msg,status=201)
+    machineDesc = machine.machineDesc + "(" + machine.machineLocation + ")"
+    suggestedDuration = 'Std - ' + machine.certificationDuration
     
-    #  Default duration for this machine
-    defaultDuration = db.session.query(Machines.certificationDuration).filter(Machines.machineID == machineID).scalar()
-    
-    #  Instructors assigned to this machine
+    # TRANSACTION DEPENDENT DATA FOR AUTHORIZATION MODAL FORM
+    if transactionType == "NEW":
+        # DATA FOR NEW CERTIFICATIONS
+        dateCertified = date.today()
+        certificationDuration = ""
+    else:
+        # DATA FOR EDIT OF EXISTING CERTIFICATION
+        memberCertification = db.session.query(MemberMachineCertifications)\
+            .filter(MemberMachineCertifications.machineID == machineID)\
+            .filter(MemberMachineCertifications.member_ID == villageID).first()
+        if memberCertification == None:
+            msg = 'Missing record in MemberMachineCertifications table'
+            flash(msg,'danger')
+            dateCertified=date.today().strftime('%Y-%m-%d')
+            certificationDuration = machine.certificationDuration
+            return jsonify(msg=msg,status=201)
+        dateCertified = memberCertification.dateCertified.strftime('%Y-%m-%d')
+        certificationDuration = memberCertification.certificationDuration
+    print('certificationDuration - ',certificationDuration)
+
+    # INSTRUCTORS ASSIGNED TO THIS MACHINE FOR DROP-DOWN LIST
     instructorsDict = []
     instructorItem = []
     sp = "EXEC instructorsForSpecificMachine '" + machineID + "'"
@@ -694,10 +719,11 @@ def getMachineInstructorsList():
         for i in instructors:
             instructorItem = {
                 'machineID': i.machineID,
-                'instructorName': i.LFN_Name,
-                'todaysDate':todaysDate,
-                'defaultDuration':defaultDuration
+                'instructorName': i.LFN_Name
             }
             instructorsDict.append(instructorItem)
             
-    return jsonify(msg='No msg',status=200,instructorsDict=instructorsDict)    
+    return jsonify(msg='No msg',status=200,machineDesc=machineDesc,\
+        dateCertified=dateCertified,certificationDuration=certificationDuration,\
+        suggestedDuration=suggestedDuration,\
+        instructorsDict=instructorsDict)    

@@ -577,7 +577,6 @@ function displayMemberCertifications(villageID,location) {
 
         var editBtn = document.createElement('button')
         editBtn.innerHTML = 'EDIT'
-        // editBtn.onclick=function() {editMemberCertifications(m['machineID'])}
         editBtn.id = 'EDIT' + m['machineID']
         editBtn.onclick=function() {editMemberCertification(this)}
         if (m['memberCertified']) {
@@ -901,8 +900,7 @@ function displayMachineInstructorData() {
 // ROUTINE FOR NEW CERTIFICATIONS
 function certifyMember(e) {
     machineID = e.id.slice(7,14)
-    //console.log('machineID - '+machineID)
-    //console.log('e.id - '+e.id)
+    
     selectedMachine = document.getElementById(e.id) 
     if (!selectedMachine.checked) {
         alert("Click on 'EDIT' to change or delete certification data.")
@@ -913,12 +911,10 @@ function certifyMember(e) {
 
     return 
 }
-    //url = window.location.origin + '/certifyMember'
-    //villageID = sessionStorage.getItem('villageID')
+
 function editMemberCertification(e) {
     machineID = e.id.slice(4,11)
     populateMemberCertificationModal("EDIT",machineID)
-
 }
 
 function old(){
@@ -1005,14 +1001,15 @@ function populateMemberCertificationModal(transactionType,machineID) {
     //  chkbox - readonly, no click event
     //  if 'EDIT' then ...
 
-    url = window.location.origin + '/getMachineInstructorsList'
+    url = window.location.origin + '/getDataForCertificationModal'
     console.log('url - '+url)
     
     villageID = sessionStorage.getItem('villageID')
 
     let dataToSend = {
         villageID: villageID,
-        machineID: machineID
+        machineID: machineID,
+        transactionType,transactionType
     };
     fetch(url, {
         method: "POST",
@@ -1029,19 +1026,42 @@ function populateMemberCertificationModal(transactionType,machineID) {
             modalAlert('Machine Authorization',data.msg)
             return
         }
-        // POPULATE certifyModal WITH INSTRUCTORS
-        //document.getElementById('certifyMachineID').innerHTML = machineID
+        // SET certifyModal FIELDS - MACHINEID, DESCRIPTION, DATE CERTIFIED
         document.getElementById('certifyMachineID').value = machineID
-        var descID = 'Desc' + machineID
-        document.getElementById('certifyDescription').value = machineID
-        document.getElementById('certifyDescription').value = document.getElementById(descID).innerHTML
-        document.getElementById('certifyDateCertified').value = data.todaysDisplayDate
+        //document.getElementById('certifyDescription').innerHTML = data.machineDesc
+        document.getElementById('certifyDescription').value = data.machineDesc
         
-        console.log('defaultDuration - '+data.defaultDuration)
-        if (data.defaultDuration !== undefined){
-            document.getElementById('certifyDuration').value = data.defaultDuration
-        }
+        console.log('data.certificationDate -'+data.dateCertified)
+        document.getElementById('certifyDateCertified').value = data.dateCertified
 
+        console.log('data.certificationDuration -'+data.certificationDuration)
+        //document.getElementById('certificationDuration').value = data.certificationDuration
+        durationIndex = 2
+        if (data.certificationDuration == 'UNL') {
+            durationIndex = 0
+        }
+        if (data.certificationDuration == '365 days') {
+            durationIndex = 1
+        }
+        if (data.certificationDuration == '180 days') {
+            durationIndex = 2
+        }
+        if (data.certificationDuration == '90 days') {
+            durationIndex = 3
+        }
+        if (data.certificationDuration == '60 days') {
+            durationIndex = 5
+        }
+        if (data.certificationDuration == '30 days') {
+            durationIndex = 5
+        }
+        if (data.certificationDuration == '7 days') {
+            durationIndex = 6
+        }
+        document.getElementById('certificationDuration').selectedIndex = durationIndex
+        
+
+        // POPULATE certifyModal DROP DOWN LIST WITH INSTRUCTORS
         var certificationModalInstructors = document.getElementById('certificationModalInstructors')
         while (certificationModalInstructors.firstChild) {
             certificationModalInstructors.removeChild(certificationModalInstructors.lastChild);
@@ -1082,18 +1102,16 @@ function showNewMachineModal() {
     document.getElementById('newMachineDescription').focus()
 }
 function showEditMachineModal() {
-    // nothing selected, return
-    //  add code to fetch machine data
+
+    // GET DESCRIPTION FROM SELECTED SELECTPICKER FOR MACHINES
     let e = document.getElementById("machineSelected");
     machineID = e.options[e.selectedIndex].getAttribute('data-machineID')
-    //selectedMachine = document.getElementById('machineSelected')
-    console.log('selectedMachine - '+ machineID)
-    //machineID = selectedMachine.data-machineID
+    currentDesc = document.getElementById('D'+machineID).innerHTML
+    position = currentDesc.indexOf("(")
+    currentDesc = currentDesc.slice(0,position)
 
-    currentDesc = document.getElementById('D'+machineID)
-    console.log('currentDesc.innerHTML - ',currentDesc.innerHTML)
     document.getElementById('machineModalTitle').innerHTML = 'EDIT MACHINE DATA'
-    document.getElementById('newMachineDescription').value = currentDesc.innerHTML
+    document.getElementById('newMachineDescription').value = currentDesc
     document.getElementById('newMachineLocation').value = localStorage.getItem('shopLocation')
     document.getElementById('newCertificationDuration').value = '180 days'
     $('#newMachineModal').modal('show')
