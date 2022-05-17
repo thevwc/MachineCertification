@@ -270,6 +270,7 @@ function displayMachineInstructorsAndMembers() {
         // Display full description
         var divDescription = document.createElement('div')
         divDescription.classList.add('machineDescription')
+        divDescription.id = "D" + data.machineID
         divDescription.innerHTML = data.machineDesc
         dtlParent.appendChild(divDescription)
 
@@ -1083,8 +1084,16 @@ function showNewMachineModal() {
 function showEditMachineModal() {
     // nothing selected, return
     //  add code to fetch machine data
+    let e = document.getElementById("machineSelected");
+    machineID = e.options[e.selectedIndex].getAttribute('data-machineID')
+    //selectedMachine = document.getElementById('machineSelected')
+    console.log('selectedMachine - '+ machineID)
+    //machineID = selectedMachine.data-machineID
+
+    currentDesc = document.getElementById('D'+machineID)
+    console.log('currentDesc.innerHTML - ',currentDesc.innerHTML)
     document.getElementById('machineModalTitle').innerHTML = 'EDIT MACHINE DATA'
-    document.getElementById('newMachineDescription').innerHTML = ''
+    document.getElementById('newMachineDescription').value = currentDesc.innerHTML
     document.getElementById('newMachineLocation').value = localStorage.getItem('shopLocation')
     document.getElementById('newCertificationDuration').value = '180 days'
     $('#newMachineModal').modal('show')

@@ -675,7 +675,13 @@ def getMachineInstructorsList():
     instructorItem = []
     sp = "EXEC instructorsForSpecificMachine '" + machineID + "'"
     sql = SQLQuery(sp)
-    instructors = db.engine.execute(sql)
+    try:
+        instructors = db.engine.execute(sql)
+    except (SQLAlchemyError, DBAPIError) as e:
+        print("ERROR -",e)
+        flash("ERROR - DB error")
+        msg='Database error.'
+        return jsonify(msg=msg,status=201)
     if instructors == None:
         instructorItem = {
             'machineID': '',
