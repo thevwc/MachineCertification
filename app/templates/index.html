@@ -58,10 +58,10 @@
             </div>
             <div class="col-2"></div>
             <div class="col-2" >
-                <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newMachineModal"> -->
+                <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#machineModal"> -->
                 <button type="'button" id='btnEditMachine' class="btn btn-secondary btn-sm" 
                     style="display:none;margin-left:2px;margin-right:1px" onclick="showEditMachineModal()">EDIT</button>
-                <button type="'button" id='btnNewMachine' class="btn btn-primary btn-sm" style="margin-left:2px;margin-right:1px" onclick="showNewMachineModal()">NEW</button>
+                <button type="'button" id='btnNewMachine' class="btn btn-primary btn-sm" style="margin-left:2px;margin-right:1px" onclick="showmachineModal()">NEW</button>
         </div>
             <div class="col-1"></div>
         </div>
@@ -148,13 +148,13 @@
 	</div>
 </div>
 
-<!-- newMachineModal -->
-<div class="modal" id="newMachineModal">
+<!-- machineModal -->
+<div class="modal" id="machineModal">
     <div class="modal-dialog">
       <div class="modal-content">
   
         <!-- Modal Header -->
-        <div class="modal-header newMachineModalHeader">
+        <div class="modal-header machineModalHeader">
           <h4 class="modal-title" id="machineModalTitle"></h4>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
@@ -214,9 +214,9 @@
         </div> 
        
         <!-- Modal footer -->
-        <div class="modal-footer newMachineModalFooter">
-          <button id='closeNewMachineModal' type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
-          <button id='saveNewMachineModal' type="button" class="btn btn-success" onclick="saveNewMachine()">Save</button>
+        <div class="modal-footer machineModalFooter">
+          <button id='closemachineModal' type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
+          <button id='savemachineModal' type="button" class="btn btn-success" onclick="saveNewMachine()">Save</button>
         </div>
   
       </div>
@@ -224,12 +224,12 @@
   </div>
 
 <!-- CERTIFY MEMBER MODAL -->
-<div class="modal" id="certifyModal">
+<div class="modal" id="certifyMemberModal">
     <div class="modal-dialog">
       <div class="modal-content">
   
         <!-- Modal Header -->
-        <div class="modal-header certifyModalHeader">
+        <div class="modal-header certifyMemberModalHeader">
           <h4 class="modal-title">MEMBER AUTHORIZATION FOR A SPECIFIC MACHINE</h4>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
@@ -292,10 +292,10 @@
         </div> 
        
         <!-- Modal footer -->
-        <div class="modal-footer certifyModalFooter">
+        <div class="modal-footer certifyMemberModalFooter">
             <div id="transactionType" style="display:none"></div>
-            <button id='closecertifyModal' type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
-            <button id='savecertifyModal' type="button" class="btn btn-success" onclick="saveCertification()">Save</button>
+            <button id='closecertifyMemberModal' type="button" class="btn btn-primary" onclick='cancelCertification()' data-bs-dismiss="modal">Cancel</button>
+            <button id='savecertifyMemberModal' type="button" class="btn btn-success" onclick="saveCertification()">Save</button>
           <!-- reconsider how to decertify or delete a memberMachineCertifications record; when unchecked? via EDIT? -->
           <!-- can dateCertified be changed? can a member be recertified -->
           <!-- should we have a 'CERTIFY' button? -->

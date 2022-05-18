@@ -117,7 +117,7 @@ def displayMachineData():
 
     req = request.get_json()
     machineID = req["machineID"]
-    #print('machineID - ',machineID)
+    print('machineID - ',machineID)
 
     machine = db.session.query(Machines).filter(Machines.machineID == machineID).first()
     if machine == None:
@@ -665,35 +665,44 @@ def getDataForCertificationModal():
     machineID = req["machineID"]
     villageID = req["villageID"]
     transactionType = req["transactionType"]
-
-    # DATA COMMON TO BOTH 'NEW' AND 'EDIT'
-    machine = db.session.query(Machines).filter(Machines.machineID == machineID).first()
-    if machine == None:
-            msg = 'Missing record in Machines table'
-            flash(msg,'danger')
-            return jsonify(msg=msg,status=201)
+    print('machineID - |'+machineID+"|")
+    # GET DATA COMMON TO BOTH 'NEW' AND 'EDIT'
+    # sqlSelect = "SELECT top 1 * FROM machinesRequiringCertification WHERE machineID = '" + machineID + "'"
+    #machine = db.engine.execute(sqlSelect)
+    # print('sqlSelect - ',sqlSelect)
+    try:
+        machine = db.session.query(Machines).filter(Machines.machineID == machineID).first()
+    except (SQLAlchemyError, DBAPIError) as e:
+        msg='Database error - ' + e
+        print(msg)
+        return jsonify(msg=msg,status=201) 
+    
     machineDesc = machine.machineDesc + "(" + machine.machineLocation + ")"
-    suggestedDuration = 'Std - ' + machine.certificationDuration
+    machineDuration = machine.certificationDuration
+    suggestedDuration = 'Std - ' + machineDuration
     
     # TRANSACTION DEPENDENT DATA FOR AUTHORIZATION MODAL FORM
+    print('transactionType - ',transactionType)
     if transactionType == "NEW":
         # DATA FOR NEW CERTIFICATIONS
         dateCertified = date.today()
-        certificationDuration = ""
+        dateCertifiedSTR = dateCertified.strftime('%Y-%m-%d')
+        certificationDuration = machineDuration
     else:
         # DATA FOR EDIT OF EXISTING CERTIFICATION
-        memberCertification = db.session.query(MemberMachineCertifications)\
-            .filter(MemberMachineCertifications.machineID == machineID)\
-            .filter(MemberMachineCertifications.member_ID == villageID).first()
-        if memberCertification == None:
-            msg = 'Missing record in MemberMachineCertifications table'
-            flash(msg,'danger')
-            dateCertified=date.today().strftime('%Y-%m-%d')
-            certificationDuration = machine.certificationDuration
-            return jsonify(msg=msg,status=201)
+        try:
+            memberCertification = db.session.query(MemberMachineCertifications)\
+                .filter(MemberMachineCertifications.machineID == machineID)\
+                .filter(MemberMachineCertifications.member_ID == villageID).first()
+        except (SQLAlchemyError, DBAPIError) as e:
+            msg='Database error - ' + e
+            print(msg)
+            return jsonify(msg=msg,status=201) 
+        print('memberCertification - ',memberCertification.member_ID,memberCertification.machineID)
+
         dateCertified = memberCertification.dateCertified.strftime('%Y-%m-%d')
         certificationDuration = memberCertification.certificationDuration
-    print('certificationDuration - ',certificationDuration)
+    
 
     # INSTRUCTORS ASSIGNED TO THIS MACHINE FOR DROP-DOWN LIST
     instructorsDict = []
@@ -726,4 +735,4 @@ def getDataForCertificationModal():
     return jsonify(msg='No msg',status=200,machineDesc=machineDesc,\
         dateCertified=dateCertified,certificationDuration=certificationDuration,\
         suggestedDuration=suggestedDuration,\
-        instructorsDict=instructorsDict)    
+        instructorsDict=instructorsDict,transactionType=transactionType)    
