@@ -16,31 +16,17 @@ const machineMemberBtn = document.getElementById("machineMemberBtn")
 const machineInstructorsAndMembers = document.getElementById("machineInstructorsAndMembers")
 const newKeyInToolCrib = document.getElementById("newKeyInToolCrib")
 const newKeyProvider = document.getElementById("newKeyProvider")
-//const instrChkbox = document.querySelectorAll(".instrChkbox")
-//const instrMachRow = document.getElementById('instrMachRow')
-
-//const certifyChkbox = document.getElementsByClassName('certifyChkbox')
 
 // EVENT LISTENERS
 shopChoice.addEventListener("change",locationClicked)
-//shopSelection.addEventListener('click',locationClicked)
-//machineSelected.addEventListener("click",machineClicked)
 machineSelected.addEventListener("change",machineClicked)
-
-//memberSelected.addEventListener("click",memberClicked)
 memberSelected.addEventListener("change",memberClicked)
 instructorSelected.addEventListener("click",instructorClicked)
 instructorSelected.addEventListener("change",instructorClicked)
 largeScreen.addEventListener("change",handleMediaChange)
 newKeyInToolCrib.addEventListener("change",keyChangeTC)
 newKeyProvider.addEventListener("change",keyChangeProvider)
-// add event listener to each element of class instrChkbox
-// instrChkbox.forEach(box => {
-//     box.addEventListener('click',function handleClick(event) {
-//         console.log('box clicked', event);
-//         instrMachRow.style.display='block'
-//     })
-// })
+
 
 // PAGE LOAD ROUTINES
 
@@ -69,8 +55,7 @@ filterMachineDropdown(shopChoice.value)
 
 // SET VERSION OF APP AND CURRENT SCREEN SIZE (FOR DEVELOPMENT PURPOSES)
 versionText = document.getElementById('versionText')
-console.log('screen width ='+screen.width)
-versionText.innerHTML='ver May 13, 2022  (' + screen.width + ')'
+versionText.innerHTML='ver May 18, 2022  (' + screen.width + ')'
 
 // IF NOT A LARGE SCREEN DISPLAY ONLY 1 PANEL AT A TIME INSTEAD OF ALL 3
 handleMediaChange(largeScreen)
@@ -85,11 +70,7 @@ function locationListClicked() {
     console.log('.. locationListClicked ..')
 }
 function locationClicked() {
-
-    console.log('window.event - '+window.event)
-
     selectedLocation = shopChoice.value
-    console.log('.... locationClicked .... '+selectedLocation)
 
     if (shopChoice.value == '') {
         return
@@ -100,9 +81,7 @@ function locationClicked() {
 }
 
 function filterMachineDropdown(selectedLocation) {
-    console.log('.... filterMachineDropdown ....'+ selectedLocation)
     if (selectedLocation == 'BOTH') {
-        console.log('.. BOTH ..')
         optMachineName = document.getElementsByClassName('optMachineName')
         for (opt of optMachineName) {
             opt.style.display = 'block'
@@ -112,7 +91,6 @@ function filterMachineDropdown(selectedLocation) {
         }
     else {
         if (selectedLocation == 'RA') {
-            console.log('.. RA ..')
             RAclass = document.getElementsByClassName ('RA')
             for (RA of RAclass) {
                 RA.style.display = 'block'
@@ -124,7 +102,6 @@ function filterMachineDropdown(selectedLocation) {
         }
         else {
         if (selectedLocation == 'BW') {
-            console.log('.. BW ..')
             BWclass = document.getElementsByClassName ('BW')
             for (BW of BWclass) {
                 BW.style.display = 'block'
@@ -153,8 +130,6 @@ function filterMachineDropdown(selectedLocation) {
 }
 
 function machineClicked() {
-    console.log('... machineClicked rtn')
-    console.log('selectedIndex - '+machineSelected.selectedIndex)
     // CLEAR OTHER SELECTIONS
     if (machineSelected.selectedIndex > 1) {
         document.getElementById('btnEditMachine').style.display='block'
@@ -183,13 +158,8 @@ function machineClicked() {
     displayMachineInstructorsAndMembers()
 }
 
-// function machineChanged() {
-//     console.log('... machine changed rt')
-// }
-
 function memberClicked() {
-    console.log('... memberClicked rtn')
-    
+   
     // CLEAR OTHER SELECTIONS
     if (memberSelected.selectedIndex == 0) {
         return
@@ -221,7 +191,6 @@ function memberClicked() {
 }
 
 function instructorClicked() {
-    console.log('... instructorClicked rtn')
     // CLEAR OTHER SELECTIONS
     if (instructorSelected.selectedIndex != 0) {
         machineSelected.selectedIndex = 0
@@ -391,7 +360,6 @@ function displayMemberCertifications(villageID,location) {
     })
 .then((res) => res.json())
 .then((data) => {
-    console.log('data.msg - ' + data.msg)
     if (data.msg == "Member not found") {
         modalAlert('Member Lookup',data.msg)
         return
@@ -482,10 +450,6 @@ function displayMemberCertifications(villageID,location) {
 
     var divHdgRow = document.createElement('div')
     divHdgRow.classList.add('row')
-
-    var divHdgCol = document.createElement('div')
-    divHdgCol.classList.add('col-2')
-    divHdgRow.appendChild(divHdgCol) 
     
     var divHdgText = document.createElement('div')
     divHdgText.classList.add('col-3')
@@ -496,26 +460,10 @@ function displayMemberCertifications(villageID,location) {
     memberMachinesParent.appendChild(divHdgRow)
 
     for (m of machine) {
-        //console.log('machine ID - '+ m['machineID'])
 
         // BUILD THE ROW
         var divRow = document.createElement('div')
         divRow.classList.add('row', 'mbrMachRow')
-        
-        // var blankCol = document.createElement('div')
-        // blankCol.classList.add('col-1')
-        // divRow.appendChild(blankCol)
-
-        // 'CERTIFY' BUTTON
-        // var divColCertifyBtn = document.createElement('div')
-        // divColCertifyBtn.classList.add('col-1')
-
-        // var certifyBtn = document.createElement('button')
-        // certifyBtn.innerHTML = 'CERTIFY'
-        // certifyBtn.id = 'CERTIFY' + m['machineID']
-        // certifyBtn.onclick=function() {memberCertification(this.id)}
-        // divColCertifyBtn.appendChild(certifyBtn)
-        // divRow.appendChild(divColCertifyBtn)
 
         var blankCol = document.createElement('div')
         blankCol.classList.add('col-1')
@@ -540,30 +488,28 @@ function displayMemberCertifications(villageID,location) {
         // MACHINE DESCRIPTION (LOCATION)
         var divColMachineDesc = document.createElement('div')
         divColMachineDesc.id = "Desc" + m['machineID']
-        divColMachineDesc.classList.add('col-6')
+        divColMachineDesc.classList.add('col-4')
         divColMachineDesc.classList.add('clsMachineDesc')
         divColMachineDesc.innerHTML = m['machineDesc']
         divColMachineDesc.style.textAlign='left'
 
-        // console.log('certificationExpired - '+m['certificationExpired'])
         if (m['certificationExpired']) {
             divColMachineDesc.classList.add('expired')
-            //divColMachineDesc.style.textDecoration = 'line-through'
         }
 
         divRow.appendChild(divColMachineDesc)
 
         // AUTHORIZATION DURATION
-        // var divColCertDuration = document.createElement('div')
-        // divColCertDuration.classList.add('col-1')
-        // divColCertDuration.innerHTML = m['certificationDuration']
-        // divRow.appendChild(divColCertDuration)
+        var divColCertDuration = document.createElement('div')
+        divColCertDuration.classList.add('col-2')
+        divColCertDuration.innerHTML = m['certificationDuration']
+        divRow.appendChild(divColCertDuration)
 
         // AUTHORIZATION DATE
-        // var divColCertDate = document.createElement('div')
-        // divColCertDate.classList.add('col-1')
-        // divColCertDate.innerHTML = m['dateCertified']
-        // divRow.appendChild(divColCertDate)
+        var divColCertDate = document.createElement('div')
+        divColCertDate.classList.add('col-2')
+        divColCertDate.innerHTML = m['dateCertified']
+        divRow.appendChild(divColCertDate)
 
         // CERTIFIED BY
         // var divColCertBy = document.createElement('div')
@@ -635,7 +581,6 @@ function displayMachineInstructorData() {
         return
     } 
     shopLocation = shopChoice.value
-    console.log('shopLocation - '+ shopLocation)
     let dataToSend = {
         instructorID: instructorID,
         shopLocation: shopLocation
@@ -945,7 +890,6 @@ function old(){
         document.getElementById('certifyDescription').value = machineID
         document.getElementById('certifyDescription').value = document.getElementById(descID).innerHTML
         document.getElementById('certifyDateCertified').value = data.todaysDisplayDate
-        //document.getElementById('certifyDuration').innerHTML = data.defaultDuration
         var certificationModalInstructors = document.getElementById('certificationModalInstructors')
         while (certificationModalInstructors.firstChild) {
             certificationModalInstructors.removeChild(certificationModalInstructors.lastChild);
@@ -973,7 +917,6 @@ function old(){
 
 // CALL ROUTINE TO GET LIST OF INSTRUCTORS FOR THIS MACHINE AND TO SHOW THE MODAL 'certifyModal'
 // POPULATE MACHINE ID, DESCRIPTION, DATE CERTIFIED, SET DURATION TO DEFAULT FOR THIS MACHINE
-//function editMemberCertification(el) {
 function populateMemberCertificationModal(transactionType,machineID) {
     villageID = sessionStorage.getItem('villageID')
     if (transactionType == 'CERTIFY') {
@@ -985,25 +928,7 @@ function populateMemberCertificationModal(transactionType,machineID) {
         document.getElementById('transactionType').innerHTML='EDIT'
     }
 
-
-    // if (el.slice(0,7) == 'CERTIFY') {
-    //     machineID = el.slice(7,14)
-    //     console.log(' ... from CERTIFY btn ...'+ machineID)
-    //     transactionType = 'CERTIFY'
-    //     
-    // }
-    // if (el.slice(0,4) == 'EDIT') {
-    //     machineID = el.slice(4,11)
-    //     console.log(' ... from EDIT btn ...'+ machineID)
-    //     transactionType = 'EDIT'
-    // }
-    //  add 'CERTIFY' button and logic ...
-    //  chkbox - readonly, no click event
-    //  if 'EDIT' then ...
-
     url = window.location.origin + '/getDataForCertificationModal'
-    console.log('url - '+url)
-    
     villageID = sessionStorage.getItem('villageID')
 
     let dataToSend = {
@@ -1028,14 +953,8 @@ function populateMemberCertificationModal(transactionType,machineID) {
         }
         // SET certifyModal FIELDS - MACHINEID, DESCRIPTION, DATE CERTIFIED
         document.getElementById('certifyMachineID').value = machineID
-        //document.getElementById('certifyDescription').innerHTML = data.machineDesc
         document.getElementById('certifyDescription').value = data.machineDesc
-        
-        console.log('data.certificationDate -'+data.dateCertified)
         document.getElementById('certifyDateCertified').value = data.dateCertified
-
-        console.log('data.certificationDuration -'+data.certificationDuration)
-        //document.getElementById('certificationDuration').value = data.certificationDuration
         durationIndex = 2
         if (data.certificationDuration == 'UNL') {
             durationIndex = 0
@@ -1121,9 +1040,6 @@ function saveNewMachine() {
     machineDesc = document.getElementById('newMachineDescription').value
     machineLocation = document.getElementById('newMachineLocation').value
     certificationDuration = document.getElementById('newCertificationDuration').value
-    // console.log('machineDesc - '+machineDesc)
-    // console.log('machineLocation - '+machineLocation)
-    // console.log('certificationDuration - '+certificationDuration)
     newKeyInToolCribID = document.getElementById('newKeyInToolCrib')
     if (newKeyInToolCribID.checked==true){
         keyInToolCrib = 1
@@ -1140,7 +1056,6 @@ function saveNewMachine() {
     }
  
     url = window.location.origin + '/newMachine'  
-    console.log('url - '+url)
         
     let dataToSend = {
         machineDesc: machineDesc,
@@ -1203,7 +1118,6 @@ function keyProviderFunction(el) {
 function saveCheckedBoxes(el) {
     let e = document.getElementById("instructorSelected");
     memberID = e.options[e.selectedIndex].getAttribute('data-villageid')
-    console.log('memberID - '+memberID)
     machineID = el.id.substring(1,8)
     
     // GET canCertify STATUS
@@ -1234,7 +1148,6 @@ function saveCheckedBoxes(el) {
     }
 
     // CALL UPDATE ROUTINE
-    console.log(machineID,canCertify,canAssist,keyProvider)
     
     let dataToSend = {
         memberID: memberID,
@@ -1243,7 +1156,7 @@ function saveCheckedBoxes(el) {
         canAssist:canAssist,
         keyProvider:keyProvider
     };
-    console.log('dataToSend - '+dataToSend)
+    
 
     fetch(`${window.origin}/updateInstructorMachineSettings`, {
         method: "POST",
@@ -1256,7 +1169,6 @@ function saveCheckedBoxes(el) {
     })
     .then((res) => res.json())
     .then((data) => {
-        console.log('after then')
         if (data.status != 200) {
             modalAlert('NEW MACHINE FOR INSTRUCTOR',data.msg)
         }
