@@ -304,7 +304,7 @@ class Machines(db.Model):
     machineLocation = db.Column(db.String(2))
     certificationDuration = db.Column(db.String(10))
     keyInToolCrib = db.Column(db.Boolean)
-    callKeyProvider = db.Column(db.Boolean)
+    keyProvider = db.Column(db.Boolean)
 
 class MemberMachineCertifications(db.Model):
     __tablename__ = 'memberMachineCertifications'

@@ -14,8 +14,8 @@ const largeScreen = window.matchMedia("(min-width: 992px)")
 const machineInstructorBtn = document.getElementById("machineInstructorBtn")
 const machineMemberBtn = document.getElementById("machineMemberBtn")
 const machineInstructorsAndMembers = document.getElementById("machineInstructorsAndMembers")
-const newKeyInToolCrib = document.getElementById("newKeyInToolCrib")
-const newKeyProvider = document.getElementById("newKeyProvider")
+const keyInToolCribID = document.getElementById("keyInToolCribID")
+const keyProviderID = document.getElementById("keyProviderID")
 
 // EVENT LISTENERS
 shopChoice.addEventListener("change",locationClicked)
@@ -24,8 +24,8 @@ memberSelected.addEventListener("change",memberClicked)
 instructorSelected.addEventListener("click",instructorClicked)
 instructorSelected.addEventListener("change",instructorClicked)
 largeScreen.addEventListener("change",handleMediaChange)
-newKeyInToolCrib.addEventListener("change",keyChangeTC)
-newKeyProvider.addEventListener("change",keyChangeProvider)
+keyInToolCribID.addEventListener("change",keyChangeTC)
+keyProviderID.addEventListener("change",keyChangeProvider)
 
 
 // PAGE LOAD ROUTINES
@@ -132,7 +132,8 @@ function filterMachineDropdown(selectedLocation) {
 function machineClicked() {
     // CLEAR OTHER SELECTIONS
     if (machineSelected.selectedIndex > 1) {
-        document.getElementById('btnEditMachine').style.display='block'
+        document.getElementById('btnEditMachine').style.display='inline-block'
+        document.getElementById('btnDeleteMachine').style.display='inline-block'
         document.getElementById('btnNewMachine').style.display='none'
         $('.selectpicker').selectpicker('refresh');
         memberSelected.selectedIndex = 0
@@ -144,6 +145,7 @@ function machineClicked() {
     }
     else {
         document.getElementById('btnEditMachine').style.display='none'
+        document.getElementById('btnDeleteMachine').style.display='none'
         document.getElementById('btnNewMachine').style.display='block'
         return
     }
@@ -236,6 +238,8 @@ function displayMachineInstructorsAndMembers() {
             dtlParent.removeChild(dtlParent.lastChild);
         }
 
+        // DISPLAY MACHINE DATA
+        
         // Display full description
         var divDescription = document.createElement('div')
         divDescription.classList.add('machineDescription')
@@ -243,6 +247,10 @@ function displayMachineInstructorsAndMembers() {
         divDescription.innerHTML = data.machineDesc
         dtlParent.appendChild(divDescription)
 
+        var divDuration = document.createElement('div')
+        divDuration.innerHTML = data.certificationDuration
+        dtlParent.appendChild(divDuration)
+        
         // Display Instructor heading
         var divInstructorHdg = document.createElement('div')
         divInstructorHdg.classList.add('instructorListHdg')
@@ -1010,15 +1018,18 @@ function prtMemberCertifications(memberID) {
     window.location.href=url
 }   
 
-function showmachineModal() {
+function showNewMachineModal() {
+    document.getElementById('transactionType').innerHTML = 'NEW'
     document.getElementById('machineModalTitle').innerHTML = 'ADD NEW MACHINE'
-    document.getElementById('newMachineDescription').innerHTML = ''
-    document.getElementById('newMachineLocation').value = localStorage.getItem('shopLocation')
-    document.getElementById('newCertificationDuration').value = '180 days'
+    document.getElementById('machineDescription').innerHTML = ''
+    document.getElementById('machineLocation').value = localStorage.getItem('shopLocation')
+    document.getElementById('certificationDuration').value = '180 days'
     $('#machineModal').modal('show')
-    document.getElementById('newMachineDescription').focus()
+    document.getElementById('machineDescription').focus()
 }
 function showEditMachineModal() {
+    console.log('showEditMachineModal')
+    document.getElementById('transactionType').innerHTML = 'EDIT'
 
     // GET DESCRIPTION FROM SELECTED SELECTPICKER FOR MACHINES
     let e = document.getElementById("machineSelected");
@@ -1026,41 +1037,86 @@ function showEditMachineModal() {
     currentDesc = document.getElementById('D'+machineID).innerHTML
     position = currentDesc.indexOf("(")
     currentDesc = currentDesc.slice(0,position)
+    shopLocation = e.options[e.selectedIndex].getAttribute('data-location')
+    duration = e.options[e.selectedIndex].getAttribute('data-duration')
+    keyInToolCrib = e.options[e.selectedIndex].getAttribute('data-keyintoolcrib')
+    keyProvider = e.options[e.selectedIndex].getAttribute('data-keyprovider')
+
+    console.log('data-duration - ',duration)
+    console.log('data-keyintoolcrib - ',keyInToolCrib)
+    console.log('data-keyprovider - '+ keyProvider)
 
     document.getElementById('machineModalTitle').innerHTML = 'EDIT MACHINE DATA'
-    document.getElementById('newMachineDescription').value = currentDesc
-    document.getElementById('newMachineLocation').value = localStorage.getItem('shopLocation')
-    document.getElementById('newCertificationDuration').value = '180 days'
+    document.getElementById('machineDescription').value = currentDesc
+    document.getElementById('machineLocation').value = shopLocation
+    durationIndex = 2
+    if (duration == 'UNL') {
+        durationIndex = 0
+    }
+    if (duration == '365') {
+        durationIndex = 1
+    }
+    if (duration == '180') {
+        durationIndex = 2
+    }
+    if (duration == '90') {
+        durationIndex = 3
+    }
+    if (duration == '60') {
+        durationIndex = 5
+    }
+    if (duration == '30') {
+        durationIndex = 5
+    }
+    if (duration == '7') {
+        durationIndex = 6
+    }
+    console.log('durationIndex - '+durationIndex)
+    document.getElementById('certificationDuration').selectedIndex = durationIndex
+    
+    //document.getElementById('certificationDuration').value = certificationDuration
+    document.getElementById('keyInToolCribID').checked = keyInToolCrib
+    document.getElementById('keyProviderID').checked = keyProvider
+    
     $('#machineModal').modal('show')
-    document.getElementById('newMachineDescription').focus()
+    document.getElementById('machineDescription').focus()
 }
-function saveNewMachine() {
-    machineDesc = document.getElementById('newMachineDescription').value
-    machineLocation = document.getElementById('newMachineLocation').value
-    certificationDuration = document.getElementById('newCertificationDuration').value
-    newKeyInToolCribID = document.getElementById('newKeyInToolCrib')
-    if (newKeyInToolCribID.checked==true){
+function saveMachineData() {
+    transactionType = document.getElementById('transactionType').innerHTML
+    alert('Saving ' + transactionType + ' transaction.')
+    machineDesc = document.getElementById('machineDescription').value
+    machineLocation = document.getElementById('machineLocation').value
+    certificationDuration = document.getElementById('certificationDuration').value
+    //keyInToolCribID = document.getElementById('keyInToolCribID')
+    if (keyInToolCribID.checked==true){
         keyInToolCrib = 1
     }
     else {
         keyInToolCrib = 0
     }
-    newKeyProviderID = document.getElementById('newKeyProvider')
-    if (newKeyProviderID.checked==true){
+    //keyProviderID = document.getElementById('keyProviderID')
+    if (keyProviderID.checked==true){
         keyProvider = 1
     }
     else {
         keyProvider = 0
     }
- 
-    url = window.location.origin + '/newMachine'  
-        
+    if (transactionType == 'NEW') {
+        url = window.location.origin + '/newMachine' 
+        machineID = '' 
+    }
+    else {
+        url = window.location.origin + '/editMachine' 
+
+    }
+    console.log('url - '+url)    
     let dataToSend = {
+        machineID:machineID,
         machineDesc: machineDesc,
         machineLocation: machineLocation,
         certificationDuration:certificationDuration,
-        keyInToolCrib:keyInToolCrib,
-        keyProvider:keyProvider
+        keyInToolCrib:keyInToolCribID.checked,
+        keyProvider:keyProviderID.checked
     };
     fetch(url, {
         method: "POST",
@@ -1074,27 +1130,66 @@ function saveNewMachine() {
     .then((res) => res.json())
     .then((data) => {
         if (data.status != 200) {
-            modalAlert('New machine',data.msg)
+            modalAlert('Machine save ...',data.msg)
+        }
+        else {
+            modalAlert('Machine',data.msg)
         }
         //modalAlert('New Machine',data.msg)
         $('#machineModal').modal('hide')
         window.location.href = "/index"
     })
 }
+
+
+// 
+function deleteMachine() {
+    let e = document.getElementById("machineSelected");
+    machineID = e.options[e.selectedIndex].getAttribute('data-machineID')
+    if (confirm("Are you sure you want to delete machine ID - '" + machineID + "'?") != true) {
+        return
+    }
+    url = window.location.origin + '/deleteMachine' 
+    console.log('url - '+url)    
+    let dataToSend = {
+        machineID:machineID
+    };
+    fetch(url, {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify(dataToSend),
+        cache: "no-cache",
+        headers: new Headers({
+            "content-type": "application/json"
+        })
+    })
+    .then((res) => res.json())
+    .then((data) => {
+        if (data.status != 200) {
+            modalAlert('Machine delete ...',data.msg)
+        }
+        else {
+            modalAlert('Machine',data.msg)
+        }
+        //modalAlert('New Machine',data.msg)
+        window.location.href = "/index"
+    })
+}
+
 function keyChangeTC() {
-    if (newKeyInToolCrib.checked == true) {
-        newKeyProvider.checked = false
+    if (keyInToolCribID.checked == true) {
+        keyProviderID.checked = false
     }
     else {
-        newKeyProvider.checked = true
+        keyProviderID.checked = true
     }
 }
 function keyChangeProvider() {
-    if (newKeyProvider.checked == true) {
-        newKeyInToolCrib.checked = false
+    if (keyProviderID.checked == true) {
+        keyInToolCribID.checked = false
     }
     else {
-        newKeyInToolCrib.checked = true
+        keyInToolCribID.checked = true
     }
 }
 

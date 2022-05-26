@@ -26,7 +26,7 @@
 
     <!-- VERSION SECTION -->
     <div class="version">
-        <h5 id="versionText">ver. May 17, 2022</h5>
+        <h5 id="versionText">ver. May 26, 2022</h5>
     </div>  
       
     <!-- SELECTION AREA -->
@@ -36,35 +36,31 @@
     <div class="machineSelector">
         <div class="row">
             <div class="col-1"></div>
-            <div class="col-5">
+            <div class="col-8">
                 <select 
                     id='machineSelected' 
                     class="selectpicker"
                     title='Select a machine ...' 
                     data-live-search=true 
                     data-live-search-style="contains" 
-                    data-width='250px'>
+                    data-width='375px'>
                     <option class="optMachines" value="">Select a machine ...</option>
                     {% for m in machineList %}
                         <option 
                             class="optMachineName {{m.machineLocation}}" 
                             data-machineID={{m.machineID}} 
                             data-location={{m.machineLocation}} 
+                            data-duration={{m.certificationDuration}}
+                            data-keyInToolCrib={{m.keyInToolCrib}}
+                            data-keyProvider={{m.keyProvider}}
                             value='{{m.machineDisplayName}}'>
                             {{m.machineDisplayName}}
                         </option>
                     {% endfor %}
                 </select>      
             </div>
-            <div class="col-2"></div>
-            <div class="col-2" >
-                <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#machineModal"> -->
-                <button type="'button" id='btnEditMachine' class="btn btn-secondary btn-sm" 
-                    style="display:none;margin-left:2px;margin-right:1px" onclick="showEditMachineModal()">EDIT</button>
-                <button type="'button" id='btnNewMachine' class="btn btn-primary btn-sm" style="margin-left:2px;margin-right:1px" onclick="showmachineModal()">NEW</button>
         </div>
-            <div class="col-1"></div>
-        </div>
+        
     </div>
 
     <!--List of members -->
@@ -110,7 +106,19 @@
     </div>
 
     <div id="machineDetailSection">
-        <div id="machineInstructorsAndMembers"></div>
+        <div id='machineBtns' class="row" >
+            <div class="col-3"></div>
+            <div id='machineBtnGroup' class="col-6 btn-group">
+                <button type="button" id='btnEditMachine' class="btn btn-success btn-sm" 
+                    style="display:none" onclick="showEditMachineModal()">EDIT</button>
+                <button type="button" id='btnDeleteMachine' class="btn btn-danger btn-sm" 
+                    style="display:none" onclick="deleteMachine()">DELETE</button>
+                <button type="button" id='btnNewMachine' class="btn btn-primary btn-sm" 
+                    style="display:inline-block" onclick="showNewMachineModal()">NEW</button>
+            </div>
+            <!-- <div class="col-1"></div> -->
+        </div>
+        <div id="machineInstructorsAndMembers"></div> 
     </div>
 
     <div id="memberDetailSection">
@@ -157,35 +165,36 @@
         <div class="modal-header machineModalHeader">
           <h4 class="modal-title" id="machineModalTitle"></h4>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          <div id="transactionType" style="display:none"></div>
         </div>
   
         <!-- Modal body -->
         <div class="modal-body">
             <div class="row">
-                <div class="col-4 newMachineLabel">
-                    <label for="newMachineDescription">Description</label>
+                <div class="col-4 machineLabel">
+                    <label for="machineDescription">Description</label>
                 </div>
-                <div class="col-5 newMachineData">
-                    <input type="text" id="newMachineDescription" size="30" >
+                <div class="col-5 machineData">
+                    <input type="text" id="machineDescription" size="30" >
                 </div>
             </div>
             <div class="row">
-                <div class="col-4 newMachineLabel">
-                    <label for="newMachineLocation">Location</label>
+                <div class="col-4 machineLabel">
+                    <label for="machineLocation">Location</label>
                 </div>
-                <div class="col-5 newMachineData">
-                    <select name="" id="newMachineLocation">
+                <div class="col-5 machineData">
+                    <select name="" id="machineLocation">
                         <option value="RA">Rolling Acres</option>
                         <option value="BW">Brownwood</option>
                     </select>
                 </div>
             </div>
             <div class="row">
-                <div class="col-4 newMachineLabel">
+                <div class="col-4 machineLabel">
                     <label for="newCertificationDuration">Suggested Duration</label>
                 </div>
-                <div class="col-5 newMachineData">
-                    <select name="" id="newCertificationDuration">
+                <div class="col-5 machineData">
+                    <select name="" id="certificationDuration">
                         <option value="UNL">Unlimited</option>
                         <option value="365 days">365 days</option>
                         <option value="180 days">180 days</option>
@@ -196,19 +205,19 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-4 newMachineLabel">
-                    <label for="newKeyInToolCrib">Key in tool crib</label>
+                <div class="col-4 machineLabel">
+                    <label for="keyInToolCribID">Key in tool crib</label>
                 </div>
-                <div class="col-5 newMachineData">
-                    <input type="checkbox" id="newKeyInToolCrib">
+                <div class="col-5 machineData">
+                    <input type="checkbox" id="keyInToolCribID">
                 </div>
             </div>
             <div class="row">
-                <div class="col-4 newMachineLabel">
-                    <label for="newKeyProvider">Call key provider</label>
+                <div class="col-4 machineLabel">
+                    <label for="keyProviderID">Call key provider</label>
                 </div>
-                <div class="col-5 newMachineData">
-                    <input type="checkbox" id="newKeyProvider">
+                <div class="col-5 machineData">
+                    <input type="checkbox" id="keyProviderID">
                 </div>
             </div>
         </div> 
@@ -216,7 +225,7 @@
         <!-- Modal footer -->
         <div class="modal-footer machineModalFooter">
           <button id='closemachineModal' type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
-          <button id='savemachineModal' type="button" class="btn btn-success" onclick="saveNewMachine()">Save</button>
+          <button id='savemachineModal' type="button" class="btn btn-success" onclick="saveMachineData()">Save</button>
         </div>
   
       </div>

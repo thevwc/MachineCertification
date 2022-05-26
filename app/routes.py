@@ -53,10 +53,11 @@ def index():
 
      # BUILD ARRAY OF MACHINE NAMES FOR DROPDOWN LIST OF MACHINES
     #machineNames=[]
-    sqlMachines = "SELECT machineID, machineDesc, machineLocation + ' - ' + machineDesc + ' (' + machineID + ')' as machineDisplayName, machineLocation "
+    sqlMachines = "SELECT machineID, machineDesc, machineLocation + ' - ' + machineDesc + ' (' + machineID + ')' as machineDisplayName, machineLocation, "
+    sqlMachines += "certificationDuration, keyInToolCrib, keyProvider "
     sqlMachines += "FROM MachinesRequiringCertification "
-    #sqlMachines += "WHERE machineLocation = '" + shopLocation + "' "
     sqlMachines += "ORDER BY machineLocation, machineDesc "
+    print('sqlMachines - ',sqlMachines)
 
     machineList = db.engine.execute(sqlMachines)
     if machineList == None:
@@ -125,7 +126,8 @@ def displayMachineData():
         return jsonify(msg=msg,status=400)
     machineDesc = machine.machineDesc + ' (' + machineID + ') at ' + machine.machineLocation
     machineLocation = machine.machineLocation
-    
+    certificationDuration = machine.certificationDuration
+
     # GET INSTRUCTORS FOR THIS MACHINE
         # GET INSTRUCTOR FOR THIS MACHINE
     instructorsList = []
@@ -222,7 +224,7 @@ def displayMachineData():
     msg="Success"
     status=200
     return jsonify(msg=msg,status=status,machineLocation=machineLocation,machineID=machineID,
-    machineDesc=machineDesc,instructorsList=instructorsList,certifiedDict=certifiedDict,UsageDict=usageDict)
+    machineDesc=machineDesc,certificationDuration=certificationDuration,instructorsList=instructorsList,certifiedDict=certifiedDict,UsageDict=usageDict)
 
 
 @app.route('/displayMemberData',methods=['POST'])
@@ -529,6 +531,89 @@ def prtMemberCertifications():
             memberName=memberName,villageID=villageID,\
             machinesCertifiedDict=machinesCertifiedDict)
 
+@app.route('/editMachine',methods=['GET','POST'])
+def editMachine():
+    print('... /editMachine')
+    
+    req = request.get_json()
+    machineID = req["machineID"]
+    machineDesc = req["machineDesc"]
+    machineLocation = req["machineLocation"]
+    certificationDuration = req["certificationDuration"]
+    keyInToolCrib = req["keyInToolCrib"]
+    keyProvider = req["keyProvider"]
+
+    print('machineID - ',machineID)
+    print('machineDesc -',machineDesc)
+    print('machineLocation - ',machineLocation)
+    print('certificationDuration - ',certificationDuration)
+    print('keyInToolCrib - ',type(keyInToolCrib),keyInToolCrib)
+    print('keyProvider - ',type(keyProvider),keyProvider)
+    
+    machine = db.session.query(Machines).filter(Machines.machineID == machineID).first()
+    if (machine == None):
+        return jsonify(msg="Machine not found.",status=201)
+    try:
+        machine.machineDesc = machineDesc
+        machine.machineLocation = machineLocation
+        machine.certificationDuration = certificationDuration
+        # if keyInToolCrib == 1:
+        #     machine.keyInToolCrib = True
+        # else:
+        #     machine.keyInToolCrib = False
+        machine.keyInToolCrib = keyInToolCrib
+
+        # if keyProvider == 1:
+        #     machine.keyProvider = True
+        # else:
+        #     machine.keyProvider = False
+        machine.keyProvider = keyProvider
+        
+        print('machine.certificationDuration - ',machine.certificationDuration)
+        print('machine.keyInToolCrib - ',machine.keyInToolCrib)
+        print('machine.keyProvider - ',machine.keyProvider)
+        
+        # sqlUpdate = "UPDATE machinesRequiringCertification SET "
+        # sqlUpdate += "machineDesc = '" + machineDesc + "', "
+        # sqlUpdate += "machineLocation = '" + machineLocation + "', "
+        # sqlUpdate += "certificationDuration = '" + certificationDuration + "', "
+        # sqlUpdate += "keyInToolCrib = " + str(keyInToolCrib) + ", "
+        # sqlUpdate += "keyProvider = " + str(keyProvider) 
+        # sqlUpdate += " WHERE machineID = '" + machineID + "'"
+
+        # print(sqlUpdate)
+
+    
+        #db.query.execute(sqlUpdate)
+        db.session.commit()
+        msg="Update succeeded"
+        print(msg)
+        return jsonify(msg=msg,status=200)
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        error = str(e.__dict__['orig'])
+        msg = "SQLAlchemyError - " + error
+        print(msg)
+        return jsonify(msg=msg,status=201)
+    except (DBAPIError) as e:
+        db.session.rollback()
+        error = str(e.__dict__['orig'])
+        msg = "DPAPIError - " + error
+        print(msg)
+        return jsonify(msg=msg,status=201)
+    except (IntegrityError) as e:
+        db.session.rollback()
+        error = str(e.__dict__['orig'])
+        msg = "IntegrityError - " + error
+        print(msg)
+        return jsonify(msg=msg,status=201)   
+    except:
+        db.session.rollback()
+        msg="Update failed."
+        print(msg)
+        return jsonify(msg=msg,status=201)
+#except (sqlalchemy.exc.SQLAlchemyError, sqlalchemy.exc.DBAPIError) as e:
+
 @app.route('/newMachine',methods=['GET','POST'])
 def newMachine():
     print('... /newMachine')
@@ -542,12 +627,12 @@ def newMachine():
     machineID = getNextMachineID()
     
 
-    # print('machineDesc -',machineDesc)
-    # print('machineLocation - ',machineLocation)
-    # print('certificationDuration - ',certificationDuration)
-    # print('keyInToolCrib - ',type(keyInToolCrib),keyInToolCrib)
-    # print('keyProvider - ',type(keyProvider),keyProvider)
-    # print('machineID - ',machineID)
+    print('machineDesc -',machineDesc)
+    print('machineLocation - ',machineLocation)
+    print('certificationDuration - ',certificationDuration)
+    print('keyInToolCrib - ',type(keyInToolCrib),keyInToolCrib)
+    print('keyProvider - ',type(keyProvider),keyProvider)
+    print('machineID - ',machineID)
 
     # newMachine = Machines(
     #     machineID=machineID,
@@ -605,6 +690,8 @@ def newMachine():
     #     msg='Record could not be added'
     #     return jsonify(msg=msg,status=201)
     
+
+
 def getNextMachineID():
     lastUsedID = db.session.query(func.max(Machines.machineID)).scalar() 
     strNumber = (lastUsedID[1:5])
@@ -614,6 +701,47 @@ def getNextMachineID():
     chkdigits = sum % 11 
     newMachineID = 'E' + id + f'{chkdigits:02d}'
     return newMachineID
+
+
+@app.route('/deleteMachine', methods=['GET','POST'])
+def deleteMachine():
+    req = request.get_json()
+    machineID = req["machineID"]
+    sqlDelete = "DELETE FROM machinesRequiringCertification "
+    sqlDelete += "WHERE machineID = '" + machineID + "'"
+
+    try:
+        result = db.engine.execute(sqlDelete)
+        print('result - ',result)
+        if result != 0:
+            print('success')
+            return jsonify(msg="Machine deleted.",status=200)
+        else:
+            print('failed')
+            return jsonify(msg="Delete failed.",status=201)
+    except SQLAlchemyError as e:
+        #db.session.rollback()
+        error = str(e.__dict__['orig'])
+        msg = "SQLAlchemyError - " + error
+        print(msg)
+        return jsonify(msg=msg,status=201)
+    except (DBAPIError) as e:
+        #db.session.rollback()
+        error = str(e.__dict__['orig'])
+        msg = "DPAPIError - " + error
+        print(msg)
+        return jsonify(msg=msg,status=201)
+    except (IntegrityError) as e:
+        #db.session.rollback()
+        error = str(e.__dict__['orig'])
+        msg = "IntegrityError - " + error
+        print(msg)
+        return jsonify(msg=msg,status=201)   
+    except:
+        #db.session.rollback()
+        msg="Delete failed."
+        print(msg)
+        return jsonify(msg=msg,status=201)
 
 @app.route('/updateInstructorMachineSettings',methods=['GET','POST'])
 def updateInstructorMachineSettings():

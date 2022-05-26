@@ -335,6 +335,19 @@ input:read-write {
         height:600px;
         width:100%;
     }
+    #machineDescription {
+        background-color: white;
+        color:navy;
+        margin-top:5px;
+    }
+    /* #keyInToolCrib {
+        border:1px solid red;
+        background-color: blue;
+        color:white;
+    }
+    #keyProvider {
+        border:1px solid fuchsia;
+    } */
     #instructorDetailSection {
         height:100%;
         width:100%;
@@ -453,6 +466,19 @@ input:read-write {
         overflow:auto;
         font-size: 1rem;
     }
+    #machineDescription {
+        background-color: white;
+        color:navy;
+        margin-top:5px;
+    }
+    /* #keyInToolCrib {
+        border:1px solid red;
+        background-color: blue;
+        color:white;
+    }
+    #keyProvider {
+        border:1px solid fuchsia;
+    } */
     .certifiedMemberName {
         text-align: left;
         margin-left:70px;
@@ -626,13 +652,35 @@ input:read-write {
     #machineDetailSection {
         grid-area:machineDetailArea;
         background-color: lightcoral;
-        padding-top:10px;
+        padding-top:0px;
         margin-top:0px;
         display:block;
         height:1450px;
         width:100%;
         overflow:auto;
     }
+    #machineDescription {
+        background-color: white;
+        color:green;
+        margin-top:5px;
+    }
+    #machineBtns {
+        align-content: center;
+        margin-bottom:5px;
+    }
+    /* #authorizationDuration {
+        background-color: white;
+        color:green;
+    }
+    #keyInToolCrib {
+        background-color: white;
+        color:green;
+    }
+    #keyProvider {
+        background-color: white;
+        color:green;
+    } */
+
     .usageDateAndName {
         text-align:left;
         width:400px;
