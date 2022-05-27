@@ -118,7 +118,27 @@
             </div>
             <!-- <div class="col-1"></div> -->
         </div>
-        <div id="machineInstructorsAndMembers"></div> 
+        <!-- <div id="machineDescription">
+
+        </div> -->
+        <!-- <div id="machineInfo">
+            <div class="row">
+                <div class="col-3">
+                    <div>Duration - 180 days</div>
+                </div>
+                <div class="col-7">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="keyLocation1" id="radioKeyInToolCrib" value=1>
+                        <label class="form-check-label" for="keyLocation1">Key in Tool Crib</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="keyLocation2" id="radioKeyProvider" value=2>
+                        <label class="form-check-label" for="keyLocation2">Key Provider</label>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <div id="machineInstructorsAndMembers"></div>  
     </div>
 
     <div id="memberDetailSection">
@@ -178,6 +198,7 @@
                     <input type="text" id="machineDescription" size="30" >
                 </div>
             </div>
+            <br>
             <div class="row">
                 <div class="col-4 machineLabel">
                     <label for="machineLocation">Location</label>
@@ -204,12 +225,13 @@
                     </select>
                 </div>
             </div>
+            <br>
             <div class="row">
                 <div class="col-4 machineLabel">
                     <label for="keyInToolCribID">Key in tool crib</label>
                 </div>
                 <div class="col-5 machineData">
-                    <input type="checkbox" id="keyInToolCribID">
+                    <input type="radio" id="keyInToolCribID"  name="keyLocation">
                 </div>
             </div>
             <div class="row">
@@ -217,8 +239,8 @@
                     <label for="keyProviderID">Call key provider</label>
                 </div>
                 <div class="col-5 machineData">
-                    <input type="checkbox" id="keyProviderID">
-                </div>
+                    <input type="radio" id="keyProviderID" name="keyLocation">
+                </div> 
             </div>
         </div> 
        

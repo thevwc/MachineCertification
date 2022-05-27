@@ -57,7 +57,7 @@ def index():
     sqlMachines += "certificationDuration, keyInToolCrib, keyProvider "
     sqlMachines += "FROM MachinesRequiringCertification "
     sqlMachines += "ORDER BY machineLocation, machineDesc "
-    print('sqlMachines - ',sqlMachines)
+    #print('sqlMachines - ',sqlMachines)
 
     machineList = db.engine.execute(sqlMachines)
     if machineList == None:
@@ -118,7 +118,7 @@ def displayMachineData():
 
     req = request.get_json()
     machineID = req["machineID"]
-    print('machineID - ',machineID)
+    #print('machineID - ',machineID)
 
     machine = db.session.query(Machines).filter(Machines.machineID == machineID).first()
     if machine == None:
@@ -127,7 +127,8 @@ def displayMachineData():
     machineDesc = machine.machineDesc + ' (' + machineID + ') at ' + machine.machineLocation
     machineLocation = machine.machineLocation
     certificationDuration = machine.certificationDuration
-
+    keyProvider = machine.keyProvider
+    
     # GET INSTRUCTORS FOR THIS MACHINE
         # GET INSTRUCTOR FOR THIS MACHINE
     instructorsList = []
@@ -224,7 +225,8 @@ def displayMachineData():
     msg="Success"
     status=200
     return jsonify(msg=msg,status=status,machineLocation=machineLocation,machineID=machineID,
-    machineDesc=machineDesc,certificationDuration=certificationDuration,instructorsList=instructorsList,certifiedDict=certifiedDict,UsageDict=usageDict)
+    machineDesc=machineDesc,certificationDuration=certificationDuration,instructorsList=instructorsList,\
+        certifiedDict=certifiedDict,UsageDict=usageDict,keyProvider=keyProvider)
 
 
 @app.route('/displayMemberData',methods=['POST'])
@@ -383,7 +385,7 @@ def displayMachineInstructors():
 
 @app.route('/certifyMember',methods=['GET','POST'])
 def certifyMember():
-    print('... /certifyMember')
+    #print('... /certifyMember')
     
     req = request.get_json()
     memberID = req["villageID"]
@@ -394,10 +396,10 @@ def certifyMember():
     #staffID = req["staffID"]
     todaysDate = date.today().strftime('%Y-%m-%d')
 
-    print('memberID -',memberID)
-    print('machineID - ',machineID)
+    # print('memberID -',memberID)
+    # print('machineID - ',machineID)
     #print('staffID - ',staffID)
-    print('todaysDate - ',todaysDate)
+    #print('todaysDate - ',todaysDate)
 
     mbrCert = db.session.query(MemberMachineCertifications)\
         .filter(MemberMachineCertifications.machineID == machineID)\
@@ -410,7 +412,7 @@ def certifyMember():
     # add new record
     sqlInsert = "INSERT INTO memberMachineCertifications (member_ID,dateCertified,certifiedBy,machineID,certificationDuration)"
     sqlInsert += " VALUES('" + memberID + "', '" + dateCertified + "', '" + certifiedBy + "', '" + machineID + "', '" + duration + "')"
-    print('sqlInsert - ',sqlInsert)
+    #print('sqlInsert - ',sqlInsert)
     try:
         certification = db.engine.execute(sqlInsert)
     except (SQLAlchemyError, DBAPIError) as e:
@@ -533,7 +535,7 @@ def prtMemberCertifications():
 
 @app.route('/editMachine',methods=['GET','POST'])
 def editMachine():
-    print('... /editMachine')
+    #print('... /editMachine')
     
     req = request.get_json()
     machineID = req["machineID"]
@@ -543,12 +545,12 @@ def editMachine():
     keyInToolCrib = req["keyInToolCrib"]
     keyProvider = req["keyProvider"]
 
-    print('machineID - ',machineID)
-    print('machineDesc -',machineDesc)
-    print('machineLocation - ',machineLocation)
-    print('certificationDuration - ',certificationDuration)
-    print('keyInToolCrib - ',type(keyInToolCrib),keyInToolCrib)
-    print('keyProvider - ',type(keyProvider),keyProvider)
+    # print('machineID - ',machineID)
+    # print('machineDesc -',machineDesc)
+    # print('machineLocation - ',machineLocation)
+    # print('certificationDuration - ',certificationDuration)
+    # print('keyInToolCrib - ',type(keyInToolCrib),keyInToolCrib)
+    # print('keyProvider - ',type(keyProvider),keyProvider)
     
     machine = db.session.query(Machines).filter(Machines.machineID == machineID).first()
     if (machine == None):
@@ -569,9 +571,9 @@ def editMachine():
         #     machine.keyProvider = False
         machine.keyProvider = keyProvider
         
-        print('machine.certificationDuration - ',machine.certificationDuration)
-        print('machine.keyInToolCrib - ',machine.keyInToolCrib)
-        print('machine.keyProvider - ',machine.keyProvider)
+        # print('machine.certificationDuration - ',machine.certificationDuration)
+        # print('machine.keyInToolCrib - ',machine.keyInToolCrib)
+        # print('machine.keyProvider - ',machine.keyProvider)
         
         # sqlUpdate = "UPDATE machinesRequiringCertification SET "
         # sqlUpdate += "machineDesc = '" + machineDesc + "', "

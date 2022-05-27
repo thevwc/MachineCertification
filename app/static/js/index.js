@@ -247,10 +247,21 @@ function displayMachineInstructorsAndMembers() {
         divDescription.innerHTML = data.machineDesc
         dtlParent.appendChild(divDescription)
 
-        var divDuration = document.createElement('div')
-        divDuration.innerHTML = data.certificationDuration
-        dtlParent.appendChild(divDuration)
+        // var divDuration = document.createElement('div')
+        // divDuration.innerHTML = data.certificationDuration
+        // dtlParent.appendChild(divDuration)
         
+        // var divkeyInToolCrib = document.createElement('div')
+        // var inputKeyInToolCrib = document.createElement('input')
+        // inputKeyInToolCrib.type="checkbox"
+        // console.log('data-keyProviderID - '+ data.keyProvider)
+        // if (data.keyProviderID == true) {
+        //     inputKeyInToolCrib.setattribute('checked','checked')
+        // }
+        
+        // divkeyInToolCrib.appendChild(inputKeyInToolCrib)
+        // dtlParent.appendChild(divkeyInToolCrib)
+            
         // Display Instructor heading
         var divInstructorHdg = document.createElement('div')
         divInstructorHdg.classList.add('instructorListHdg')
@@ -1031,52 +1042,92 @@ function showEditMachineModal() {
     console.log('showEditMachineModal')
     document.getElementById('transactionType').innerHTML = 'EDIT'
 
-    // GET DESCRIPTION FROM SELECTED SELECTPICKER FOR MACHINES
+    // GET DESCRIPTION et al FROM SELECTED SELECTPICKER FOR MACHINES
     let e = document.getElementById("machineSelected");
     machineID = e.options[e.selectedIndex].getAttribute('data-machineID')
     currentDesc = document.getElementById('D'+machineID).innerHTML
     position = currentDesc.indexOf("(")
     currentDesc = currentDesc.slice(0,position)
-    shopLocation = e.options[e.selectedIndex].getAttribute('data-location')
-    duration = e.options[e.selectedIndex].getAttribute('data-duration')
-    keyInToolCrib = e.options[e.selectedIndex].getAttribute('data-keyintoolcrib')
-    keyProvider = e.options[e.selectedIndex].getAttribute('data-keyprovider')
+    datashopLocation = e.options[e.selectedIndex].getAttribute('data-location')
+    dataduration = e.options[e.selectedIndex].getAttribute('data-duration')
+    datakeyintoolcrib = e.options[e.selectedIndex].getAttribute('data-keyintoolcrib')
+    datakeyprovider = e.options[e.selectedIndex].getAttribute('data-keyprovider')
 
-    console.log('data-duration - ',duration)
-    console.log('data-keyintoolcrib - ',keyInToolCrib)
-    console.log('data-keyprovider - '+ keyProvider)
+    console.log('dataduration - ',dataduration)
+    console.log('datakeyintoolcrib - ',datakeyintoolcrib)
+    console.log('datakeyprovider - '+ datakeyprovider)
 
     document.getElementById('machineModalTitle').innerHTML = 'EDIT MACHINE DATA'
     document.getElementById('machineDescription').value = currentDesc
-    document.getElementById('machineLocation').value = shopLocation
+    document.getElementById('machineLocation').value = datashopLocation
     durationIndex = 2
-    if (duration == 'UNL') {
+    if (dataduration == 'UNL') {
         durationIndex = 0
     }
-    if (duration == '365') {
+    if (dataduration == '365') {
         durationIndex = 1
     }
-    if (duration == '180') {
+    if (dataduration == '180') {
         durationIndex = 2
     }
-    if (duration == '90') {
+    if (dataduration == '90') {
         durationIndex = 3
     }
-    if (duration == '60') {
+    if (dataduration == '60') {
         durationIndex = 5
     }
-    if (duration == '30') {
+    if (dataduration == '30') {
         durationIndex = 5
     }
-    if (duration == '7') {
+    if (dataduration == '7') {
         durationIndex = 6
     }
     console.log('durationIndex - '+durationIndex)
     document.getElementById('certificationDuration').selectedIndex = durationIndex
     
     //document.getElementById('certificationDuration').value = certificationDuration
-    document.getElementById('keyInToolCribID').checked = keyInToolCrib
-    document.getElementById('keyProviderID').checked = keyProvider
+    console.log('datakeyintoolcrib status - '+ datakeyintoolcrib + typeof(datakeyintoolcrib))
+    console.log('datakeyprovider status - '+ datakeyprovider + typeof(datakeyprovider))
+    console.log('... after ... keyInToolCribID.checked - '+ keyInToolCribID.checked)
+    console.log('... after ... keyInProvider.checked - '+ keyProviderID.checked)
+    if (datakeyintoolcrib == 'True') {
+        keyInToolCribID.checked = true
+    }
+    else {
+        keyInToolCribID.checked = false 
+    }
+    if (datakeyprovider == 'True') {
+        keyProviderID.checked = true
+    }
+    else {
+        keyProviderID.checked = false 
+    }
+
+    // keyInToolCribID.checked = datakeyintoolcrib
+    //keyProviderID.checked = datakeyprovider
+    // keyInToolCribID.checked = true
+
+    // if (datakeyintoolcrib){
+    //     console.log('datakeyintoolcrib is true')
+    //     keyInToolCribID.checked = true
+    // }
+    // else {
+    //     console.log('datakeyintoolcrib is false')
+    //     keyInToolCribID.removeAttribute('checked')
+    // }
+    // console.log('... after ... keyInToolCribID.checked - '+ keyInToolCribID.checked)
+    // console.log('datakeyprovider status - '+ datakeyprovider)
+    // if (datakeyprovider){
+    //     console.log('datakeyProvider is true')
+    //     keyProviderID.checked = true
+    // }
+    // else {
+
+    //     console.log('datakeyProvider is false')
+    //     keyProviderID.removeAttribute('checked')
+    // }
+    // document.getElementById('keyInToolCribID').checked = keyInToolCrib
+    // document.getElementById('keyProviderID').checked = keyProvider
     
     $('#machineModal').modal('show')
     document.getElementById('machineDescription').focus()
@@ -1177,20 +1228,22 @@ function deleteMachine() {
 }
 
 function keyChangeTC() {
-    if (keyInToolCribID.checked == true) {
-        keyProviderID.checked = false
-    }
-    else {
-        keyProviderID.checked = true
-    }
+    console.log('... keyChangeTC')
+    // if (keyInToolCribID.checked == true) {
+    //     keyProviderID.checked = false
+    // }
+    // else {
+    //     keyProviderID.checked = true
+    // }
 }
 function keyChangeProvider() {
-    if (keyProviderID.checked == true) {
-        keyInToolCribID.checked = false
-    }
-    else {
-        keyInToolCribID.checked = true
-    }
+    console.log('... keyChangeProvider')
+    // if (keyProviderID.checked == true) {
+    //     keyInToolCribID.checked = false
+    // }
+    // else {
+    //     keyInToolCribID.checked = true
+    // }
 }
 
 // function instrMachChange() {
