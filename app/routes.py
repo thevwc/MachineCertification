@@ -839,7 +839,7 @@ def getDataForCertificationModal():
             return jsonify(msg=msg,status=201) 
         print('memberCertification - ',memberCertification.member_ID,memberCertification.machineID)
 
-        dateCertified = memberCertification.dateCertified.strftime('%Y-%m-%d')
+        dateCertifiedSTR = memberCertification.dateCertified.strftime('%Y-%m-%d')
         certificationDuration = memberCertification.certificationDuration
     
 
@@ -872,6 +872,6 @@ def getDataForCertificationModal():
             instructorsDict.append(instructorItem)
             
     return jsonify(msg='No msg',status=200,machineDesc=machineDesc,\
-        dateCertified=dateCertified,certificationDuration=certificationDuration,\
+        dateCertified=dateCertifiedSTR,certificationDuration=certificationDuration,\
         suggestedDuration=suggestedDuration,\
         instructorsDict=instructorsDict,transactionType=transactionType)    

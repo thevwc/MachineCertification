@@ -974,6 +974,9 @@ function populateMemberCertificationModal(transactionType,machineID) {
         document.getElementById('certifyMachineID').value = machineID
         document.getElementById('certifyDescription').value = data.machineDesc
         document.getElementById('certifyDateCertified').value = data.dateCertified
+        console.log('data.dateCertified - '+ data.dateCertified)
+        console.log('data.certificationDuration - '+ data.certificationDuration)
+
         durationIndex = 2
         if (data.certificationDuration == 'UNL') {
             durationIndex = 0
@@ -1014,6 +1017,10 @@ function populateMemberCertificationModal(transactionType,machineID) {
             msg += "\nYou will need to set up the instructors before you can certify any memnber."
             modalAlert("MEMBER AUTHORIZATION",msg)
             //$('#certifyMemberModal').modal('show')
+            machineID = document.getElementById('certifyMachineID').value
+            chkboxID = 'CERTIFY' + machineID
+            chkbox = document.getElementById(chkboxID)
+            chkbox.checked = false
             return
         }
         // BUILD AN OPTION LINE FOR EACH INSTRUCTOR
@@ -1338,16 +1345,26 @@ function saveCheckedBoxes(el) {
 }
 
 function cancelCertificationModal() {
+    machineID = document.getElementById('certifyMachineID').value
+    chkboxID = 'CERTIFY' + machineID
+    console.log('chkboxID - '+ chkboxID)
+
+    chkbox = document.getElementById(chkboxID)
+    chkbox.checked = false
     $('#certifyMemberModal').modal('hide')
 }
-function saveCertification() {
+function saveCertificationModal() {
     transactionType = document.getElementById('transactionType').innerHTML
+    machineID = document.getElementById('certifyMachineID').value
+    console.log('machineID - '+machineID)
     console.log('... saveCertification ...'+ transactionType)
     if (transactionType == 'NEW') {
         instructorAssigned  = document.getElementById('certificationModalInstructors')
          
 
         console.log(' new certification')
+        // check for date certified
+        // check for duration
         
     //     memberID = req["villageID"]
     // machineID = req["machineID"]
