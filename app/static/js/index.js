@@ -132,9 +132,11 @@ function filterMachineDropdown(selectedLocation) {
 function machineClicked() {
     // CLEAR OTHER SELECTIONS
     if (machineSelected.selectedIndex > 1) {
-        document.getElementById('btnEditMachine').style.display='inline-block'
-        document.getElementById('btnDeleteMachine').style.display='inline-block'
-        document.getElementById('btnNewMachine').style.display='none'
+        document.getElementById('btnEditMachine').removeAttribute('disabled')
+        document.getElementById('btnDeleteMachine').removeAttribute('disabled')
+        // document.getElementById('btnEditMachine').style.display='inline-block'
+        // document.getElementById('btnDeleteMachine').style.display='inline-block'
+        // document.getElementById('btnNewMachine').style.display='inline-block'
         $('.selectpicker').selectpicker('refresh');
         memberSelected.selectedIndex = 0
         instructorSelected.selectedIndex = 0
@@ -146,7 +148,7 @@ function machineClicked() {
     else {
         document.getElementById('btnEditMachine').style.display='none'
         document.getElementById('btnDeleteMachine').style.display='none'
-        document.getElementById('btnNewMachine').style.display='block'
+        document.getElementById('btnNewMachine').style.display='none'
         return
     }
     // HIDE MEMBER AND INSTRUCTOR SECTIONS IF NOT ON LARGE SCREEN
@@ -1008,7 +1010,10 @@ function populateMemberCertificationModal(transactionType,machineID) {
             optionLine = document.createElement("option")
             optionLine.innerHTML = "No instructors assigned."
             certificationModalInstructors.appendChild(optionLine)
-            $('#certifyMemberModal').modal('show')
+            msg = "There are currently no instructors assigned to this machine."
+            msg += "\nYou will need to set up the instructors before you can certify any memnber."
+            modalAlert("MEMBER AUTHORIZATION",msg)
+            //$('#certifyMemberModal').modal('show')
             return
         }
         // BUILD AN OPTION LINE FOR EACH INSTRUCTOR
@@ -1033,8 +1038,12 @@ function showNewMachineModal() {
     document.getElementById('transactionType').innerHTML = 'NEW'
     document.getElementById('machineModalTitle').innerHTML = 'ADD NEW MACHINE'
     document.getElementById('machineDescription').innerHTML = ''
+    document.getElementById('machineDescription').value = ''
     document.getElementById('machineLocation').value = localStorage.getItem('shopLocation')
     document.getElementById('certificationDuration').value = '180 days'
+    document.getElementById('keyInToolCribID').checked = false
+    document.getElementById('keyProviderID').checked = true
+
     $('#machineModal').modal('show')
     document.getElementById('machineDescription').focus()
 }
@@ -1189,6 +1198,8 @@ function saveMachineData() {
         //modalAlert('New Machine',data.msg)
         $('#machineModal').modal('hide')
         window.location.href = "/index"
+        window.location.reload()
+        //window.location.href = window.location.href;
     })
 }
 
@@ -1333,7 +1344,11 @@ function saveCertification() {
     transactionType = document.getElementById('transactionType').innerHTML
     console.log('... saveCertification ...'+ transactionType)
     if (transactionType == 'NEW') {
+        instructorAssigned  = document.getElementById('certificationModalInstructors')
+         
+
         console.log(' new certification')
+        
     //     memberID = req["villageID"]
     // machineID = req["machineID"]
     // certifyBy = req["certifyBy"]

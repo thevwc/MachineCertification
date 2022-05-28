@@ -635,6 +635,15 @@ def newMachine():
     print('keyInToolCrib - ',type(keyInToolCrib),keyInToolCrib)
     print('keyProvider - ',type(keyProvider),keyProvider)
     print('machineID - ',machineID)
+    if (keyInToolCrib):
+        keyInToolCribNumber = 1
+    else:
+        keyInToolCribNumber = 0
+
+    if (keyProvider):
+        keyProviderNumber = 1
+    else:
+        keyProviderNumber = 0
 
     # newMachine = Machines(
     #     machineID=machineID,
@@ -655,10 +664,10 @@ def newMachine():
     #     return jsonify(msg=msg,status=201)
 
     sqlInsert = "INSERT INTO [machinesRequiringCertification] ([machineID],[machineDesc], [machineLocation],"
-    sqlInsert += "certificationDuration,keyInToolCrib,callKeyProvider) "
+    sqlInsert += "certificationDuration,keyInToolCrib,keyProvider) "
     sqlInsert += " VALUES ('" + machineID + "', '" +  machineDesc +"', '" + machineLocation + "', '" 
-    sqlInsert += certificationDuration + "'," + str(keyInToolCrib) + "," + str(keyProvider) + ")"
-    
+    sqlInsert += certificationDuration + "'," + str(keyInToolCribNumber) + "," + str(keyProviderNumber) + ")"
+    print('sqlInsert - ',sqlInsert)
     try:
         result = db.engine.execute(sqlInsert)
         if result != 0:
