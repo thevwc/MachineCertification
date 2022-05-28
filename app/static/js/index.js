@@ -881,70 +881,71 @@ function editMemberCertification(e) {
     populateMemberCertificationModal("EDIT",machineID)
 }
 
-function old(){
-    let dataToSend = {
-        //staffID: staffID,
-        villageID: villageID,
-        machineID: machineID
-    };
-    fetch(url, {
-        method: "POST",
-        credentials: "include",
-        body: JSON.stringify(dataToSend),
-        cache: "no-cache",
-        headers: new Headers({
-            "content-type": "application/json"
-        })
-    })
-    .then((res) => res.json())
-    .then((data) => {
-        if (data.status != 200) {
-            modalAlert('Machine Authorization',data.msg)
-            return
-        }
-    // POPULATE certifyMemberModal WITH INSTRUCTORS
-        //document.getElementById('certifyMachineID').innerHTML = machineID
-        document.getElementById('certifyMachineID').value = machineID
-        var descID = 'Desc' + machineID
-        document.getElementById('certifyDescription').value = machineID
-        document.getElementById('certifyDescription').value = document.getElementById(descID).innerHTML
-        document.getElementById('certifyDateCertified').value = data.todaysDisplayDate
-        var certificationModalInstructors = document.getElementById('certificationModalInstructors')
-        while (certificationModalInstructors.firstChild) {
-            certificationModalInstructors.removeChild(certificationModalInstructors.lastChild);
-        }
-        instructors = data.instructorsDict
-        // IF NO INSTRUCTORS ASSIGNED BUILD OPTION LINE WITH MSG
-        if (instructors.length == 0){
-            optionLine = document.createElement("option")
-            optionLine.innerHTML = "No instructors assigned."
-            certificationModalInstructors.appendChild(optionLine)
-            $('#certifyMemberModal').modal('show')
-            return
-        }
-        // BUILD AN OPTION LINE FOR EACH INSTRUCTOR
-        for (var element of instructors) {
-            var optionLine = document.createElement('option')
-            optionLine.innerHTML = element.instructorName
-            optionLine.value = element.instructorID
-            certificationModalInstructors.appendChild(optionLine)
-        }
-        $('#certifyMemberModal').modal('show')
-    return
-    })
-}
+// function old(){
+//     let dataToSend = {
+//         //staffID: staffID,
+//         villageID: villageID,
+//         machineID: machineID
+//     };
+//     fetch(url, {
+//         method: "POST",
+//         credentials: "include",
+//         body: JSON.stringify(dataToSend),
+//         cache: "no-cache",
+//         headers: new Headers({
+//             "content-type": "application/json"
+//         })
+//     })
+//     .then((res) => res.json())
+//     .then((data) => {
+//         if (data.status != 200) {
+//             modalAlert('Machine Authorization',data.msg)
+//             return
+//         }
+//     // POPULATE certifyMemberModal WITH INSTRUCTORS
+//         //document.getElementById('certifyMachineID').innerHTML = machineID
+//         document.getElementById('certifyMachineID').value = machineID
+//         var descID = 'Desc' + machineID
+//         document.getElementById('certifyDescription').value = machineID
+//         document.getElementById('certifyDescription').value = document.getElementById(descID).innerHTML
+//         document.getElementById('certifyDateCertified').value = data.todaysDisplayDate
+//         var certificationModalInstructors = document.getElementById('certificationModalInstructors')
+//         while (certificationModalInstructors.firstChild) {
+//             certificationModalInstructors.removeChild(certificationModalInstructors.lastChild);
+//         }
+//         instructors = data.instructorsDict
+//         // IF NO INSTRUCTORS ASSIGNED BUILD OPTION LINE WITH MSG
+//         if (instructors.length == 0){
+//             optionLine = document.createElement("option")
+//             optionLine.innerHTML = "No instructors assigned."
+//             optionLine.value = ''
+//             certificationModalInstructors.appendChild(optionLine)
+//             $('#certifyMemberModal').modal('show')
+//             return
+//         }
+//         // BUILD AN OPTION LINE FOR EACH INSTRUCTOR
+//         for (var element of instructors) {
+//             var optionLine = document.createElement('option')
+//             optionLine.innerHTML = element.instructorName
+//             optionLine.value = element.instructorID
+//             certificationModalInstructors.appendChild(optionLine)
+//         }
+//         $('#certifyMemberModal').modal('show')
+//     return
+//     })
+// }
 
 // CALL ROUTINE TO GET LIST OF INSTRUCTORS FOR THIS MACHINE AND TO SHOW THE MODAL 'certifyMemberModal'
 // POPULATE MACHINE ID, DESCRIPTION, DATE CERTIFIED, SET DURATION TO DEFAULT FOR THIS MACHINE
-function populateMemberCertificationModal(transactionType,machineID) {
+function populateMemberCertificationModal(certifyTransactionType,machineID) {
     villageID = sessionStorage.getItem('villageID')
-    if (transactionType == 'NEW') {
+    if (certifyTransactionType == 'NEW') {
         document.getElementById('deleteAuthorizationModal').style.display="none"
-        document.getElementById('transactionType').innerHTML='NEW'
+        document.getElementById('certifyTransactionType').innerHTML='NEW'
     }
     else {
         document.getElementById('deleteAuthorizationModal').style.display="block"
-        document.getElementById('transactionType').innerHTML='EDIT'
+        document.getElementById('certifyTransactionType').innerHTML='EDIT'
     }
 
     url = window.location.origin + '/getDataForCertificationModal'
@@ -953,7 +954,7 @@ function populateMemberCertificationModal(transactionType,machineID) {
     let dataToSend = {
         villageID: villageID,
         machineID: machineID,
-        transactionType,transactionType
+        certifyTransactionType,certifyTransactionType
     };
     fetch(url, {
         method: "POST",
@@ -999,6 +1000,11 @@ function populateMemberCertificationModal(transactionType,machineID) {
         if (data.certificationDuration == '7 days') {
             durationIndex = 6
         }
+        // console.log('durationIndex - '+durationIndex)
+        // certificationDuration = document.getElementById('certificationDuration')
+        // console.log('current selected index - '+ certificationDuration.selectedIndex)
+        // certificationDuration.selectedIndex = durationIndex
+        // console.log('new selected index - '+ certificationDuration.selectedIndex)
         document.getElementById('certificationDuration').selectedIndex = durationIndex
         
 
@@ -1042,7 +1048,7 @@ function prtMemberCertifications(memberID) {
 }   
 
 function showNewMachineModal() {
-    document.getElementById('transactionType').innerHTML = 'NEW'
+    document.getElementById('machineTransactionType').innerHTML = 'NEW'
     document.getElementById('machineModalTitle').innerHTML = 'ADD NEW MACHINE'
     document.getElementById('machineDescription').innerHTML = ''
     document.getElementById('machineDescription').value = ''
@@ -1056,7 +1062,7 @@ function showNewMachineModal() {
 }
 function showEditMachineModal() {
     console.log('showEditMachineModal')
-    document.getElementById('transactionType').innerHTML = 'EDIT'
+    document.getElementById('machineTransactionType').innerHTML = 'EDIT'
 
     // GET DESCRIPTION et al FROM SELECTED SELECTPICKER FOR MACHINES
     let e = document.getElementById("machineSelected");
@@ -1149,8 +1155,8 @@ function showEditMachineModal() {
     document.getElementById('machineDescription').focus()
 }
 function saveMachineData() {
-    transactionType = document.getElementById('transactionType').innerHTML
-    alert('Saving ' + transactionType + ' transaction.')
+    machineTransactionType = document.getElementById('machineTransactionType').innerHTML
+    alert('Saving ' + machineTransactionType + ' transaction.')
     machineDesc = document.getElementById('machineDescription').value
     machineLocation = document.getElementById('machineLocation').value
     certificationDuration = document.getElementById('certificationDuration').value
@@ -1168,7 +1174,7 @@ function saveMachineData() {
     else {
         keyProvider = 0
     }
-    if (transactionType == 'NEW') {
+    if (machineTransactionType == 'NEW') {
         url = window.location.origin + '/newMachine' 
         machineID = '' 
     }
@@ -1354,28 +1360,43 @@ function cancelCertificationModal() {
     $('#certifyMemberModal').modal('hide')
 }
 function saveCertificationModal() {
-    transactionType = document.getElementById('transactionType').innerHTML
+    certifyTransactionType = document.getElementById('certifyTransactionType').innerHTML
+    memberID = memberSelected.options[memberSelected.selectedIndex].getAttribute('data-villageid')
     machineID = document.getElementById('certifyMachineID').value
-    console.log('machineID - '+machineID)
-    console.log('... saveCertification ...'+ transactionType)
-    if (transactionType == 'NEW') {
-        instructorAssigned  = document.getElementById('certificationModalInstructors')
-         
+    dateCertified = document.getElementById('certifyDateCertified').value
+    duration = document.getElementById('certificationDuration').value
+    instructorElement  = document.getElementById('certificationModalInstructors')
+    instructorAssigned = instructorElement.options[instructorElement.selectedIndex].value
 
-        console.log(' new certification')
-        // check for date certified
-        // check for duration
-        
-    //     memberID = req["villageID"]
-    // machineID = req["machineID"]
-    // certifyBy = req["certifyBy"]
-    // duration = req["duration"]
-    // dateCertified = req["dateCertified"]
-    }
-    else {
-        console.log(' save changes to existing certification')
-    }
-
-    //call certify or call save edit ?
+    console.log('member - '+ memberID)
+    console.log('machine - '+ machineID)
+    console.log('duration - '+ duration)
+    console.log('instructor - '+instructorAssigned.value)
+    let dataToSend = {
+        memberID: memberID,
+        machineID: machineID,
+        dateCertified:dateCertified,
+        duration:duration,
+        certifiedBy:instructorAssigned
+    };
+    fetch(`${window.origin}/certifyMember`, {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify(dataToSend),
+        cache: "no-cache",
+        headers: new Headers({
+            "content-type": "application/json"
+        })
+    })
+    .then((res) => res.json())
+    .then((data) => {
+        if (data.status != 200) {
+            modalAlert('MEMBER CERTIFICATION',data.msg)
+            $('#certifyMemberModal').modal('hide')
+            return
+        }
+        modalAlert('MEMBER CERTIFICATION',data.msg)
+        $('#certifyMemberModal').modal('hide')
+    })
 }
 // END OF FUNCTIONS

@@ -388,9 +388,9 @@ def certifyMember():
     #print('... /certifyMember')
     
     req = request.get_json()
-    memberID = req["villageID"]
+    memberID = req["memberID"]
     machineID = req["machineID"]
-    certifyBy = req["certifyBy"]
+    certifiedBy = req["certifiedBy"]
     duration = req["duration"]
     dateCertified = req["dateCertified"]
     #staffID = req["staffID"]
@@ -860,15 +860,19 @@ def getDataForCertificationModal():
             'machineID': '',
             'instructorName': "No instructors assigned.",
             'todaysDate':todaysDate,
-            'defaultDuration':defaultDuration
+            'defaultDuration':defaultDuration,
+            'instructorID':''
         }
+        
         instructorsDict.append(instructorItem)
     else:
         for i in instructors:
             instructorItem = {
                 'machineID': i.machineID,
-                'instructorName': i.LFN_Name
+                'instructorName': i.LFN_Name,
+                'instructorID':i.villageID
             }
+            print('instructor - ',instructorItem)
             instructorsDict.append(instructorItem)
             
     return jsonify(msg='No msg',status=200,machineDesc=machineDesc,\

@@ -185,7 +185,7 @@
         <div class="modal-header machineModalHeader">
           <h4 class="modal-title" id="machineModalTitle"></h4>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-          <div id="transactionType" style="display:none"></div>
+          <div id="machineTransactionType" style="display:none"></div>
         </div>
   
         <!-- Modal body -->
@@ -215,7 +215,7 @@
                     <label for="newCertificationDuration">Suggested Duration</label>
                 </div>
                 <div class="col-5 machineData">
-                    <select name="" id="certificationDuration">
+                    <select name="" id="stdDuration">
                         <option value="UNL">Unlimited</option>
                         <option value="365 days">365 days</option>
                         <option value="180 days">180 days</option>
@@ -324,7 +324,7 @@
        
         <!-- Modal footer -->
         <div class="modal-footer certifyMemberModalFooter">
-            <div id="transactionType" style="display:none"></div>
+            <div id="certifyTransactionType" style="display:block"></div>
             <button id='closecertifyMemberModal' type="button" class="btn btn-primary" onclick='cancelCertificationModal()' data-bs-dismiss="modal">Cancel</button>
             <button id='savecertifyMemberModal' type="button" class="btn btn-success" onclick="saveCertificationModal()">Save</button>
           <!-- reconsider how to decertify or delete a memberMachineCertifications record; when unchecked? via EDIT? -->
