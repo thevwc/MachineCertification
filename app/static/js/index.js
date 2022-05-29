@@ -1,5 +1,13 @@
 // index.js
+var colorWellMachineBG;
+var defaultColorMachineBG = "#0000ff";
 
+window.addEventListener("load", startup, false);
+
+// if (!localStorage.getItem('machineBGcolor')){
+//     localStorage.setItem('machineBGcolor','#f08080' )
+// }
+// const machineBGcolorInput =localStorage.machineBGcolor
 
 // CONSTANTS
 const shopChoice = document.querySelector('.shopChoice')
@@ -63,8 +71,34 @@ handleMediaChange(largeScreen)
 // END OF PAGE LOAD ROUTINES
 // -------------
 // FUNCTIONS
+function startup() {
+    defaultColor = '#f08080'
+    colorWellMachineBG = document.querySelector("#colorWellMachineBG");
+    colorWellMachineBG.value = defaultColor;
+    colorWellMachineBG.addEventListener("input", updateFirst, false);
+    colorWellMachineBG.addEventListener("change", updateAll, false);
+    colorWellMachineBG.select();
+  }
+  
+function updateFirst(event) {
+    var p = document.querySelector("p");
 
+    if (p) {
+        p.style.color = event.target.value;
+    }
+    document.getElementById('machineDetailSection').style.backgroundColor = event.target.value 
+}
 
+function updateAll(event) {
+    console.log('event.target.value - '+event.target.value)
+    document.getElementById('machineDetailSection').style.backgroundColor = event.target.value 
+    // document.querySelectorAll("p").forEach(function(p) {
+    //   p.style.color = event.target.value;
+    //});
+  }
+  
+
+  
 // SHOW/HIDE MACHINE LIST OPTIONS BASED ON LOCATION SELECTION
 function locationListClicked() {
     console.log('.. locationListClicked ..')
@@ -1500,4 +1534,8 @@ function deCertifyMember() {
     })
 }
 
+function chgMachineBG() {
+    document.getElementById('machineDetailSection').style.backgroundColor=this.value
+    alert('new color')
+}
 // END OF FUNCTIONS
