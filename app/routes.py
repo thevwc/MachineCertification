@@ -388,6 +388,7 @@ def certifyMember():
     #print('... /certifyMember')
     
     req = request.get_json()
+    transactionType = req["certifyTransactionType"]
     memberID = req["memberID"]
     machineID = req["machineID"]
     certifiedBy = req["certifiedBy"]
@@ -401,25 +402,40 @@ def certifyMember():
     #print('staffID - ',staffID)
     #print('todaysDate - ',todaysDate)
 
-    mbrCert = db.session.query(MemberMachineCertifications)\
-        .filter(MemberMachineCertifications.machineID == machineID)\
-        .filter(MemberMachineCertifications.member_ID == memberID).first()
-    if (mbrCert != None):
-        msg="Already certified."
-        return jsonify(msg=msg,status=201)
-    
-    
-    # add new record
-    sqlInsert = "INSERT INTO memberMachineCertifications (member_ID,dateCertified,certifiedBy,machineID,certificationDuration)"
-    sqlInsert += " VALUES('" + memberID + "', '" + dateCertified + "', '" + certifiedBy + "', '" + machineID + "', '" + duration + "')"
-    #print('sqlInsert - ',sqlInsert)
-    try:
-        certification = db.engine.execute(sqlInsert)
-    except (SQLAlchemyError, DBAPIError) as e:
-        print("ERROR -",e)
-        flash("ERROR - DB error")
-        msg='Record could not be inserted'
-        return jsonify(msg=msg,status=201)
+    # GET THE MEMBERS CURRENT CERTIFICATION RECORD
+    if (transactionType == 'EDIT'):
+        mbrCert = db.session.query(MemberMachineCertifications)\
+            .filter(MemberMachineCertifications.machineID == machineID)\
+            .filter(MemberMachineCertifications.member_ID == memberID).first()
+        if (mbrCert == None):
+            msg="Record not found"
+            return jsonify(msg=msg,status=201)
+        mbrCert.certificationDuration = duration
+        mbrCert.certifiedBy = certifiedBy
+        mbrCert.dateCertified = dateCertified
+        try:
+            db.session.commit()
+            msg="Record updated"
+            return jsonify(msg=msg,status=200)
+        except:
+            msg="Could not save changes"
+            return jsonify(msg=msg,status=201)
+
+    if (transactionType == 'NEW'):
+        # CREATE NEW RECORD
+        sqlInsert = "INSERT INTO memberMachineCertifications (member_ID,dateCertified,certifiedBy,machineID,certificationDuration)"
+        sqlInsert += " VALUES('" + memberID + "', '" + dateCertified + "', '" + certifiedBy + "', '" + machineID + "', '" + duration + "')"
+        #print('sqlInsert - ',sqlInsert)
+        try:
+            certification = db.engine.execute(sqlInsert)
+            msg="Record updated."
+            return jsonify(msg=msg,status=200)
+        except (SQLAlchemyError, DBAPIError) as e:
+            print("ERROR -",e)
+            flash("ERROR - DB error")
+            msg='Record could not be inserted'
+            return jsonify(msg=msg,status=201)
+
     # sp = "EXEC newMemberMachineCertification '" + memberID + "', '" + todaysDate + "', '" + machineID + "', '" + staffID + "'"
     # print('sp - ',sp)
     # try:
@@ -432,8 +448,8 @@ def certifyMember():
     #     msg='Record could not be inserted'
     #     return jsonify(msg=msg,status=201)
     
-    msg='Success'
-    return jsonify(msg=msg,status=200)
+    # msg='Success'
+    # return jsonify(msg=msg,status=200)
 
 @app.route('/deCertifyMember',methods=['GET','POST'])
 def deCertifyMember():
@@ -803,7 +819,7 @@ def getDataForCertificationModal():
     req = request.get_json()
     machineID = req["machineID"]
     villageID = req["villageID"]
-    transactionType = req["transactionType"]
+    transactionType = req["certifyTransactionType"]
     print('machineID - |'+machineID+"|")
     # GET DATA COMMON TO BOTH 'NEW' AND 'EDIT'
     # sqlSelect = "SELECT top 1 * FROM machinesRequiringCertification WHERE machineID = '" + machineID + "'"

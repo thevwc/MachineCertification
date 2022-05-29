@@ -55,7 +55,7 @@ filterMachineDropdown(shopChoice.value)
 
 // SET VERSION OF APP AND CURRENT SCREEN SIZE (FOR DEVELOPMENT PURPOSES)
 versionText = document.getElementById('versionText')
-versionText.innerHTML='ver May 18, 2022  (' + screen.width + ')'
+versionText.innerHTML='ver May 28, 2022  (' + screen.width + ')'
 
 // IF NOT A LARGE SCREEN DISPLAY ONLY 1 PANEL AT A TIME INSTEAD OF ALL 3
 handleMediaChange(largeScreen)
@@ -559,6 +559,13 @@ function displayMemberCertifications(villageID,location) {
         // ADD THE ROW TO THE DETAIL SECTION
         memberMachinesParent.appendChild(divRow)
     }
+
+    var clrMemberBtn = document.createElement('button')
+    clrMemberBtn.innerHTML = 'CLEAR'
+    clrMemberBtn.style.marginRight='5px'
+    clrMemberBtn.onclick=function() {clrMemberData(m['machineID'])}
+    memberMachinesParent.appendChild(clrMemberBtn)
+
     var prtMemberBtn = document.createElement('button')
     prtMemberBtn.innerHTML = 'PRINT'
     prtMemberBtn.onclick=function() {prtMemberCertifications(m['machineID'])}
@@ -1373,6 +1380,7 @@ function saveCertificationModal() {
     console.log('duration - '+ duration)
     console.log('instructor - '+instructorAssigned.value)
     let dataToSend = {
+        certifyTransactionType: certifyTransactionType,
         memberID: memberID,
         machineID: machineID,
         dateCertified:dateCertified,
@@ -1397,6 +1405,19 @@ function saveCertificationModal() {
         }
         modalAlert('MEMBER CERTIFICATION',data.msg)
         $('#certifyMemberModal').modal('hide')
+        memberClicked()
     })
+}
+function clrMemberData() {
+    // Clear previous member data
+    memberData = document.getElementById('memberData')
+    while (memberData.firstChild) {
+        memberData.removeChild(memberData.lastChild)
+    }
+    var memberMachinesParent = document.getElementById('memberMachines')
+    while (memberMachinesParent.firstChild) {
+        memberMachinesParent.removeChild(memberMachinesParent.lastChild);
+    }
+    memberSelected.selectedIndex = 0
 }
 // END OF FUNCTIONS
