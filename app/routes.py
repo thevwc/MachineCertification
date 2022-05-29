@@ -456,9 +456,8 @@ def deCertifyMember():
     #print('... /deCertifyMember')
     
     req = request.get_json()
-    memberID = req["villageID"]
+    memberID = req["memberID"]
     machineID = req["machineID"]
-    staffID = req["staffID"]
     
     # print('memberID - ',memberID)
     # print('machineID - ',machineID)
@@ -469,21 +468,13 @@ def deCertifyMember():
     #print('sqlDelete - ',sqlDelete)
     try:
         certification = db.engine.execute(sqlDelete)
+        msg="Authorization removed."
+        return jsonify(msg=msg,status=200)
     except (SQLAlchemyError, DBAPIError) as e:
         print("ERROR -",e)
         flash("ERROR - DB error")
         msg='Record could not be deleted'
         return jsonify(msg=msg,status=201)
-    # mbrCert = db.session.query(MemberMachineCertifications)\
-    #     .filter(MemberMachineCertifications.machineID == machineID)\
-    #     .filter(MemberMachineCertifications.memberID == memberID).first()
-    # if (mbrCert != None):
-    #     msg="Already certified."
-    #     return jsonify(msg=msg,status=200)
-    
-    # add new record
-    msg='Success'
-    return jsonify(msg=msg,status=200)
     
 @app.route('/prtMemberCertifications')
 def prtMemberCertifications():
@@ -520,6 +511,8 @@ def prtMemberCertifications():
             'machineLocation': '',
             'dateCertified': ''
         }
+        print('machinesCertifiedItem - ',machinesCertifiedItem)
+
         machinesCertifiedDict.append(machineItem)
         return render_template("memberCerts.html",todaysDate=todaysDate,\
             memberName=memberName,villageID=villageID,\
@@ -530,9 +523,15 @@ def prtMemberCertifications():
     # order by machineLocation, machineDesc
     
     for mc in machinesCertified:
+        print('mc.machineID - ',mc.machineID)
+
         machineID = mc.machineID
         # Look up specific machine to get description and location
         machine = db.session.query(Machines).filter(Machines.machineID == machineID).first()
+        if (machine == None):
+            msg="Missing machine record."
+            return jsonify(msg=msg,status=201)
+        
         dateCertified=mc.dateCertified.strftime('%m-%d-%Y')
         # print('machineID - ',machineID)
         # print('dateCertified - ',dateCertified)
@@ -888,7 +887,6 @@ def getDataForCertificationModal():
                 'instructorName': i.LFN_Name,
                 'instructorID':i.villageID
             }
-            print('instructor - ',instructorItem)
             instructorsDict.append(instructorItem)
             
     return jsonify(msg='No msg',status=200,machineDesc=machineDesc,\

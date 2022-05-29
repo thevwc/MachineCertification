@@ -560,23 +560,23 @@ function displayMemberCertifications(villageID,location) {
         memberMachinesParent.appendChild(divRow)
     }
 
-    var clrMemberBtn = document.createElement('button')
-    clrMemberBtn.innerHTML = 'CLEAR'
-    clrMemberBtn.style.marginRight='5px'
-    clrMemberBtn.onclick=function() {clrMemberData(m['machineID'])}
-    memberMachinesParent.appendChild(clrMemberBtn)
+    // var clrMemberBtn = document.createElement('button')
+    // clrMemberBtn.innerHTML = 'CLEAR'
+    // clrMemberBtn.style.marginRight='5px'
+    // clrMemberBtn.onclick=function() {clrMemberData(m['machineID'])}
+    // memberMachinesParent.appendChild(clrMemberBtn)
 
-    var prtMemberBtn = document.createElement('button')
-    prtMemberBtn.innerHTML = 'PRINT'
-    prtMemberBtn.onclick=function() {prtMemberCertifications(m['machineID'])}
-    memberMachinesParent.appendChild(prtMemberBtn)
+    // var prtMemberBtn = document.createElement('button')
+    // prtMemberBtn.innerHTML = 'PRINT'
+    // prtMemberBtn.onclick=function() {prtMemberCertifications(m['machineID'])}
+    // memberMachinesParent.appendChild(prtMemberBtn)
     return
     })
 }
 
-function prtMemberCertifications (machineID) {
-    alert('... prtMemberCertifications - '+ machineID)
-}
+// function prtMemberCertifications (machineID) {
+//     alert('... layout to be defined ...')
+// }
 
 function modalAlert(title,msg) {
 	document.getElementById("modalTitle").innerHTML = title
@@ -801,7 +801,7 @@ function displayMachineInstructorData() {
 
             // Machine Description
             var divColMachineDesc = document.createElement('div')
-            divColMachineDesc.classList.add('col-5')
+            divColMachineDesc.classList.add('col-6')
             divColMachineDesc.classList.add('clsMachineDesc')
             divColMachineDesc.innerHTML = m['machineDesc']
             divColMachineDesc.style.textAlign='left'
@@ -1048,9 +1048,13 @@ function populateMemberCertificationModal(certifyTransactionType,machineID) {
     })
 }
 
-function prtMemberCertifications(memberID) {
-    villageID = sessionStorage.getItem('villageID')
-    url = '/prtMemberCertifications?villageID='+villageID
+function prtMemberCertifications() {
+    if (memberSelected.selectedIndex == 0) {
+        modalAlert('PRINT CERTIFICATIONS',"A member has not been selected.")
+        return
+    }
+    memberID = memberSelected.options[memberSelected.selectedIndex].getAttribute('data-villageid')
+    url = '/prtMemberCertifications?villageID='+memberID
     window.location.href=url
 }   
 
@@ -1298,8 +1302,8 @@ function saveCheckedBoxes(el) {
     machineID = el.id.substring(1,8)
     
     // GET canCertify STATUS
-    certifyID = 'C' +  machineID
-    if (document.getElementById(certifyID).checked) {
+    canCertifyID = 'C' +  machineID
+    if (document.getElementById(canCertifyID).checked) {
         canCertify = 1
     }
     else {
@@ -1307,8 +1311,8 @@ function saveCheckedBoxes(el) {
     }
 
     // GET canAssist STATUS
-    assistID = 'A' +  machineID
-    if (document.getElementById(assistID).checked) {
+    canAssistID = 'A' +  machineID
+    if (document.getElementById(canAssistID).checked) {
         canAssist = 1
     }
     else {
@@ -1316,8 +1320,8 @@ function saveCheckedBoxes(el) {
     }
 
     // GET keyProvider STATUS
-    keyProviderID = 'K' +  machineID
-    if (document.getElementById(keyProviderID).checked) {
+    hasKeyID = 'K' +  machineID
+    if (document.getElementById(hasKeyID).checked) {
         keyProvider = 1
     }
     else {
@@ -1408,7 +1412,27 @@ function saveCertificationModal() {
         memberClicked()
     })
 }
+
+function clrMachineData() {
+    if (machineSelected.selectedIndex == 0) {
+        modalAlert('CLEAR MACHINE DATA',"Nothing to clear.")
+        return
+    }
+    // Clear previous machine data
+    machineData = document.getElementById('machineInstructorsAndMembers')
+    while (machineData.firstChild) {
+        machineData.removeChild(machineData.lastChild)
+    }
+    machineSelected.selectedIndex = 0
+    $('.selectpicker').selectpicker('refresh');
+
+}
+
 function clrMemberData() {
+    if (memberSelected.selectedIndex == 0) {
+        modalAlert('CLEAR MEMBER DATA',"Nothing to clear.")
+        return
+    }
     // Clear previous member data
     memberData = document.getElementById('memberData')
     while (memberData.firstChild) {
@@ -1419,5 +1443,61 @@ function clrMemberData() {
         memberMachinesParent.removeChild(memberMachinesParent.lastChild);
     }
     memberSelected.selectedIndex = 0
+    $('.selectpicker').selectpicker('refresh');
+
 }
+
+function clrInstructorData() {
+    if (instructorSelected.selectedIndex == 0) {
+        modalAlert('CLEAR INSTRUCTOR DATA',"Nothing to clear.")
+        return
+    }
+    // Clear previous member data
+    dtlParent = document.getElementById('instructorData')
+        while (dtlParent.firstChild) {
+            dtlParent.removeChild(dtlParent.lastChild);
+        }
+
+    // Clear previous data from 'instructorMachines' div
+    var instructorMachinesParent = document.getElementById('instructorMachines')
+    while (instructorMachinesParent.firstChild) {
+        instructorMachinesParent.removeChild(instructorMachinesParent.lastChild);
+    }
+
+    instructorSelected.selectedIndex = 0
+    $('.selectpicker').selectpicker('refresh');
+
+}
+
+function deCertifyMember() {
+    memberID = memberSelected.options[memberSelected.selectedIndex].getAttribute('data-villageid')
+    machineID = document.getElementById('certifyMachineID').value
+    confirmed = confirm('Are you sure you want to remove this authorization?')
+    if (!confirmed) {
+        return
+    }
+    let dataToSend = {
+        memberID: memberID,
+        machineID: machineID
+    };
+    fetch(`${window.origin}/deCertifyMember`, {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify(dataToSend),
+        cache: "no-cache",
+        headers: new Headers({
+            "content-type": "application/json"
+        })
+    })
+    .then((res) => res.json())
+    .then((data) => {
+        if (data.status != 200) {
+            modalAlert('MEMBER CERTIFICATION',data.msg)
+            return
+        }
+        modalAlert('MEMBER CERTIFICATION',data.msg)
+        memberClicked()
+    })
+}
+
 // END OF FUNCTIONS

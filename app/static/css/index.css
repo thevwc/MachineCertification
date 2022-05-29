@@ -3,6 +3,9 @@
     --main-txt-color: white;  
     --main-padding: 10px;  
     --main-body-bg-color: lightgray;
+    --machine-bg-color:lightcoral;
+    --member-bg-color:lightblue;
+    --instructor-bg-color:lightgreen;
   }
 input:read-only {
     /* background-color: #ccc; */
@@ -223,6 +226,7 @@ input:read-write {
         text-align:center;
     }
     #footer {
+        align-items: center;
         grid-area: footerArea;
         background-color: navy;
     }
@@ -251,7 +255,8 @@ input:read-write {
                              "footerArea";  
         gap:0px;
         margin:0 0; 
-        background-color: lightcoral;
+        background-color:var(--machine-bg-color);
+        /* background-color: lightcoral; */
         overflow-y: hidden;
         
     }
@@ -410,6 +415,7 @@ input:read-write {
     .machineSelector {
         grid-area:machineSelectorArea;
         background-color: lightcoral;
+        background-color:var(--machine-bg-color);
         padding-top:5px;
         padding-bottom:0px;
         margin:0;
@@ -458,6 +464,7 @@ input:read-write {
     #machineDetailSection {
         grid-area:machineDetailArea;
         background-color: lightcoral;
+        background-color:var(--machine-bg-color);
         padding-top:10px;
         margin-top:0px;
         display:block;
@@ -557,11 +564,11 @@ input:read-write {
         height: 780px;
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
-        grid-template-rows: 50px 50px 665px 20px;
+        grid-template-rows: 50px 50px 650px 40px;
         grid-template-areas:"hdgArea locationArea versionArea"
                             "machineSelectorArea memberSelectorArea instructorSelectorArea" 
                             "machineDetailArea memberDetailArea instructorDetailArea"
-                            "footerArea footerArea footerArea";
+                            "machineFooterArea memberFooterArea instructorFooterArea";
         gap:0px;
         background-color:lightgray;
         top:0; bottom:0; left:0; right:0;
@@ -602,6 +609,7 @@ input:read-write {
     .machineSelector {
         grid-area:machineSelectorArea;
         background-color: lightcoral;
+        background-color:var(--machine-bg-color);
         padding-top:5px;
         padding-bottom:0px;
         margin:0;
@@ -652,6 +660,7 @@ input:read-write {
     #machineDetailSection {
         grid-area:machineDetailArea;
         background-color: lightcoral;
+        background-color:var(--machine-bg-color);
         padding-top:0px;
         margin-top:0px;
         display:block;
@@ -763,8 +772,21 @@ input:read-write {
         margin-left: 10px;
         font-size: 1rem;
     }
-    #footer {
-        grid-area: footerArea;
+    #machineFooter {
+        grid-area: machineFooterArea;
+        text-align: center;
+        color:white;
+        background-color: navy
+    }
+    #memberFooter {
+        text-align: center;
+        grid-area: memberFooterArea;
+        color:white;
+        background-color: navy
+    }
+    #instructorFooter {
+        text-align: center;
+        grid-area: instructorFooterArea;
         color:white;
         background-color: navy
     }
@@ -781,7 +803,7 @@ input:read-write {
         grid-template-areas:"hdgArea hdgArea hdgArea versionArea"
                             "locationSelectorArea machineSelectorArea memberSelectorArea instructorSelectorArea" 
                             ".machineDetailArea memberDetailArea instructorDetailArea"
-                            "footerArea footerArea footerArea footerArea";
+                            "footerArea machineFooterArea memberFooterArea instructorFooterArea";
         gap:0px;
         background-color:lightgray;
         top:0; bottom:0; left:0; right:0;
@@ -819,6 +841,7 @@ input:read-write {
     .machineSelector {
         grid-area:machineSelectorArea;
         background-color: lightcoral;
+        background-color:var(--machine-bg-color);
         padding-top:5px;
         padding-bottom:0px;
         margin:0;
@@ -853,7 +876,8 @@ input:read-write {
     
     #machineDetailSection {
         grid-area:machineDetailArea;
-        background-color: lightcoral;
+        background-color:var(--machine-bg-color);
+        
         padding-top:10px;
         margin-top:0px;
         display:block;
@@ -968,8 +992,9 @@ input:read-write {
     }
     
     #footer {
+        text-align: center;
         grid-area: footerArea;
-        background-color: navy;
+        background-color: gray;
     }
 }
 /* MODAL CSS */

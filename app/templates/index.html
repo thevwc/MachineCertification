@@ -26,7 +26,7 @@
 
     <!-- VERSION SECTION -->
     <div class="version">
-        <h5 id="versionText">ver. May 28, 2022</h5>
+        <h5 id="versionText">ver. May 29, 2022</h5>
     </div>  
       
     <!-- SELECTION AREA -->
@@ -116,40 +116,28 @@
                 <button type="button" id='btnNewMachine' class="btn btn-primary btn-sm" 
                     style="display:inline-block" onclick="showNewMachineModal()">NEW</button>
             </div>
-            <!-- <div class="col-1"></div> -->
         </div>
-        <!-- <div id="machineDescription">
-
-        </div> -->
-        <!-- <div id="machineInfo">
-            <div class="row">
-                <div class="col-3">
-                    <div>Duration - 180 days</div>
-                </div>
-                <div class="col-7">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="keyLocation1" id="radioKeyInToolCrib" value=1>
-                        <label class="form-check-label" for="keyLocation1">Key in Tool Crib</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="keyLocation2" id="radioKeyProvider" value=2>
-                        <label class="form-check-label" for="keyLocation2">Key Provider</label>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-        <div id="machineInstructorsAndMembers"></div>  
+        
+        <div id="machineInstructorsAndMembers"></div> 
     </div>
-
+    <div id="machineFooter">
+        <button id="clearMachineData" onclick="clrMachineData()">CLEAR</button>
+    </div> 
     <div id="memberDetailSection">
         <div id="memberData"></div>
         <div id="memberMachines"></div>
     </div>  
-    
+    <div id="memberFooter">
+        <button id="clearMemberData" onclick="clrMemberData()">CLEAR</button>
+        <button id="printMemberData"onclick="prtMemberCertifications()">PRINT</button>
+    </div>
     <div id="instructorDetailSection">
         <div id="instructorData"></div>
-        <div id="instructorMachines"></div>
+        <div id="instructorMachines"></div> 
     </div> 
+    <div id="instructorFooter">
+        <button id="clearInstructorData" onclick="clrInstructorData()">CLEAR</button>
+    </div>
     <div id="footer">
         <div>END</div>
     </div> 
@@ -324,13 +312,10 @@
        
         <!-- Modal footer -->
         <div class="modal-footer certifyMemberModalFooter">
-            <div id="certifyTransactionType" style="display:block"></div>
+            <div id="certifyTransactionType" style="display:none"></div>
             <button id='closecertifyMemberModal' type="button" class="btn btn-primary" onclick='cancelCertificationModal()' data-bs-dismiss="modal">Cancel</button>
             <button id='savecertifyMemberModal' type="button" class="btn btn-success" onclick="saveCertificationModal()">Save</button>
-          <!-- reconsider how to decertify or delete a memberMachineCertifications record; when unchecked? via EDIT? -->
-          <!-- can dateCertified be changed? can a member be recertified -->
-          <!-- should we have a 'CERTIFY' button? -->
-            <button id='deleteAuthorizationModal' type="button" onclick=window.location.origin + '/decertifyMember' class="btn btn-danger" data-bs-dismiss="modal">Remove Authorization</button>
+            <button id='deleteAuthorizationModal' type="button" onclick='deCertifyMember()' class="btn btn-danger" data-bs-dismiss="modal">Remove Authorization</button>
         </div>
   
       </div>
