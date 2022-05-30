@@ -1,6 +1,16 @@
 // index.js
 var colorWellMachineBG;
-var defaultColorMachineBG = "#0000ff";
+var defaultColorMachineBG = "#f08080";
+var colorWellMachineFG;
+var defaultColorMachineFG = "#000000";
+var colorWellMemberBG;
+var defaultColorMemberBG = "#ADD8E6";
+var colorWellMemberFG;
+var defaultColorMemberFG = "#000000";
+var colorWellInstrBG;
+var defaultColorInstrBG = "#90EE90";
+var colorWellInstrFG;
+var defaultColorInstrFG = "#000000";
 
 window.addEventListener("load", startup, false);
 
@@ -63,7 +73,7 @@ filterMachineDropdown(shopChoice.value)
 
 // SET VERSION OF APP AND CURRENT SCREEN SIZE (FOR DEVELOPMENT PURPOSES)
 versionText = document.getElementById('versionText')
-versionText.innerHTML='ver May 28, 2022  (' + screen.width + ')'
+versionText.innerHTML='ver May 29, 2022  (' + screen.width + ')'
 
 // IF NOT A LARGE SCREEN DISPLAY ONLY 1 PANEL AT A TIME INSTEAD OF ALL 3
 handleMediaChange(largeScreen)
@@ -72,31 +82,73 @@ handleMediaChange(largeScreen)
 // -------------
 // FUNCTIONS
 function startup() {
-    defaultColor = '#f08080'
+    //defaultColor = '#f08080'
     colorWellMachineBG = document.querySelector("#colorWellMachineBG");
-    colorWellMachineBG.value = defaultColor;
-    colorWellMachineBG.addEventListener("input", updateFirst, false);
-    colorWellMachineBG.addEventListener("change", updateAll, false);
+    colorWellMachineBG.value = defaultColorMachineBG;
+    colorWellMachineBG.addEventListener("input", updateMachineFirst, false);
+    colorWellMachineBG.addEventListener("change", updateMachineAll, false);
     colorWellMachineBG.select();
+
+    //defaultColor = '#000000'
+    colorWellMachineFG = document.querySelector("#colorWellMachineFG");
+    colorWellMachineFG.value = defaultColorMachineFG;
+    colorWellMachineFG.addEventListener("input", updateMachineFirst, false);
+    colorWellMachineFG.addEventListener("change", updateMachineAll, false);
+    colorWellMachineFG.select();
+
+    //defaultColor = '#f08080'
+    colorWellMemberBG = document.querySelector("#colorWellMemberBG");
+    colorWellMemberBG.value = defaultColorMemberBG;
+    colorWellMemberBG.addEventListener("input", updateMemberFirst, false);
+    colorWellMemberBG.addEventListener("change", updateMemberAll, false);
+    colorWellMemberBG.select();
+
+    //defaultColor = '#000000'
+    colorWellMemberFG = document.querySelector("#colorWellMemberFG");
+    colorWellMemberFG.value = defaultColorMemberFG;
+    colorWellMemberFG.addEventListener("input", updateMemberFirst, false);
+    colorWellMemberFG.addEventListener("change", updateMemberAll, false);
+    colorWellMemberFG.select();
+
+    //defaultColor = '#f08080'
+    colorWellInstrBG = document.querySelector("#colorWellInstrBG");
+    colorWellInstrBG.value = defaultColorInstrBG;
+    colorWellInstrBG.addEventListener("input", updateInstructorFirst, false);
+    colorWellInstrBG.addEventListener("change", updateInstructorAll, false);
+    colorWellInstrBG.select();
+
+    //defaultColor = '#000000'
+    colorWellInstrFG = document.querySelector("#colorWellInstrFG");
+    colorWellInstrFG.value = defaultColorInstrFG;
+    colorWellInstrFG.addEventListener("input", updateInstructorFirst, false);
+    colorWellInstrFG.addEventListener("change", updateInstructorAll, false);
+    colorWellInstrFG.select();
+
   }
   
-function updateFirst(event) {
-    var p = document.querySelector("p");
-
-    if (p) {
-        p.style.color = event.target.value;
-    }
+function updateMachineFirst(event) {
     document.getElementById('machineDetailSection').style.backgroundColor = event.target.value 
 }
 
-function updateAll(event) {
-    console.log('event.target.value - '+event.target.value)
-    document.getElementById('machineDetailSection').style.backgroundColor = event.target.value 
-    // document.querySelectorAll("p").forEach(function(p) {
-    //   p.style.color = event.target.value;
-    //});
+function updateMachineAll(event) { 
+    document.documentElement.style.setProperty('--machine-bg-color', event.target.value);
   }
-  
+
+function updateMemberFirst(event) {
+    document.getElementById('MemberDetailSection').style.backgroundColor = event.target.value 
+}
+
+function updateMemberAll(event) { 
+    document.documentElement.style.setProperty('--member-bg-color', event.target.value);
+}
+
+function updateInstructorFirst(event) {
+    document.getElementById('InstructorDetailSection').style.backgroundColor = event.target.value 
+}
+
+function updateInstructorAll(event) { 
+    document.documentElement.style.setProperty('--instructor-bg-color', event.target.value);
+}
 
   
 // SHOW/HIDE MACHINE LIST OPTIONS BASED ON LOCATION SELECTION
@@ -921,60 +973,6 @@ function editMemberCertification(e) {
     machineID = e.id.slice(4,11)
     populateMemberCertificationModal("EDIT",machineID)
 }
-
-// function old(){
-//     let dataToSend = {
-//         //staffID: staffID,
-//         villageID: villageID,
-//         machineID: machineID
-//     };
-//     fetch(url, {
-//         method: "POST",
-//         credentials: "include",
-//         body: JSON.stringify(dataToSend),
-//         cache: "no-cache",
-//         headers: new Headers({
-//             "content-type": "application/json"
-//         })
-//     })
-//     .then((res) => res.json())
-//     .then((data) => {
-//         if (data.status != 200) {
-//             modalAlert('Machine Authorization',data.msg)
-//             return
-//         }
-//     // POPULATE certifyMemberModal WITH INSTRUCTORS
-//         //document.getElementById('certifyMachineID').innerHTML = machineID
-//         document.getElementById('certifyMachineID').value = machineID
-//         var descID = 'Desc' + machineID
-//         document.getElementById('certifyDescription').value = machineID
-//         document.getElementById('certifyDescription').value = document.getElementById(descID).innerHTML
-//         document.getElementById('certifyDateCertified').value = data.todaysDisplayDate
-//         var certificationModalInstructors = document.getElementById('certificationModalInstructors')
-//         while (certificationModalInstructors.firstChild) {
-//             certificationModalInstructors.removeChild(certificationModalInstructors.lastChild);
-//         }
-//         instructors = data.instructorsDict
-//         // IF NO INSTRUCTORS ASSIGNED BUILD OPTION LINE WITH MSG
-//         if (instructors.length == 0){
-//             optionLine = document.createElement("option")
-//             optionLine.innerHTML = "No instructors assigned."
-//             optionLine.value = ''
-//             certificationModalInstructors.appendChild(optionLine)
-//             $('#certifyMemberModal').modal('show')
-//             return
-//         }
-//         // BUILD AN OPTION LINE FOR EACH INSTRUCTOR
-//         for (var element of instructors) {
-//             var optionLine = document.createElement('option')
-//             optionLine.innerHTML = element.instructorName
-//             optionLine.value = element.instructorID
-//             certificationModalInstructors.appendChild(optionLine)
-//         }
-//         $('#certifyMemberModal').modal('show')
-//     return
-//     })
-// }
 
 // CALL ROUTINE TO GET LIST OF INSTRUCTORS FOR THIS MACHINE AND TO SHOW THE MODAL 'certifyMemberModal'
 // POPULATE MACHINE ID, DESCRIPTION, DATE CERTIFIED, SET DURATION TO DEFAULT FOR THIS MACHINE

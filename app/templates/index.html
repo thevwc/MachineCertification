@@ -26,7 +26,7 @@
 
     <!-- VERSION SECTION -->
     <div class="version">
-        <h5 id="versionText">ver. May 29, 2022</h5>
+        <h5 id="versionText">ver. date</h5>
     </div>  
       
     <!-- SELECTION AREA -->
@@ -117,15 +117,15 @@
                     style="display:inline-block" onclick="showNewMachineModal()">NEW</button>
             </div>
         </div>
-        
         <div id="machineInstructorsAndMembers"></div> 
     </div>
+
     <div id="machineFooter">
         <button id="clearMachineData" onclick="clrMachineData()">CLEAR</button>
-        <label for="colorWellMachineBG">BG:</label>
-        <input type="color" value="#ff0000" id="colorWellMachineBG"
+        <label for="colorWellInstrBG" style=margin-left:20px;>BG:</label>
+        <input type="color" value="#ff0000" id="colorWellMachineBG">
         <label for="colorWellMachineFG">Text:</label>
-        <input type="color" value="#000000" prompt="TEXT" id="colorWellMachineFG"
+        <input type="color" value="#000000" prompt="TEXT" id="colorWellMachineFG">
     </div> 
     <div id="memberDetailSection">
         <div id="memberData"></div>
@@ -134,6 +134,10 @@
     <div id="memberFooter">
         <button id="clearMemberData" onclick="clrMemberData()">CLEAR</button>
         <button id="printMemberData"onclick="prtMemberCertifications()">PRINT</button>
+        <label for="colorWellMemberBG" style=margin-left:20px;>BG:</label>
+        <input type="color" value="#ff0000" id="colorWellMemberBG">
+        <label for="colorWellMemberFG">Text:</label>
+        <input type="color" value="#000000" prompt="TEXT" id="colorWellMemberFG">
     </div>
     <div id="instructorDetailSection">
         <div id="instructorData"></div>
@@ -141,6 +145,10 @@
     </div> 
     <div id="instructorFooter">
         <button id="clearInstructorData" onclick="clrInstructorData()">CLEAR</button>
+        <label for="colorWellInstrBG"  style=margin-left:20px;>BG:</label>
+        <input type="color" value="#ff0000" id="colorWellInstrBG">
+        <label for="colorWellInstrFG">Text:</label>
+        <input type="color" value="#000000" prompt="TEXT" id="colorWellInstrFG">
     </div>
     <div id="footer">
         <div>END</div>
