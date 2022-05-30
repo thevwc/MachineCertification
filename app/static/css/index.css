@@ -6,6 +6,9 @@
     --machine-bg-color:lightcoral;
     --member-bg-color:lightblue;
     --instructor-bg-color:lightgreen;
+    --machine-fg-color:blue;
+    --member-fg-color:black;
+    --instructor-fg-color:black;
   }
 input:read-only {
     /* background-color: #ccc; */
@@ -111,7 +114,8 @@ input:read-write {
 
     #machineDetailSection {
         grid-area:detailArea;
-        background-color: coral;
+        background-color: var (--member-bg-color);
+        color: var (--machine-fg-color);
         padding-top:10px;
         margin-top:10px;
         height:100%;
@@ -170,7 +174,8 @@ input:read-write {
     
     #memberDetailSection {
         grid-area:detailArea;
-        background-color: aquamarine;
+        background-color:var (--member-bg-color);
+        color: var (--member-fg-color);
         padding-top:10px;
         margin-top:10px;
         height:600px;
@@ -186,7 +191,8 @@ input:read-write {
     
     #instructorDetailSection {
         grid-area:detailArea;
-        background-color: lightgreen;
+        background-color: var (--instructor-bg-color);
+        color: var (--instructor-fg-color);
         padding-top:10px;
         margin-top:10px;
         height:100%;
@@ -372,12 +378,12 @@ input:read-write {
         width:100%;
         height: 100%;
         display: grid;
-        grid-template-columns:.5fr 1fr 1fr 1fr;
-        grid-template-rows: 50px 50px 1fr;
-        grid-template-areas:"hdgArea hdgArea hdgArea versionArea"
-                            "locationSelectorArea machineSelectorArea memberSelectorArea instructorSelectorArea" 
-                            ".machineDetailArea memberDetailArea instructorDetailArea"
-                            "footerArea footerArea footerArea footerArea";
+        grid-template-columns:1fr 1fr 1fr;
+        grid-template-rows: 50px 50px 1fr 40px;
+        grid-template-areas:"hdgArea locationSelectorArea versionArea"
+                            "machineSelectorArea memberSelectorArea instructorSelectorArea" 
+                            "machineDetailArea memberDetailArea instructorDetailArea"
+                            "machineFooterArea memberFooterArea instructorFooterArea";
         gap:0px;
         background-color:lightgray;
         top:0; bottom:0; left:0; right:0;
@@ -405,6 +411,7 @@ input:read-write {
 
     .locationSelector {
         grid-area:locationSelectorArea;
+        background-color: navy;
         padding-top:10px;
         padding-bottom:0px;
         margin:0;
@@ -672,6 +679,12 @@ input:read-write {
         align-content: center;
         margin-bottom:5px;
     }
+    #machineDurationAndKeyLocation {
+        display:none;
+        border:1px solid black;
+        background-color: antiquewhite;
+        color:green;
+    }
     /* #authorizationDuration {
         background-color: white;
         color:green;
@@ -771,19 +784,19 @@ input:read-write {
         grid-area: machineFooterArea;
         text-align: center;
         color:white;
-        background-color: navy
+        background-color: var (--machine-bg-color);
     }
     #memberFooter {
         grid-area: memberFooterArea;
         text-align: center;
         color:white;
-        background-color: navy
+        background-color: var (--member-bg-color);
     }
     #instructorFooter {
         grid-area: instructorFooterArea;
         text-align: center;
         color:white;
-        background-color: navy
+        background-color:  var (--instructor-bg-color);
     }
 }
 
@@ -793,12 +806,12 @@ input:read-write {
         width:100%;
         height: 980px;
         display: grid;
-        grid-template-columns:.5fr 1fr 1fr 1fr;
+        grid-template-columns:1fr 1fr 1fr;
         grid-template-rows: 50px 50px 840px 40px;
-        grid-template-areas:"hdgArea hdgArea hdgArea versionArea"
-                            "locationSelectorArea machineSelectorArea memberSelectorArea instructorSelectorArea" 
-                            ".machineDetailArea memberDetailArea instructorDetailArea"
-                            "footerArea machineFooterArea memberFooterArea instructorFooterArea";
+        grid-template-areas:"hdgArea locationSelectorArea versionArea"
+                            "machineSelectorArea memberSelectorArea instructorSelectorArea" 
+                            "machineDetailArea memberDetailArea instructorDetailArea"
+                            "machineFooterArea memberFooterArea instructorFooterArea";
         gap:0px;
         background-color:lightgray;
         top:0; bottom:0; left:0; right:0;

@@ -43,7 +43,7 @@
                     title='Select a machine ...' 
                     data-live-search=true 
                     data-live-search-style="contains" 
-                    data-width='375px'>
+                    data-width='350px'>
                     <option class="optMachines" value="">Select a machine ...</option>
                     {% for m in machineList %}
                         <option 
@@ -117,6 +117,18 @@
                     style="display:inline-block" onclick="showNewMachineModal()">NEW</button>
             </div>
         </div>
+        <!-- <div id="machineDurationAndKeyLocation">
+            <div class="col-2"></div>
+            <div id="machineDuration" class="col-3"></div>
+            <div class="col-3">
+                <input type="radio" name="keyLocation" id="keyTC">
+                <label for="keyLocation">TC</label>
+            </div>
+            <div class="col-3">
+                <input type="radio" name="keyLocation" id="keyKP">
+                <label for="keyLocation">KP</label>
+            </div>
+        </div> -->
         <div id="machineInstructorsAndMembers"></div> 
     </div>
 

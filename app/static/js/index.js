@@ -135,7 +135,7 @@ function updateMachineAll(event) {
   }
 
 function updateMemberFirst(event) {
-    document.getElementById('MemberDetailSection').style.backgroundColor = event.target.value 
+    document.getElementById('memberDetailSection').style.backgroundColor = event.target.value 
 }
 
 function updateMemberAll(event) { 
@@ -143,7 +143,7 @@ function updateMemberAll(event) {
 }
 
 function updateInstructorFirst(event) {
-    document.getElementById('InstructorDetailSection').style.backgroundColor = event.target.value 
+    document.getElementById('instructorDetailSection').style.backgroundColor = event.target.value 
 }
 
 function updateInstructorAll(event) { 
@@ -335,21 +335,61 @@ function displayMachineInstructorsAndMembers() {
         divDescription.innerHTML = data.machineDesc
         dtlParent.appendChild(divDescription)
 
-        // var divDuration = document.createElement('div')
-        // divDuration.innerHTML = data.certificationDuration
-        // dtlParent.appendChild(divDuration)
+        // INSERT MACHINE DURATION AND SET LOCATION RADIO BUTTONS
+        var divDurationRow = document.createElement('div')
+        divDurationRow.classList.add('row')
+
+        var divCol3 = document.createElement('div')
+        divCol3.classList.add('col-3')
+        divDurationRow.appendChild(divCol3)
+
+        var divDuration = document.createElement('div')
+        divDuration.classList.add('col-3')
+        divDuration.innerHTML = data.machineDuration
+        divDurationRow.appendChild(divDuration)
         
-        // var divkeyInToolCrib = document.createElement('div')
-        // var inputKeyInToolCrib = document.createElement('input')
-        // inputKeyInToolCrib.type="checkbox"
-        // console.log('data-keyProviderID - '+ data.keyProvider)
-        // if (data.keyProviderID == true) {
-        //     inputKeyInToolCrib.setattribute('checked','checked')
-        // }
+        // DEFINE RADIO BUTTON FOR KEY IN TOOL CRIB
+        var divKeyInToolCrib = document.createElement('div')
+        divKeyInToolCrib.classList.add('col-2')
+
+        var inputKeyInToolCrib = document.createElement('input')
+        inputKeyInToolCrib.type="radio"
+        inputKeyInToolCrib.name = 'keyInToolCrib'
         
-        // divkeyInToolCrib.appendChild(inputKeyInToolCrib)
-        // dtlParent.appendChild(divkeyInToolCrib)
+        if (data.keyInToolCrib == true) {
+            inputKeyInToolCrib.checked = true
+        }
+        divKeyInToolCrib.appendChild(inputKeyInToolCrib)
+        
+        var labelKeyInToolCrib = document.createElement('label')
+        labelKeyInToolCrib.innerHTML = 'TC'
+        labelKeyInToolCrib.style.marginLeft = '3px'
+        divKeyInToolCrib.appendChild(labelKeyInToolCrib)
+
+        divDurationRow.appendChild(divKeyInToolCrib)
+
+        // DEFINE RADIO BUTTON FOR KEY PROVIDER
+        var divKeyProvider = document.createElement('div')
+        divKeyProvider.classList.add('col-3')
+
+        var inputKeyProvider = document.createElement('input')
+        inputKeyProvider.type="radio"
+        inputKeyProvider.name = 'KeyProvider'
+        
+        if (data.keyProvider == true) {
+            inputKeyProvider.checked = true
+        }
+        divKeyProvider.appendChild(inputKeyProvider)
+        
+        var labelKeyProvider = document.createElement('label')
+        labelKeyProvider.innerHTML = 'KP'
+        labelKeyProvider.style.marginLeft = '3px'
+        divKeyProvider.appendChild(labelKeyProvider)
+
+        divDurationRow.appendChild(divKeyProvider)
             
+        dtlParent.appendChild(divDurationRow)
+
         // Display Instructor heading
         var divInstructorHdg = document.createElement('div')
         divInstructorHdg.classList.add('instructorListHdg')
@@ -1446,11 +1486,14 @@ function saveCertificationModal() {
 }
 
 function clrMachineData() {
-    if (machineSelected.selectedIndex == 0) {
-        modalAlert('CLEAR MACHINE DATA',"Nothing to clear.")
-        return
-    }
+    // if (machineSelected.selectedIndex == 0) {
+    //     modalAlert('CLEAR MACHINE DATA',"Nothing to clear.")
+    //     return
+    // 
+    // }
+
     // Clear previous machine data
+    //document.getElementById('machineDurationAndKeyLocation').style.display=none
     machineData = document.getElementById('machineInstructorsAndMembers')
     while (machineData.firstChild) {
         machineData.removeChild(machineData.lastChild)
@@ -1461,10 +1504,11 @@ function clrMachineData() {
 }
 
 function clrMemberData() {
-    if (memberSelected.selectedIndex == 0) {
-        modalAlert('CLEAR MEMBER DATA',"Nothing to clear.")
-        return
-    }
+    // if (memberSelected.selectedIndex == 0) {
+    //     modalAlert('CLEAR MEMBER DATA',"Nothing to clear.")
+    //     return
+    // }
+
     // Clear previous member data
     memberData = document.getElementById('memberData')
     while (memberData.firstChild) {
@@ -1480,10 +1524,11 @@ function clrMemberData() {
 }
 
 function clrInstructorData() {
-    if (instructorSelected.selectedIndex == 0) {
-        modalAlert('CLEAR INSTRUCTOR DATA',"Nothing to clear.")
-        return
-    }
+    // if (instructorSelected.selectedIndex == 0) {
+    //     modalAlert('CLEAR INSTRUCTOR DATA',"Nothing to clear.")
+    //     return
+    // }
+
     // Clear previous member data
     dtlParent = document.getElementById('instructorData')
         while (dtlParent.firstChild) {

@@ -126,7 +126,8 @@ def displayMachineData():
         return jsonify(msg=msg,status=400)
     machineDesc = machine.machineDesc + ' (' + machineID + ') at ' + machine.machineLocation
     machineLocation = machine.machineLocation
-    certificationDuration = machine.certificationDuration
+    machineDuration = machine.certificationDuration
+    keyInToolCrib = machine.keyInToolCrib
     keyProvider = machine.keyProvider
     
     # GET INSTRUCTORS FOR THIS MACHINE
@@ -225,8 +226,8 @@ def displayMachineData():
     msg="Success"
     status=200
     return jsonify(msg=msg,status=status,machineLocation=machineLocation,machineID=machineID,
-    machineDesc=machineDesc,certificationDuration=certificationDuration,instructorsList=instructorsList,\
-        certifiedDict=certifiedDict,UsageDict=usageDict,keyProvider=keyProvider)
+    machineDesc=machineDesc,machineDuration=machineDuration,instructorsList=instructorsList,\
+        certifiedDict=certifiedDict,UsageDict=usageDict,keyInToolCrib=keyInToolCrib,keyProvider=keyProvider)
 
 
 @app.route('/displayMemberData',methods=['POST'])
