@@ -14,10 +14,8 @@ var defaultColorInstrFG = "#000000";
 
 window.addEventListener("load", startup, false);
 
-// if (!localStorage.getItem('machineBGcolor')){
-//     localStorage.setItem('machineBGcolor','#f08080' )
-// }
-// const machineBGcolorInput =localStorage.machineBGcolor
+
+//const machineBGcolorInput =localStorage.machineBGcolor
 
 // CONSTANTS
 const shopChoice = document.querySelector('.shopChoice')
@@ -82,9 +80,18 @@ handleMediaChange(largeScreen)
 // -------------
 // FUNCTIONS
 function startup() {
-    //defaultColor = '#f08080'
+    console.log ('startup rtn ...')
+    // IF A BG COLOR HAS NOT BEEN SAVED, USE THE DEFAULT BG COLOR
+    if (!localStorage.getItem('machineBGcolor')){
+        machineBGcolorInput = defaultColorMachineBG
+        //localStorage.setItem('machineBGcolor',defaultColorMachineBG)
+    }
+    else {
+        machineBGcolorInput = localStorage.getItem('machineBGcolor')
+    }
+    document.documentElement.style.setProperty('--machine-bg-color', machineBGcolorInput);
     colorWellMachineBG = document.querySelector("#colorWellMachineBG");
-    colorWellMachineBG.value = defaultColorMachineBG;
+    colorWellMachineBG.value = machineBGcolorInput
     colorWellMachineBG.addEventListener("input", updateMachineFirst, false);
     colorWellMachineBG.addEventListener("change", updateMachineAll, false);
     colorWellMachineBG.select();
@@ -132,6 +139,8 @@ function updateMachineFirst(event) {
 
 function updateMachineAll(event) { 
     document.documentElement.style.setProperty('--machine-bg-color', event.target.value);
+    localStorage.setItem('machineBGcolor',event.target.value)
+    // close or hide dialog form
   }
 
 function updateMemberFirst(event) {
