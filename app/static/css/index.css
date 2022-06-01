@@ -17,6 +17,9 @@ input:read-only {
 input:read-write {
     color:blue;
 }
+.colorCtrl {
+    display:inline-block;
+}
 /* Phone layout (default) */
 @media only screen and (max-width:600px) {
     body {
@@ -783,8 +786,8 @@ input:read-write {
     #machineFooter {
         grid-area: machineFooterArea;
         text-align: center;
-        color:white;
-        background-color: var (--machine-bg-color);
+        color: var (--machine-bg-color);
+        background-color: var (--machine-fg-color);
     }
     #memberFooter {
         grid-area: memberFooterArea;

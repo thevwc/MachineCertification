@@ -134,10 +134,11 @@
 
     <div id="machineFooter">
         <button id="clearMachineData" onclick="clrMachineData()">CLEAR</button>
-        <label for="colorWellInstrBG" style=margin-left:20px;>BG:</label>
-        <input type="color" value="#ff0000" id="colorWellMachineBG">
-        <label for="colorWellMachineFG">Text:</label>
-        <input type="color" value="#000000" prompt="TEXT" id="colorWellMachineFG">
+        <label for="colorWellInstrBG" class="colorCtrl" style=margin-left:20px;>BG:</label>
+        <input type="color" class="colorCtrl" value="#ff0000" id="colorWellMachineBG">
+        <label for="colorWellMachineFG" class="colorCtrl" >Text:</label>
+        <input type="color" class="colorCtrl" value="#000000" prompt="TEXT" id="colorWellMachineFG">
+        <button class="colorCtrl btn btn-sm btn-primary" onclick="recolorCtrl('machine')">RESET</button>
     </div> 
     <div id="memberDetailSection">
         <div id="memberData"></div>
@@ -146,10 +147,11 @@
     <div id="memberFooter">
         <button id="clearMemberData" onclick="clrMemberData()">CLEAR</button>
         <button id="printMemberData"onclick="prtMemberCertifications()">PRINT</button>
-        <label for="colorWellMemberBG" style=margin-left:20px;>BG:</label>
-        <input type="color" value="#ff0000" id="colorWellMemberBG">
-        <label for="colorWellMemberFG">Text:</label>
-        <input type="color" value="#000000" prompt="TEXT" id="colorWellMemberFG">
+        <label for="colorWellMemberBG" class="colorCtrl" style=margin-left:20px;>BG:</label>
+        <input type="color" class="colorCtrl" value="#ff0000" id="colorWellMemberBG">
+        <label for="colorWellMemberFG" class="colorCtrl" >Text:</label>
+        <input type="color" class="colorCtrl" value="#000000" prompt="TEXT" id="colorWellMemberFG">
+        <button class="btn btn-sm btn-primary colorCtrl" onclick="recolorCtrl('member')">RESET</button>
     </div>
     <div id="instructorDetailSection">
         <div id="instructorData"></div>
@@ -157,10 +159,11 @@
     </div> 
     <div id="instructorFooter">
         <button id="clearInstructorData" onclick="clrInstructorData()">CLEAR</button>
-        <label for="colorWellInstrBG"  style=margin-left:20px;>BG:</label>
-        <input type="color" value="#ff0000" id="colorWellInstrBG">
-        <label for="colorWellInstrFG">Text:</label>
-        <input type="color" value="#000000" prompt="TEXT" id="colorWellInstrFG">
+        <label for="colorWellInstrBG" class="colorCtrl" style=margin-left:20px;>BG:</label>
+        <input type="color" class="colorCtrl" value="#ff0000" id="colorWellInstrBG">
+        <label for="colorWellInstrFG" class="colorCtrl">Text:</label>
+        <input type="color" class="colorCtrl" value="#000000" prompt="TEXT" id="colorWellInstrFG">
+        <button class="btn btn-sm btn-primary colorCtrl" onclick="recolorCtrl('instructor')">RESET</button>
     </div>
     <div id="footer">
         <div>END</div>

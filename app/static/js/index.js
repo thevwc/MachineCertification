@@ -1,15 +1,15 @@
 // index.js
-var colorWellMachineBG;
+//var colorWellMachineBG;
 var defaultColorMachineBG = "#f08080";
-var colorWellMachineFG;
+//var colorWellMachineFG;
 var defaultColorMachineFG = "#000000";
-var colorWellMemberBG;
+//var colorWellMemberBG;
 var defaultColorMemberBG = "#ADD8E6";
-var colorWellMemberFG;
+//var colorWellMemberFG;
 var defaultColorMemberFG = "#000000";
-var colorWellInstrBG;
+//var colorWellInstrBG;
 var defaultColorInstrBG = "#90EE90";
-var colorWellInstrFG;
+//var colorWellInstrFG;
 var defaultColorInstrFG = "#000000";
 
 window.addEventListener("load", startup, false);
@@ -18,6 +18,13 @@ window.addEventListener("load", startup, false);
 //const machineBGcolorInput =localStorage.machineBGcolor
 
 // CONSTANTS
+const colorWellMachineBG = document.querySelector("#colorWellMachineBG");
+const colorWellMachineFG = document.querySelector("#colorWellMachineFG");
+const colorWellMemberBG = document.querySelector("#colorWellMemberBG");
+const colorWellMemberFG = document.querySelector("#colorWellMemberFG");
+const colorWellInstructorBG = document.querySelector("#colorWellInstructorBG");
+const colorWellInstructorFG = document.querySelector("#colorWellInstructorFG");
+
 const shopChoice = document.querySelector('.shopChoice')
 //const shopSelection = document.getElementsByClassName('locationOption')
 const machineSelected = document.getElementById("machineSelected")
@@ -81,17 +88,8 @@ handleMediaChange(largeScreen)
 // FUNCTIONS
 function startup() {
     console.log ('startup rtn ...')
-    // IF A BG COLOR HAS NOT BEEN SAVED, USE THE DEFAULT BG COLOR
-    if (!localStorage.getItem('machineBGcolor')){
-        machineBGcolorInput = defaultColorMachineBG
-        //localStorage.setItem('machineBGcolor',defaultColorMachineBG)
-    }
-    else {
-        machineBGcolorInput = localStorage.getItem('machineBGcolor')
-    }
-    document.documentElement.style.setProperty('--machine-bg-color', machineBGcolorInput);
-    colorWellMachineBG = document.querySelector("#colorWellMachineBG");
-    colorWellMachineBG.value = machineBGcolorInput
+    
+    
     colorWellMachineBG.addEventListener("input", updateMachineFirst, false);
     colorWellMachineBG.addEventListener("change", updateMachineAll, false);
     colorWellMachineBG.select();
@@ -1589,5 +1587,85 @@ function deCertifyMember() {
 function chgMachineBG() {
     document.getElementById('machineDetailSection').style.backgroundColor=this.value
     alert('new color')
+}
+
+function resetColor(panel) {
+    if (panel == 'machine'){
+        document.documentElement.style.setProperty('--machine-bg-color', defaultColorMachineBG);
+        document.documentElement.style.setProperty('--machine-fg-color', defaultColorMachineFG);
+    }
+    else {
+        if (panel== 'member') {
+            document.documentElement.style.setProperty('--member-bg-color', defaultColormemberBG);
+            document.documentElement.style.setProperty('--member-fg-color', defaultColormemberFG);
+        }
+        else {
+            if (panel == 'instructor') {
+                document.documentElement.style.setProperty('--instructor-bg-color', defaultColorinstructorBG);
+            document.documentElement.style.setProperty('--instructor-fg-color', defaultColorinstructorFG);
+            }
+        }
+    }
+}
+
+
+function retrieveStoredColors() {
+        
+    // IF A MACHINE COLOR HAS NOT BEEN SAVED, USE THE DEFAULT MACHINE COLOR
+    if (!localStorage.getItem('machineBGcolor')){
+        machineBGcolorInput = defaultColorMachineBG
+    }
+    else {
+        machineBGcolorInput = localStorage.getItem('machineBGcolor')
+    }
+    document.documentElement.style.setProperty('--machine-bg-color', machineBGcolorInput);
+    colorWellMachineBG.value = machineBGcolorInput
+
+    if (!localStorage.getItem('machineFGcolor')){
+        machineFGcolorInput = defaultColorMachineFG
+    }
+    else {
+        machineFGcolorInput = localStorage.getItem('machineFGcolor')
+    }
+    document.documentElement.style.setProperty('--machine-fg-color', machineFGcolorInput);
+    colorWellMachineFG.value = machineFGcolorInput
+
+    // IF A MEMBER COLOR HAS NOT BEEN SAVED, USE THE DEFAULT MEMBER COLOR
+    if (!localStorage.getItem('memberBGcolor')){
+        memberBGcolorInput = defaultColorMemberBG
+    }
+    else {
+        memberBGcolorInput = localStorage.getItem('memberBGcolor')
+    }
+    document.documentElement.style.setProperty('--member-bg-color', memberBGcolorInput);
+    colorWellMemberBG.value = memberBGcolorInput
+
+    if (!localStorage.getItem('memberFGcolor')){
+        memberFGcolorInput = defaultColorMemberFG
+    }
+    else {
+        memberFGcolorInput = localStorage.getItem('memberFGcolor')
+    }
+    document.documentElement.style.setProperty('--member-fg-color', memberFGcolorInput);
+    colorWellMemberFG.value = memberFGcolorInput
+
+    // IF A INSTRUCTOR COLOR HAS NOT BEEN SAVED, USE THE DEFAULT INSTRUCTOR COLOR
+    if (!localStorage.getItem('instructorBGcolor')){
+        instructorBGcolorInput = defaultColorInstructorBG
+    }
+    else {
+        instructorBGcolorInput = localStorage.getItem('instructorBGcolor')
+    }
+    document.documentElement.style.setProperty('--instructor-bg-color', instructorBGcolorInput);
+    colorWellInstructorBG.value = instructorBGcolorInput
+
+    if (!localStorage.getItem('instructorFGcolor')){
+        instructorFGcolorInput = defaultColorInstructorFG
+    }
+    else {
+        instructorFGcolorInput = localStorage.getItem('instructorFGcolor')
+    }
+    document.documentElement.style.setProperty('--instructor-fg-color', instructorFGcolorInput);
+    colorWellInstructorFG.value = instructorFGcolorInput
 }
 // END OF FUNCTIONS
