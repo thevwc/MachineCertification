@@ -21,16 +21,10 @@ input:read-write {
     display:inline-block;
 }
 /* Phone layout (default) */
-@media only screen and (max-width:600px) {
-    body {
-        background-color: var(--main-body-bg-color);
-        height:100%;
-        width:100%;
-        text-align:center;
-        background-color: aqua;
-    }
-}
-    .parent {
+/* @media only screen and (max-width:600px) {
+   
+} */
+    /* .parent {
         display: grid;
         grid-template-columns: 375px;
         grid-template-rows: 40px 30px 30px 30px 30px 50px 550px 50px;
@@ -46,8 +40,8 @@ input:read-write {
         background-color: aqua; 
         height:100%;
         width:100%;              
-    }
-    .heading {
+    } */
+    /* .heading {
         grid-area: hdgArea;
         display:grid;
         padding-top: 0px;
@@ -55,19 +49,19 @@ input:read-write {
         text-align: center;
         background-color:navy;
         color: var(--main-txt-color);
-        width:100%;
-    }
+        width:100%; 
+    } */
 
-    .version {
+    /* .version {
         grid-area:versionArea;
         font-size:.75rem;
         padding-top:3px;
         text-align:center;
         background-color: navy;
         color:white;
-    }
+    } */
     
-    #locationSelector {
+    /* #locationSelector {
         grid-area:locationSelectorArea;
         padding-top:5px;
         padding-bottom:0px;
@@ -75,22 +69,22 @@ input:read-write {
         text-align: center;
         margin-left:200px;
         border:2px solid yellow;
-    }
-    #locationSelected {
+    } */
+    /* #locationSelected {
         width:100px;
-    }
-    #machineSelector {
+    } */
+    /* #machineSelector {
         grid-area:machineSelectorArea;
         padding-top:5px;
         padding-bottom:0px;
         padding-left:0px;
         margin:auto;
-    }
-    #machineSelected {
+    } */
+    /* #machineSelected {
         width:200px;
-    }
+    } */
     
-    #memberSelector {
+    /* #memberSelector {
         grid-area:memberSelectorArea;
         padding-top:5px;
         padding-bottom:0px;
@@ -98,154 +92,49 @@ input:read-write {
         margin:auto;
         margin-top:5px;
         margin-left:5px;
-    }                         
-    #memberSelected {
+    }                          */
+    /* #memberSelected {
         width:280px;
-    }
+    } */
 
-    .instructorSelector {
+    /* .instructorSelector {
         grid-area:instructorSelectorArea;
         padding-top:5px;
         padding-bottom:0px;
         padding-left:10px;
         margin:auto;
-        margin-top:5px;
-    }                         
-    #instructorSelected {
+        margin-top:5px; 
+    }   */                      
+    /* #instructorSelected {
         width:280px;
-    }
-
-    #machineDetailSection {
-        grid-area:detailArea;
-        background-color: var (--member-bg-color);
-        color: var (--machine-fg-color);
-        padding-top:10px;
-        margin-top:10px;
-        height:100%;
-        width:100%;
-        margin:auto;
-        overflow:auto;
-        /* display:none; */
-    }
-    .machineDescription {
-        text-align: center;
-        background-color: white;
-        color:salmon;
-        margin-left:10px;
-        margin-right:10px;
-    }
-    .instructorListHdg {
-        text-align:left;
-        margin-left: 50px;
-    }
-    .noInstructors {
-        text-align: left;
-        margin-left:70px;
-    }
-    .instructorName {
-        text-align:left;
-        width:300px;
-        margin-left:70px; 
-    }
-    .memberListHdg {
-        text-align: left;
-        padding-top:30px;
-        margin-left:50px;
-    }
-    .noMembers {
-        text-align: left;
-        margin-left:70px;
-    }
-    .certifiedMemberName {
-        text-align: left;
-        margin-left:70px;
-    }
-    .machineUsageHdg {
-        text-align:left;
-        margin-top:20px;
-        margin-left:50px;
-    }
-    .noUsage {
-        text-align: left;
-        margin-left:70px;
-    }
-    .usageDateAndName {
-        text-align: left;
-        font-size: .75rem;
-        margin-left:20px;
-    } 
+    } */
     
-    #memberDetailSection {
-        grid-area:detailArea;
-        background-color:var (--member-bg-color);
-        color: var (--member-fg-color);
-        padding-top:10px;
-        margin-top:10px;
-        height:600px;
-        width:100%;
-        margin:auto;
-        font-size:small;
-        overflow: auto;
-        /* display:none; */
-    }
-    .memberName {
-        margin-left:30px;    
-    }
-    
-    #instructorDetailSection {
-        grid-area:detailArea;
-        background-color: var (--instructor-bg-color);
-        color: var (--instructor-fg-color);
-        padding-top:10px;
-        margin-top:10px;
-        height:100%;
-        width:100%;
-        margin:auto;
-        overflow:auto;
-        font-size: .75rem;
-        /* display:none; */
-    }
-    #instructorData {
-        margin-left:100px;
-    }
-    .instructorNameHdg {
-        text-align: center;
-        background-color: white;
-        color:green;
-        margin-left:10px;
-    }
-    #instructorMachines {
-        padding-left: 30px;
-        margin-left: 40px;
-    }
-    .instrMachHdg {
-        font-size:.75rem;
+    /* .noMembers {
         text-align: left;
-        margin-left:10px;
-    }
-    .instrMachRow {
-        padding-left:30px;
-    }
-
-    #instructorMachinesDetail {
-        padding-left: 20px;
-
-    }
-    .headings {
+        margin-left:70px;
+    } */
+    /* .certifiedMemberName {
+        text-align: left;
+        margin-left:70px;
+    } */
+    
+    /* .headings {
         text-align:center;
-    }
-    #footer {
+    } */
+    /* #footer {
         align-items: center;
         grid-area: footerArea;
         background-color: navy;
-    }
+    } */
 
 
 /* iPad portrait (810x1080) and Kindle fire (800x1280)*/
+/* SINGLE COLUMN */
 @media (min-width: 768px) {
     body {
         background-color: var(--main-body-bg-color);
         height:1280;
+        /* height 100% */
         width:100%;
         text-align:center;
     }
@@ -295,8 +184,7 @@ input:read-write {
         text-align: center;
         margin:auto;
         margin-left:200px;
-        margin-top:15px;
-        
+        margin-top:15px;   
     }
     #machineSelector {
         grid-area:machineSelectorArea;
@@ -307,9 +195,9 @@ input:read-write {
         margin-left:10px;
         
     }
-    /* #machineSelected {
+    #machineSelected {
         width:300px;
-    } */
+    }
     
     #memberSelector {
         grid-area:memberSelectorArea;
@@ -340,19 +228,80 @@ input:read-write {
     #instructorSelected {
         width:300px;
     }
+    #machineDetailSection {
+        grid-area:detailArea;
+        background-color: var (--member-bg-color);
+        color: var (--machine-fg-color);
+        padding-top:10px;
+        margin-top:10px;
+        height:100%;
+        /* height:600px */
+        width:100%;
+        margin:auto;
+        overflow:auto;
+        /* display:none; */
+    }
+    .instructorListHdg {
+        text-align:left;
+        margin-left: 50px;
+    }
+    .noInstructors {
+        text-align: left;
+        margin-left:70px;
+    }
+    .instructorName {
+        text-align:left;
+        width:300px;
+        margin-left:70px; 
+    }
+    .memberListHdg {
+        text-align: left;
+        padding-top:30px;
+        margin-left:50px;
+    }
+    .machineUsageHdg {
+        text-align:left;
+        margin-top:20px;
+        margin-left:50px;
+    }
+    .noUsage {
+        text-align: left;
+        margin-left:70px;
+    }
+    .usageDateAndName {
+        text-align: left;
+        font-size: .75rem;
+        margin-left:20px;
+    }
+    .memberName {
+        margin-left:30px;    
+    } 
+    /* .machineDescription {
+        text-align: center;
+        background-color: white;
+        color:salmon;
+        margin-left:10px;
+        margin-right:10px;
+    } */
     #memberDetailSection {
+        grid-area:detailArea;
+        background-color:var (--member-bg-color);
+        color: var (--member-fg-color);
+        padding-top:10px;
+        margin-top:10px;
         height:100%;
         width:100%;
+        margin:auto;
+        font-size:small;
+        overflow: auto;
     }
-    #machineDetailSection {
-        height:600px;
-        width:100%;
-    }
-    #machineDescription {
+   
+    
+    /* #machineDescription {
         background-color: white;
         color:navy;
         margin-top:5px;
-    }
+    } */
     /* #keyInToolCrib {
         border:1px solid red;
         background-color: blue;
@@ -362,12 +311,50 @@ input:read-write {
         border:1px solid fuchsia;
     } */
     #instructorDetailSection {
+        grid-area:detailArea;
+        background-color: var (--instructor-bg-color);
+        color: var (--instructor-fg-color);
+        padding-top:10px;
+        margin-top:10px;
+        height:100%;
+        width:100%;
+        margin:auto;
+        overflow:auto;
+        font-size: 1rem;
+        /* display:none; */
+    }
+    #instructorData {
+        margin-left:100px;
+    }
+    .instructorNameHdg {
+        text-align: center;
+        background-color: white;
+        color:green;
+        margin-left:10px;
+    }
+    #instructorMachines {
+        padding-left: 30px;
+        margin-left: 40px;
+    }
+    .instrMachHdg {
+        font-size:.75rem;
+        text-align: left;
+        margin-left:10px;
+    }
+    .instrMachRow {
+        padding-left:30px;
+    }
+
+    #instructorMachinesDetail {
+        padding-left: 20px;
+    }
+    /* #instructorDetailSection {
         height:100%;
         width:100%;
         font-size: 1rem;
         margin-left: 20px;
 
-    }
+    } */
     #footer {
         grid-area: footerArea;
         background-color: navy;
@@ -895,10 +882,10 @@ input:read-write {
         overflow:auto;
         font-size: 1rem;
     }
-    .instructorListHdg {
+    /* .instructorListHdg {
         text-align:left;
         margin-left: 90px;
-    }
+    } */
     .noInstructors {
         text-align: left;
         margin-left:110px;
@@ -913,22 +900,21 @@ input:read-write {
         padding-top:30px;
         margin-left:90px;
     }
-    .noMembers {
+    /* .noMembers {
         text-align: left;
         margin-left:110px;
-    }
-    .certifiedMemberName {
+    } */
+    /* .certifiedMemberName {
         text-align: left;
         margin-left:110px;
 
-    }
-    .machineUsageHdg {
+    } */
+    /* .machineUsageHdg {
         text-align:left;
         margin-top:20px;
         margin-left:90px;
-    }
+    } */
     .noUsage {
-        text-align: left;
         margin-left:110px;
     }
     .usageDateAndName {

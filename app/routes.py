@@ -398,12 +398,13 @@ def certifyMember():
     #staffID = req["staffID"]
     todaysDate = date.today().strftime('%Y-%m-%d')
 
-    # print('memberID -',memberID)
-    # print('machineID - ',machineID)
-    #print('staffID - ',staffID)
+    print('memberID -',memberID)
+    print('machineID - ',machineID)
+    print('certifiedBy - ',certifiedBy)
     #print('todaysDate - ',todaysDate)
 
     # GET THE MEMBERS CURRENT CERTIFICATION RECORD
+    print('transactionType - ',transactionType)
     if (transactionType == 'EDIT'):
         mbrCert = db.session.query(MemberMachineCertifications)\
             .filter(MemberMachineCertifications.machineID == machineID)\
@@ -429,7 +430,7 @@ def certifyMember():
         #print('sqlInsert - ',sqlInsert)
         try:
             certification = db.engine.execute(sqlInsert)
-            msg="Record updated."
+            msg="New certification record added."
             return jsonify(msg=msg,status=200)
         except (SQLAlchemyError, DBAPIError) as e:
             print("ERROR -",e)
@@ -837,7 +838,6 @@ def getDataForCertificationModal():
     suggestedDuration = 'Std - ' + machineDuration
     
     # TRANSACTION DEPENDENT DATA FOR AUTHORIZATION MODAL FORM
-    print('transactionType - ',transactionType)
     if transactionType == "NEW":
         # DATA FOR NEW CERTIFICATIONS
         dateCertified = date.today()
@@ -853,8 +853,7 @@ def getDataForCertificationModal():
             msg='Database error - ' + e
             print(msg)
             return jsonify(msg=msg,status=201) 
-        print('memberCertification - ',memberCertification.member_ID,memberCertification.machineID)
-
+        
         dateCertifiedSTR = memberCertification.dateCertified.strftime('%Y-%m-%d')
         certificationDuration = memberCertification.certificationDuration
     

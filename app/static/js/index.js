@@ -1,32 +1,23 @@
 // index.js
-//var colorWellMachineBG;
-var defaultColorMachineBG = "#f08080";
-//var colorWellMachineFG;
-var defaultColorMachineFG = "#000000";
-//var colorWellMemberBG;
-var defaultColorMemberBG = "#ADD8E6";
-//var colorWellMemberFG;
-var defaultColorMemberFG = "#000000";
-//var colorWellInstrBG;
-var defaultColorInstrBG = "#90EE90";
-//var colorWellInstrFG;
-var defaultColorInstrFG = "#000000";
 
 window.addEventListener("load", startup, false);
 
-
-//const machineBGcolorInput =localStorage.machineBGcolor
+// VARIABLES
+var colorWellMachineBG = document.querySelector("#colorWellMachineBG");
+var colorWellMachineFG = document.querySelector("#colorWellMachineFG");
+var colorWellMemberBG = document.querySelector("#colorWellMemberBG");
+var colorWellMemberFG = document.querySelector("#colorWellMemberFG");
+var colorWellInstructorBG = document.querySelector("#colorWellInstructorBG");
+var colorWellInstructorFG = document.querySelector("#colorWellInstructorFG");
 
 // CONSTANTS
-const colorWellMachineBG = document.querySelector("#colorWellMachineBG");
-const colorWellMachineFG = document.querySelector("#colorWellMachineFG");
-const colorWellMemberBG = document.querySelector("#colorWellMemberBG");
-const colorWellMemberFG = document.querySelector("#colorWellMemberFG");
-const colorWellInstructorBG = document.querySelector("#colorWellInstructorBG");
-const colorWellInstructorFG = document.querySelector("#colorWellInstructorFG");
-
+const defaultColorMachineBG = "#f08080";
+const defaultColorMachineFG = "#000000";
+const defaultColorMemberBG = "#ADD8E6";
+const defaultColorMemberFG = "#000000";
+const defaultColorInstrBG = "#90EE90";
+const defaultColorInstrFG = "#000000";
 const shopChoice = document.querySelector('.shopChoice')
-//const shopSelection = document.getElementsByClassName('locationOption')
 const machineSelected = document.getElementById("machineSelected")
 const memberSelected = document.getElementById("memberSelected")
 const instructorSelected = document.getElementById("instructorSelected")
@@ -39,7 +30,9 @@ const machineMemberBtn = document.getElementById("machineMemberBtn")
 const machineInstructorsAndMembers = document.getElementById("machineInstructorsAndMembers")
 const keyInToolCribID = document.getElementById("keyInToolCribID")
 const keyProviderID = document.getElementById("keyProviderID")
-
+const btnEditMachine = document.getElementById('btnEditMachine')
+const btnDeleteMachine = document.getElementById('btnDeleteMachine')
+const btnNewMachine = document.getElementById('btnNewMachine')
 // EVENT LISTENERS
 shopChoice.addEventListener("change",locationClicked)
 machineSelected.addEventListener("change",machineClicked)
@@ -78,7 +71,7 @@ filterMachineDropdown(shopChoice.value)
 
 // SET VERSION OF APP AND CURRENT SCREEN SIZE (FOR DEVELOPMENT PURPOSES)
 versionText = document.getElementById('versionText')
-versionText.innerHTML='ver May 30, 2022  (' + screen.width + ')'
+versionText.innerHTML='ver June 1, 2022  (' + screen.width + ')'
 
 // IF NOT A LARGE SCREEN DISPLAY ONLY 1 PANEL AT A TIME INSTEAD OF ALL 3
 handleMediaChange(largeScreen)
@@ -225,11 +218,8 @@ function filterMachineDropdown(selectedLocation) {
 function machineClicked() {
     // CLEAR OTHER SELECTIONS
     if (machineSelected.selectedIndex > 1) {
-        document.getElementById('btnEditMachine').removeAttribute('disabled')
-        document.getElementById('btnDeleteMachine').removeAttribute('disabled')
-        // document.getElementById('btnEditMachine').style.display='inline-block'
-        // document.getElementById('btnDeleteMachine').style.display='inline-block'
-        // document.getElementById('btnNewMachine').style.display='inline-block'
+        btnEditMachine.removeAttribute('disabled')
+        btnDeleteMachine.removeAttribute('disabled')
         $('.selectpicker').selectpicker('refresh');
         memberSelected.selectedIndex = 0
         instructorSelected.selectedIndex = 0
@@ -239,9 +229,9 @@ function machineClicked() {
         instructorSelected.setAttribute('selectedIndex',0)
     }
     else {
-        document.getElementById('btnEditMachine').style.display='none'
-        document.getElementById('btnDeleteMachine').style.display='none'
-        document.getElementById('btnNewMachine').style.display='none'
+        btnEditMachine.style.display='none'
+        btnDeleteMachine.style.display='none'
+        btnNewMachine.style.display='none'
         return
     }
     // HIDE MEMBER AND INSTRUCTOR SECTIONS IF NOT ON LARGE SCREEN
@@ -256,7 +246,6 @@ function machineClicked() {
 }
 
 function memberClicked() {
-   
     // CLEAR OTHER SELECTIONS
     if (memberSelected.selectedIndex == 0) {
         return
@@ -276,13 +265,6 @@ function memberClicked() {
     let option = memberSelected.options[memberSelected.selectedIndex]; 
     villageID = memberSelected.options[memberSelected.selectedIndex].getAttribute('data-villageid')
     sessionStorage.setItem('villageID',villageID)
-    // ...................................
-    // ....PROGRAM ERRORS AT THE NEXT LINE  
-    //location=shopChoice.value
-    //location = 'RA'
-    //shopLocation = document.getElementById("shopChoice")
-    //location=shopLocation.value
-    // ....................................
     shopLocation = shopChoice.value
     displayMemberCertifications(villageID,shopLocation)
 }
@@ -401,8 +383,6 @@ function displayMachineInstructorsAndMembers() {
         var divInstructorHdg = document.createElement('div')
         divInstructorHdg.classList.add('instructorListHdg')
         divInstructorHdg.innerHTML = "Instructors:"
-        // divInstructorHdg.style.textAlign = 'left'
-        // divInstructorHdg.style.marginLeft = '30px'
         dtlParent.appendChild(divInstructorHdg)
 
         // Display List of Instructors
@@ -431,9 +411,6 @@ function displayMachineInstructorsAndMembers() {
         var divMemberHdg = document.createElement('div')
         divMemberHdg.classList.add('memberListHdg')
         divMemberHdg.innerHTML = "Certified Members:"
-        // divMemberHdg.style.textAlign = 'left'
-        // divMemberHdg.style.paddingTop = '30px'
-        // divMemberHdg.style.paddingLeft = '30px'
         dtlParent.appendChild(divMemberHdg)
 
         // Display list of members certified for this machine
@@ -460,9 +437,6 @@ function displayMachineInstructorsAndMembers() {
         var divUsageHdg = document.createElement('div')
         divUsageHdg.classList.add('machineUsageHdg')
         divUsageHdg.innerHTML = "Machine Usage:"
-        // divUsageHdg.style.textAlign = 'left'
-        // divUsageHdg.style.paddingTop = '30px'
-        // divUsageHdg.style.paddingLeft = '30px'
         dtlParent.appendChild(divUsageHdg)
 
         // Display dates machine was used 
@@ -473,8 +447,6 @@ function displayMachineInstructorsAndMembers() {
             var divNoMembers = document.createElement('div')
             divNoMembers.classList.add('noUsage')
             divNoMembers.innerHTML = "No usage to date."
-            //divNoMembers.style.width = '400px'
-            //divNoMembers.style.marginLeft = '60px'
             dtlParent.appendChild(divNoMembers)
         }
         else {
@@ -533,18 +505,11 @@ function displayMemberCertifications(villageID,location) {
     table = document.createElement('table')
     table.style="margin:auto"
 
-    // tableCaption = document.createElement('caption')
-    // tableCaption.style = "caption-side:top;text-align:center"
-    // tableCaption.innerHTML = data.memberName
-    // table.appendChild(tableCaption)
-
     tableBody = document.createElement('tbody')
-    //tableBody.id = 'memberMachineList'
     table.appendChild(tableBody)
 
 
     // Build data lines td1 - Home phone, td2 - mobile phone, td3 - email
-    
     tableRow = document.createElement("tr")
     td1Lbl = document.createElement("td")
     td1Data = document.createElement("td")
@@ -614,7 +579,6 @@ function displayMemberCertifications(villageID,location) {
     memberMachinesParent.appendChild(divHdgRow)
 
     for (m of machine) {
-
         // BUILD THE ROW
         var divRow = document.createElement('div')
         divRow.classList.add('row', 'mbrMachRow')
@@ -627,12 +591,12 @@ function displayMemberCertifications(villageID,location) {
         chkInput.type="checkbox"
         chkInput.id = "CERTIFY" + m['machineID']
         chkInput.onclick=function() {certifyMember(this)}
-        //chkInput.disabled = true
         chkInput.classList.add('col-1')
         chkInput.classList.add('certifyChkbox')
         if (m['memberCertified']) {
             chkInput.checked = true
             chkInput.innerHTML = 'True'
+            chkInput.disabled = true 
         }
         else {
             chkInput.innerHTML = 'False'
@@ -692,17 +656,6 @@ function displayMemberCertifications(villageID,location) {
         // ADD THE ROW TO THE DETAIL SECTION
         memberMachinesParent.appendChild(divRow)
     }
-
-    // var clrMemberBtn = document.createElement('button')
-    // clrMemberBtn.innerHTML = 'CLEAR'
-    // clrMemberBtn.style.marginRight='5px'
-    // clrMemberBtn.onclick=function() {clrMemberData(m['machineID'])}
-    // memberMachinesParent.appendChild(clrMemberBtn)
-
-    // var prtMemberBtn = document.createElement('button')
-    // prtMemberBtn.innerHTML = 'PRINT'
-    // prtMemberBtn.onclick=function() {prtMemberCertifications(m['machineID'])}
-    // memberMachinesParent.appendChild(prtMemberBtn)
     return
     })
 }
@@ -1086,11 +1039,7 @@ function populateMemberCertificationModal(certifyTransactionType,machineID) {
         if (data.certificationDuration == '7 days') {
             durationIndex = 6
         }
-        // console.log('durationIndex - '+durationIndex)
-        // certificationDuration = document.getElementById('certificationDuration')
-        // console.log('current selected index - '+ certificationDuration.selectedIndex)
-        // certificationDuration.selectedIndex = durationIndex
-        // console.log('new selected index - '+ certificationDuration.selectedIndex)
+        
         document.getElementById('certificationDuration').selectedIndex = durationIndex
         
 
@@ -1106,7 +1055,7 @@ function populateMemberCertificationModal(certifyTransactionType,machineID) {
             optionLine.innerHTML = "No instructors assigned."
             certificationModalInstructors.appendChild(optionLine)
             msg = "There are currently no instructors assigned to this machine."
-            msg += "\nYou will need to set up the instructors before you can certify any memnber."
+            msg += "\nYou will need to set up the instructors before you can certify any member."
             modalAlert("MEMBER AUTHORIZATION",msg)
             //$('#certifyMemberModal').modal('show')
             machineID = document.getElementById('certifyMachineID').value
@@ -1493,14 +1442,9 @@ function saveCertificationModal() {
 }
 
 function clrMachineData() {
-    // if (machineSelected.selectedIndex == 0) {
-    //     modalAlert('CLEAR MACHINE DATA',"Nothing to clear.")
-    //     return
-    // 
-    // }
+    btnDeleteMachine.disabled = true
 
     // Clear previous machine data
-    //document.getElementById('machineDurationAndKeyLocation').style.display=none
     machineData = document.getElementById('machineInstructorsAndMembers')
     while (machineData.firstChild) {
         machineData.removeChild(machineData.lastChild)
