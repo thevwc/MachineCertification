@@ -24,7 +24,7 @@ const instructorSelected = document.getElementById("instructorSelected")
 const machineDetailSection = document.getElementById("machineDetailSection")
 const memberDetailSection = document.getElementById("memberDetailSection")
 const instructorDetailSection = document.getElementById("instructorDetailSection")
-const largeScreen = window.matchMedia("(min-width: 992px)")
+const largeScreen = window.matchMedia("(min-width: 1280px)")
 const machineInstructorBtn = document.getElementById("machineInstructorBtn")
 const machineMemberBtn = document.getElementById("machineMemberBtn")
 const machineInstructorsAndMembers = document.getElementById("machineInstructorsAndMembers")
@@ -72,7 +72,7 @@ filterMachineDropdown(shopChoice.value)
 
 // SET VERSION OF APP AND CURRENT SCREEN SIZE (FOR DEVELOPMENT PURPOSES)
 versionText = document.getElementById('versionText')
-versionText.innerHTML='ver June 2, 2022  (' + screen.width + ')'
+versionText.innerHTML='ver June 2, 2022  (' + window.innerWidth + ')'
 
 // IF NOT A LARGE SCREEN DISPLAY ONLY 1 PANEL AT A TIME INSTEAD OF ALL 3
 handleMediaChange(largeScreen)
@@ -258,8 +258,10 @@ function memberClicked() {
     instructorSelected.selectedIndex = 0
 
     // HIDE MACHINE AND INSTRUCTOR SECTIONS IF NOT ON LARGE SCREEN
-    if (!largeScreen.matches) { 
+    //if (!largeScreen.matches) { 
+    if (window.innerWidth < 1280) {
         machineDetailSection.style.display="none"
+        clrMachineData()
         memberDetailSection.style.display="block"
         instructorDetailSection.style.display="none"
     }
@@ -678,7 +680,7 @@ function closeModal() {
 
 function handleMediaChange(e) {
     if (e.matches) {
-        // LOGIC FOR SCREENS 992 OR LARGER
+        // LOGIC FOR SCREENS 1280 OR LARGER
         machineDetailSection.style.display="block"
         memberDetailSection.style.display="block"
         instructorDetailSection.style.display="block"
@@ -1445,7 +1447,11 @@ function saveCertificationModal() {
 
 function clrMachineData() {
     btnDeleteMachine.disabled = true
-
+    machineBtns.style.display='none'
+    if (!largeScreen) {
+        // HIDE machineDetailSection
+        machineDetailSection.style.display="none"
+    }
     // Clear previous machine data
     machineData = document.getElementById('machineInstructorsAndMembers')
     while (machineData.firstChild) {

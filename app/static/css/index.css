@@ -112,7 +112,6 @@ input:read-write {
         padding-top:10px;
         margin-top:10px;
         height:100%;
-        /* height:600px */
         width:100%;
         margin:auto;
         overflow:auto;
@@ -195,9 +194,21 @@ input:read-write {
         margin:auto;
         font-size:small;
         overflow: auto;
+        border:1px solid red;
     }
-   
-    
+    .memberNameHdg {
+        background-color: white;
+        text-align: center;
+        margin:auto;
+        width:50%;
+        border:1px solid navy;
+        font-size: 1rem;
+    }
+    #memberMachines {
+        grid-area:detail2Area;
+        background-color: aliceblue;
+        margin:auto;
+    }
     /* #machineDescription {
         background-color: white;
         color:navy;
@@ -477,10 +488,10 @@ input:read-write {
         padding-left:30px;
     }
     
-    #footer {
+    /* #footer {
         grid-area: footerArea;
         background-color: navy;
-    }
+    } */
 }
 
 
@@ -922,11 +933,11 @@ input:read-write {
         padding-left:5px;
     }
     
-    #footer {
+    /* #footer {
         text-align: center;
         grid-area: footerArea;
         background-color: navy;
-    }
+    } */
 }
 /* MODAL CSS */
 /* .modal-dialog {
