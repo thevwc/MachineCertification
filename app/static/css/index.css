@@ -82,6 +82,7 @@ input:read-write {
     }
     .machineSelector {
         grid-area:machineSelectorArea;
+        text-align:center;
         margin:auto;
     }
     #machineSelected {
@@ -89,6 +90,7 @@ input:read-write {
     }
     .memberSelector {
         grid-area:memberSelectorArea;
+        text-align: center;
         margin:auto;
     }                         
     #memberSelected {
@@ -97,6 +99,7 @@ input:read-write {
     
     .instructorSelector {
         grid-area:instructorSelectorArea;
+        text-align: center;
         margin:auto;
     }                         
     #instructorSelected {
@@ -129,43 +132,55 @@ input:read-write {
     }
 
     .instructorListHdg {
-        text-align:center;
+        text-align:left;
         width:300px;
+        padding-top:30px;
         margin:auto;
         border-bottom:1px solid navy;
     }
     .noInstructors {
-        text-align:center;
+        text-align:left;
         width:300px;
         margin:auto;
     }
     .instructorName {
-        text-align:center;
+        text-align:left;
         width:300px;
+        padding-left:30px;
         margin:auto;
     }
     .memberListHdg {
-        text-align: center;
+        text-align: left;
+        width:300px;
         padding-top:30px;
         margin:auto;
+        border-bottom:1px solid navy;
     }
-    .memberName {
-        text-align:center;
+    .certifiedMemberName {
+        text-align:left;
+        width:300px;
+        padding-left:30px;
         margin:auto;    
     } 
     .machineUsageHdg {
         text-align:left;
-        margin-top:20px;
-        margin-left:50px;
+        width:300px;
+        padding-top:30px;
+        margin:auto;
+        border-bottom: 1px solid navy;
     }
     .noUsage {
         text-align: left;
-        margin-left:70px;
+        width:300px;
+        padding-left:30px;
+        margin:auto;
     }
     .usageDateAndName {
         text-align: left;
+        width:300px;
+        padding-left:30px;
         font-size: .75rem;
-        margin-left:20px;
+        margin:auto;
     }
     
    
@@ -303,7 +318,7 @@ input:read-write {
                             "machineDetailArea memberDetailArea instructorDetailArea"
                             "machineFooterArea memberFooterArea instructorFooterArea";
         gap:0px;
-        background-color:lightgray;
+        background-color:gray;
         top:0; bottom:0; left:0; right:0;
     }
     .heading {
@@ -337,51 +352,42 @@ input:read-write {
         width:100%;
     }
     .machineSelector {
-        grid-area:machineSelectorArea;
+        padding-top:5px;
+        padding-bottom:0px;
+        padding-left:10px;
+        padding-right:10px;
+        margin:0;
         background-color: var(--machine-bg-color);
-        padding-top:5px;
-        padding-bottom:0px;
-        margin:auto;
-        width:100%;
     }
-    /* #machineSelector {
-        background-color: lightcoral;
-    } */
-    
-
-    /* #machineSelected {
-        padding-left:100px;
-        width:500px;
-    } */
+  
     .memberSelector {
-        grid-area:memberSelectorArea;
-        background-color:var(--member-bg-color);
         padding-top:5px;
         padding-bottom:0px;
+        padding-left:10px;
+        padding-right:10px;
         margin:0;
-        width:100%;
+        background-color:var(--member-bg-color);
     }
-    /* #memberSelector {
-        grid-area:memberSelectorArea;
-        padding-top:0px;
-        padding-bottom:0px;
-        margin:0;
-        width:100%;
-    } */
+  
     #memberSelected {
         width:300px;
     }
-
+ 
     .instructorSelector {
-        grid-area:instructorSelectorArea;
-        background-color: var(--instructor-bg-color);
         padding-top:5px;
         padding-bottom:0px;
+        padding-left:10px;
+        padding-right:10px;
+        margin:0;
+        background-color: var(--instructor-bg-color);
+    }                          
+
+    #instructorSelected {
+        padding-top:5px;
+        padding-bottom:0px;
+        padding-left:30px;
         margin:0;
         width:100%;
-    }                         
-    #instructorSelected {
-        width:300px;
     }
     
     #machineDetailSection {
@@ -408,11 +414,11 @@ input:read-write {
     #keyProvider {
         border:1px solid fuchsia;
     } */
-    .certifiedMemberName {
+    /* .certifiedMemberName {
         text-align: left;
-        margin-left:70px;
+        padding:70px;
 
-    }
+    } */
     .usageDateAndName {
         text-align: left;
         width:400px;
@@ -528,14 +534,14 @@ input:read-write {
         background-color:navy;
         color: var(--main-txt-color);
     }
-    .machineSelector {
+    /* .machineSelector {
         grid-area:machineSelectorArea;
         background-color:var(--machine-bg-color);
         padding-top:5px;
         padding-bottom:0px;
         margin:0;
         width:100%;
-    }
+    } */
     /* #machineSelector {
         background-color: lightcoral;
     } */
@@ -565,7 +571,7 @@ input:read-write {
         width:300px;
     }
 
-    .instructorSelector {
+    /* .instructorSelector {
         grid-area:instructorSelectorArea;
         background-color: var(--instructor-bg-color);
         padding-top:5px;
@@ -573,7 +579,7 @@ input:read-write {
         padding-left:30px;
         margin:0;
         width:100%;
-    }                         
+    }                          */
     #instructorSelected {
         width:300px;
     }
@@ -764,7 +770,7 @@ input:read-write {
         padding-left:5px;
         width:100%;
     }
-    .machineSelector {
+    /* .machineSelector {
         grid-area:machineSelectorArea;
         background-color:var(--machine-bg-color);
         padding-top:5px;
@@ -772,9 +778,9 @@ input:read-write {
         padding-left:0px;
         text-align: center;
         width:100%;
-    }
+    } */
     
-    .memberSelector {
+    /* .memberSelector {
         grid-area:memberSelectorArea;
         background-color: var(--member-bg-color);
         padding-top:5px;
@@ -782,13 +788,13 @@ input:read-write {
         padding-left:0px;
         text-align:center;
         width:100%;
-    }
+    } */
    
     #memberSelected {
         width:300px;
     }
 
-    .instructorSelector {
+    /* .instructorSelector {
         grid-area:instructorSelectorArea;
         background-color: var(--instructor-bg-color);
         padding-top:5px;
@@ -796,7 +802,7 @@ input:read-write {
         padding-left:0px;
         text-align: center;
         width:100%;
-    }                         
+    }                          */
     #instructorSelected {
         width:300px;
     }
@@ -825,11 +831,11 @@ input:read-write {
         width:300px;
         margin-left:110px; 
     }
-    .memberListHdg {
+    /* .memberListHdg {
         text-align: left;
         padding-top:30px;
         margin-left:90px;
-    }
+    } */
     /* .noMembers {
         text-align: left;
         margin-left:110px;
