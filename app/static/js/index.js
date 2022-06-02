@@ -30,6 +30,7 @@ const machineMemberBtn = document.getElementById("machineMemberBtn")
 const machineInstructorsAndMembers = document.getElementById("machineInstructorsAndMembers")
 const keyInToolCribID = document.getElementById("keyInToolCribID")
 const keyProviderID = document.getElementById("keyProviderID")
+const machineBtns = document.getElementById('machineBtns')
 const btnEditMachine = document.getElementById('btnEditMachine')
 const btnDeleteMachine = document.getElementById('btnDeleteMachine')
 const btnNewMachine = document.getElementById('btnNewMachine')
@@ -71,7 +72,7 @@ filterMachineDropdown(shopChoice.value)
 
 // SET VERSION OF APP AND CURRENT SCREEN SIZE (FOR DEVELOPMENT PURPOSES)
 versionText = document.getElementById('versionText')
-versionText.innerHTML='ver June 1, 2022  (' + screen.width + ')'
+versionText.innerHTML='ver June 2, 2022  (' + screen.width + ')'
 
 // IF NOT A LARGE SCREEN DISPLAY ONLY 1 PANEL AT A TIME INSTEAD OF ALL 3
 handleMediaChange(largeScreen)
@@ -241,6 +242,7 @@ function machineClicked() {
         instructorDetailSection.style.display="none"
     }
     // GET MACHINE DATA TO DISPLAY
+    machineBtns.style.display="block"
     machineInstructorsAndMembers.style.display="block"
     displayMachineInstructorsAndMembers()
 }
