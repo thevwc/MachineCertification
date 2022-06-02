@@ -20,116 +20,9 @@ input:read-write {
 .colorCtrl {
     display:inline-block;
 }
-/* Phone layout (default) */
-/* @media only screen and (max-width:600px) {
-   
-} */
-    /* .parent {
-        display: grid;
-        grid-template-columns: 375px;
-        grid-template-rows: 40px 30px 30px 30px 30px 50px 550px 50px;
-        grid-template-areas:"hdgArea" 
-                            "versionArea"
-                            "locationSelectorArea"
-                            "machineSelectorArea"
-                            "memberSelectorArea"
-                            "instructorSelectorArea"
-                            "detailArea"
-                            "footerArea";
-        grid-gap:0em;
-        background-color: aqua; 
-        height:100%;
-        width:100%;              
-    } */
-    /* .heading {
-        grid-area: hdgArea;
-        display:grid;
-        padding-top: 0px;
-        padding-bottom:0px;
-        text-align: center;
-        background-color:navy;
-        color: var(--main-txt-color);
-        width:100%; 
-    } */
-
-    /* .version {
-        grid-area:versionArea;
-        font-size:.75rem;
-        padding-top:3px;
-        text-align:center;
-        background-color: navy;
-        color:white;
-    } */
-    
-    /* #locationSelector {
-        grid-area:locationSelectorArea;
-        padding-top:5px;
-        padding-bottom:0px;
-        padding-left:0px;
-        text-align: center;
-        margin-left:200px;
-        border:2px solid yellow;
-    } */
-    /* #locationSelected {
-        width:100px;
-    } */
-    /* #machineSelector {
-        grid-area:machineSelectorArea;
-        padding-top:5px;
-        padding-bottom:0px;
-        padding-left:0px;
-        margin:auto;
-    } */
-    /* #machineSelected {
-        width:200px;
-    } */
-    
-    /* #memberSelector {
-        grid-area:memberSelectorArea;
-        padding-top:5px;
-        padding-bottom:0px;
-        padding-left:0px;
-        margin:auto;
-        margin-top:5px;
-        margin-left:5px;
-    }                          */
-    /* #memberSelected {
-        width:280px;
-    } */
-
-    /* .instructorSelector {
-        grid-area:instructorSelectorArea;
-        padding-top:5px;
-        padding-bottom:0px;
-        padding-left:10px;
-        margin:auto;
-        margin-top:5px; 
-    }   */                      
-    /* #instructorSelected {
-        width:280px;
-    } */
-    
-    /* .noMembers {
-        text-align: left;
-        margin-left:70px;
-    } */
-    /* .certifiedMemberName {
-        text-align: left;
-        margin-left:70px;
-    } */
-    
-    /* .headings {
-        text-align:center;
-    } */
-    /* #footer {
-        align-items: center;
-        grid-area: footerArea;
-        background-color: navy;
-    } */
-
 
 /* iPad portrait (810x1080) and Kindle fire (800x1280)*/
-/* SINGLE COLUMN */
+/* ONE PANEL AT A TIME, TWO COLUMNS IN EACH PANEL */
 @media (min-width: 768px) {
     body {
         background-color: var(--main-body-bg-color);
@@ -141,19 +34,18 @@ input:read-write {
     .parent {
         width:100%;
         display: grid;
-        grid-template-columns:1fr;
-        grid-template-rows: 40px 30px 30px 30px 30px 50px 1040px 30px;
-        grid-template-areas: "hdgArea"
-                            "versionArea"
-                             "locationSelectorArea"
-                             "machineSelectorArea"
-                             "memberSelectorArea"
-                             "instructorSelectorArea"
-                             "detailArea"
-                             "footerArea";  
+        grid-template-columns:1fr 1fr;
+        grid-template-rows: 40px 30px 30px 30px 50px 1040px 30px;
+        grid-template-areas: "hdgArea hdgArea"
+                            "locationArea versionArea"
+                             "machineSelectorArea machineSelectorArea"
+                             "memberSelectorArea memberSelectorArea"
+                             "instructorSelectorArea instructorSelectorArea"
+                             "detailArea detailArea"
+                             "footerArea footerArea";  
         gap:0px;
         margin:0 0; 
-        background-color:lightgray;
+        background-color:lightcyan;
         overflow-y: hidden;
         
     }
@@ -170,23 +62,33 @@ input:read-write {
 
     .version {
         grid-area:versionArea;
-        font-size:.75rem;
-        text-align:center;
-        padding-top:7px;
         background-color: navy;
         color:white;
+        text-align:right;
         padding-right:20px;
+        /* 
+        font-size:.75rem;
+        align-content: right;
+        padding-top:7px;
+        
+        
+        width:100%; */
     }
-    #locationSelector {
-        grid-area:locationSelectorArea;
+    .locationSelector {
+        grid-area:locationArea;
+        background-color: navy;
+        color:white;
+        padding-left:20px;
+        /* align-content:left;
         padding-top:15px;
         padding-bottom:0px;
-        text-align: center;
+        text-align: left;
         margin:auto;
-        margin-left:200px;
-        margin-top:15px;   
+        
+        margin-top:15px; 
+        width:50%;   */
     }
-    #machineSelector {
+    .machineSelector {
         grid-area:machineSelectorArea;
         padding-top:15px;
         padding-bottom:0px;
@@ -231,6 +133,7 @@ input:read-write {
     #machineDetailSection {
         grid-area:detailArea;
         background-color: var (--member-bg-color);
+        background-color:orange;
         color: var (--machine-fg-color);
         padding-top:10px;
         margin-top:10px;
