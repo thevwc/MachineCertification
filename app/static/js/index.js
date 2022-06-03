@@ -383,14 +383,52 @@ function displayMachineInstructorsAndMembers() {
             
         dtlParent.appendChild(divDurationRow)
 
+        var breakElement = document.createElement('br')
+        dtlParent.appendChild(breakElement)
+        dtlParent.appendChild(breakElement)
+
         // Display Instructor heading
-        var divInstructorHdg = document.createElement('div')
-        divInstructorHdg.classList.add('instructorListHdg')
-        divInstructorHdg.innerHTML = "Instructors:"
-        dtlParent.appendChild(divInstructorHdg)
+        var divInstructorHdgRow = document.createElement('div')
+        divInstructorHdgRow.classList.add('row')
+        divInstructorHdgRow.classList.add('instructorHdgRow')
+
+        var divCol4 = document.createElement('div')
+        divCol4.classList.add('col-4')
+        divInstructorHdgRow.appendChild(divCol4)
+
+        var divInstructorHdgCol1 = document.createElement('div')
+        //divInstructorHdgCol1.classList.add('instructorListHdg')
+        divInstructorHdgCol1.classList.add('col-2')
+        divInstructorHdgCol1.innerHTML = "Staff:"
+        divInstructorHdgRow.append(divInstructorHdgCol1)
+        
+        var divInstructorHdgCol1 = document.createElement('div')
+        divInstructorHdgCol1.classList.add('staffClassificationHdg')
+        divInstructorHdgCol1.classList.add('col-1')
+        divInstructorHdgCol1.innerHTML = "Can Certify"
+        divInstructorHdgRow.append(divInstructorHdgCol1)
+
+        var divInstructorHdgCol2 = document.createElement('div')
+        divInstructorHdgCol2.classList.add('staffClassificationHdg')
+        divInstructorHdgCol2.classList.add('col-1')
+        divInstructorHdgCol2.innerHTML = "Key Provider"
+        divInstructorHdgRow.append(divInstructorHdgCol2)
+        
+        var divInstructorHdgCol3 = document.createElement('div')
+        divInstructorHdgCol3.classList.add('staffClassificationHdg')
+        divInstructorHdgCol3.classList.add('col-1')
+        divInstructorHdgCol3.innerHTML = "Can Assist"
+        divInstructorHdgRow.append(divInstructorHdgCol3)
+
+        var divRightCol = document.createElement('div')
+        divRightCol.classList.add('col-3')
+        divInstructorHdgRow.appendChild(divRightCol)
+        
+        dtlParent.appendChild(divInstructorHdgRow)
 
         // Display List of Instructors
-        instructors = data.instructorsList
+        instructors = data.instructorsDict
+
         if (instructors.length == 0) {
             var divNoInstructors = document.createElement('div')
             divNoInstructors.classList.add('noInstructors')
@@ -400,14 +438,100 @@ function displayMachineInstructorsAndMembers() {
             dtlParent.appendChild(divNoInstructors)
         }
         else {
-            for (i=0;i<instructors.length;i++) {
-                var divName = document.createElement('div')
-                divName.classList.add('instructorName')
-                divName.innerHTML = instructors[i]
-                // divName.style.paddingLeft = '60px'
-                // divName.style.width = '300px'
-                // divName.style.textAlign = 'left'
-                dtlParent.appendChild(divName)
+            for (i of instructors) {
+                var divRow = document.createElement('div')
+                divRow.id = 'N' + i.machineID
+                divRow.classList.add('row')
+            
+                divCol4.classList.add('col-4')
+                divRow.appendChild(divCol4)
+
+                var divCol1 = document.createElement('div')
+                divCol1.classList.add('col-2')
+                divCol1.innerHTML = i.instructorName
+                divRow.append(divCol1)
+        
+                // Certify checkbox
+                var chkInput = document.createElement('input')
+                chkInput.type="checkbox"
+                //chkInput.id = 'C' + m['machineID']
+                chkInput.classList.add('col-1')
+                chkInput.classList.add('canCertify','instrChkbox')
+                //chkInput.setAttribute("onclick","certifyFunction(this)")
+                if (i.canCertify) {
+                    chkInput.checked = true
+                    chkInput.innerHTML = 'True'
+                }
+                else {
+                    chkInput.innerHTML = 'False'
+                }
+                divRow.appendChild(chkInput)
+
+                // Key Provider checkbox
+                var chkInput = document.createElement('input')
+                chkInput.type="checkbox"
+                //chkInput.id = 'C' + m['machineID']
+                chkInput.classList.add('col-1')
+                chkInput.classList.add('keyProvider','instrChkbox')
+                //chkInput.setAttribute("onclick","certifyFunction(this)")
+                if (i.keyProvider) {
+                    chkInput.checked = true
+                    chkInput.innerHTML = 'True'
+                }
+                else {
+                    chkInput.innerHTML = 'False'
+                }
+                divRow.appendChild(chkInput)
+
+                // Can Assist checkbox
+                var chkInput = document.createElement('input')
+                chkInput.type="checkbox"
+                //chkInput.id = 'C' + m['machineID']
+                chkInput.classList.add('col-1')
+                chkInput.classList.add('canAssist','instrChkbox')
+                //chkInput.setAttribute("onclick","certifyFunction(this)")
+                if (i.canAssist) {
+                    chkInput.checked = true
+                    chkInput.innerHTML = 'True'
+                }
+                else {
+                    chkInput.innerHTML = 'False'
+                }
+                divRow.appendChild(chkInput)
+            
+                
+                // var divLeftCol = document.createElement('div')
+                // divLeftCol.classList.add('col-4')
+                // divNameRow.appendChild(divLeftCol)
+
+                // var divName = document.createElement('div')
+                // divName.classList.add('instructorName')
+                // divName.innerHTML = i.instructorName
+                // divName.classList.add('col-2')
+                // divNameRow.appendChild(divName)
+
+                // var divCertify = document.createElement('div')
+                // divCertify.innerHTML = i.canCertify
+                // divCertify.classList.add('col-1')
+                // divCertify.classList.add('staffClassification')
+                // divNameRow.appendChild(divCertify)
+
+                // var divKeyProvider = document.createElement('div')
+                // divKeyProvider.innerHTML = i.keyProvider
+                // divKeyProvider.classList.add('col-1')
+                // divCertify.classList.add('staffClassification')
+                // divNameRow.appendChild(divKeyProvider)
+
+                // var divAssist = document.createElement('div')
+                // divAssist.innerHTML = i.canAssist
+                // divAssist.classList.add('col-1')
+                // divCertify.classList.add('staffClassification')
+                // divNameRow.appendChild(divAssist)
+
+                // var divRightCol = document.createElement('div')
+                // divRightCol.classList.add('col-4')
+                // divInstructorHdgRow.appendChild(divRightCol)
+                dtlParent.appendChild(divRow)
             }
         }
 
@@ -728,6 +852,7 @@ function displayMachineInstructorData() {
             dtlParent.removeChild(dtlParent.lastChild);
         }
         
+       
         // Display Instructor Contact Data
         // var divInstructorName = document.createElement('div')
         // divInstructorName.innerHTML = data.instructorName

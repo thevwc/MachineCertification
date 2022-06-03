@@ -130,12 +130,25 @@ input:read-write {
         margin:auto;
     }
 
-    .instructorListHdg {
+    /* .instructorListHdg {
         text-align:left;
         width:300px;
         padding-top:30px;
         margin:auto;
         border-bottom:1px solid navy;
+    } */
+    .instructorHdgRow {
+        background-color: yellow;
+    }
+    /* .instructorNameRow {
+        margin-left:200px;
+        margin-right:200px;
+    } */
+    .staffClassificationHdg {
+        font-size:.5rem;
+    }
+    .staffClassification {
+        font-size: .5rem;
     }
     .noInstructors {
         text-align:left;

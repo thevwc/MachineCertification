@@ -132,12 +132,21 @@ def displayMachineData():
     
     # GET INSTRUCTORS FOR THIS MACHINE
         # GET INSTRUCTOR FOR THIS MACHINE
-    instructorsList = []
-    sp = "EXEC instructorsForSpecificMachine '" + machineID + "'"
+    instructorsDict = []
+    instructorsItem = []
+    sp = "EXEC staffForSpecificMachine '" + machineID + "'"
+    # sp = "EXEC instructorsForSpecificMachine '" + machineID + "'"
     sql = SQLQuery(sp)
     instructors = db.engine.execute(sql)
     if instructors == None:
-        instructorsList.append("No instructors assigned.")
+        instructorName = 'No instructors assigned.'
+        instructorsItem = {
+            'instructorName':instructorName,
+            'canCertify':'0',
+            'keyProvider':'0',
+            'canAssist':'0'
+        }
+        instructorsDict.append(instructorsItem)
     else:
         for i in instructors:
             instructorName = i.First_Name 
@@ -145,7 +154,15 @@ def displayMachineData():
                 if len(i.Nickname) > 0 :
                     instructorName += ' (' + i.Nickname + ')'
             instructorName += ' ' + i.Last_Name
-            instructorsList.append(instructorName)
+            
+            instructorsItem = {
+                'machineID':machineID,
+                'instructorName':instructorName,
+                'canCertify':i.canCertify,
+                'keyProvider':i.keyProvider,
+                'canAssist':i.canAssist
+            }
+            instructorsDict.append(instructorsItem)
 
     # GET MEMBERS CERTIFIED FOR THIS MACHINE
     certifiedDict = []
@@ -225,8 +242,9 @@ def displayMachineData():
         
     msg="Success"
     status=200
-    return jsonify(msg=msg,status=status,machineLocation=machineLocation,machineID=machineID,
-    machineDesc=machineDesc,machineDuration=machineDuration,instructorsList=instructorsList,\
+    return jsonify(msg=msg,status=status,machineLocation=machineLocation,machineID=machineID,\
+        machineDesc=machineDesc,machineDuration=machineDuration,\
+        instructorsDict=instructorsDict,\
         certifiedDict=certifiedDict,UsageDict=usageDict,keyInToolCrib=keyInToolCrib,keyProvider=keyProvider)
 
 
