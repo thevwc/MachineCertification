@@ -72,7 +72,7 @@ filterMachineDropdown(shopChoice.value)
 
 // SET VERSION OF APP AND CURRENT SCREEN SIZE (FOR DEVELOPMENT PURPOSES)
 versionText = document.getElementById('versionText')
-versionText.innerHTML='ver June 2, 2022  (' + window.innerWidth + ')'
+versionText.innerHTML='ver June 3, 2022  (' + window.innerWidth + ')'
 
 // IF NOT A LARGE SCREEN DISPLAY ONLY 1 PANEL AT A TIME INSTEAD OF ALL 3
 handleMediaChange(largeScreen)
@@ -81,9 +81,6 @@ handleMediaChange(largeScreen)
 // -------------
 // FUNCTIONS
 function startup() {
-    console.log ('startup rtn ...')
-    
-    
     colorWellMachineBG.addEventListener("input", updateMachineFirst, false);
     colorWellMachineBG.addEventListener("change", updateMachineAll, false);
     colorWellMachineBG.select();
@@ -236,10 +233,13 @@ function machineClicked() {
         return
     }
     // HIDE MEMBER AND INSTRUCTOR SECTIONS IF NOT ON LARGE SCREEN
-    if (!largeScreen.matches) {
+    if (window.innerWidth < 1280) {
         machineDetailSection.style.display="block"
+        machineFooter.style.display='block'
         memberDetailSection.style.display="none"
+        memberFooter.style.display="none"
         instructorDetailSection.style.display="none"
+        instructorFooter.style.display="none"
     }
     // GET MACHINE DATA TO DISPLAY
     machineBtns.style.display="block"
@@ -261,9 +261,12 @@ function memberClicked() {
     //if (!largeScreen.matches) { 
     if (window.innerWidth < 1280) {
         machineDetailSection.style.display="none"
+        machineFooter.style.display="none"
         clrMachineData()
         memberDetailSection.style.display="block"
+        memberFooter.style.display="block"
         instructorDetailSection.style.display="none"
+        instructorFooter.style.display="none"
     }
     // GET MEMBER CONTACT INFO TO DISPLAY
     let option = memberSelected.options[memberSelected.selectedIndex]; 
@@ -280,10 +283,13 @@ function instructorClicked() {
         memberSelected.selectedIndex = 0
     }
     // HIDE MACHINE AND MEMBER SECTIONS IF NOT ON LARGE SCREEN
-    if (!largeScreen.matches) {
+    if (window.innerWidth < 1280) {
         machineDetailSection.style.display="none"
+        machineFooter.style.display="none"
         memberDetailSection.style.display="none"
+        memberFooter.style.display="none"
         instructorDetailSection.style.display="block"
+        instructorFooter.style.display="block"
     }
     // GET INSTRUCTOR CONTACT DATA TO DISPLAY
     displayMachineInstructorData()
@@ -347,6 +353,7 @@ function displayMachineInstructorsAndMembers() {
 
         var inputKeyInToolCrib = document.createElement('input')
         inputKeyInToolCrib.type="radio"
+        inputKeyInToolCrib.disabled=true 
         inputKeyInToolCrib.name = 'keyInToolCrib'
         
         if (data.keyInToolCrib == true) {
@@ -367,6 +374,7 @@ function displayMachineInstructorsAndMembers() {
 
         var inputKeyProvider = document.createElement('input')
         inputKeyProvider.type="radio"
+        inputKeyProvider.disabled=true 
         inputKeyProvider.name = 'KeyProvider'
         
         if (data.keyProvider == true) {
@@ -387,18 +395,22 @@ function displayMachineInstructorsAndMembers() {
         dtlParent.appendChild(breakElement)
         dtlParent.appendChild(breakElement)
 
+        // DEFINE SECTION FOR STAFF
+        var divStaffSection = document.createElement('div')
+        divStaffSection.classList.add('staffSection')
+
         // Display Instructor heading
         var divInstructorHdgRow = document.createElement('div')
         divInstructorHdgRow.classList.add('row')
         divInstructorHdgRow.classList.add('instructorHdgRow')
 
-        var divCol4 = document.createElement('div')
-        divCol4.classList.add('col-4')
-        divInstructorHdgRow.appendChild(divCol4)
+        // var divCol4 = document.createElement('div')
+        // divCol4.classList.add('col-3')
+        // divInstructorHdgRow.appendChild(divCol4)
 
         var divInstructorHdgCol1 = document.createElement('div')
-        //divInstructorHdgCol1.classList.add('instructorListHdg')
-        divInstructorHdgCol1.classList.add('col-2')
+        divInstructorHdgCol1.classList.add('instructorListHdg')
+        divInstructorHdgCol1.classList.add('col-6')
         divInstructorHdgCol1.innerHTML = "Staff:"
         divInstructorHdgRow.append(divInstructorHdgCol1)
         
@@ -420,11 +432,11 @@ function displayMachineInstructorsAndMembers() {
         divInstructorHdgCol3.innerHTML = "Can Assist"
         divInstructorHdgRow.append(divInstructorHdgCol3)
 
-        var divRightCol = document.createElement('div')
-        divRightCol.classList.add('col-3')
-        divInstructorHdgRow.appendChild(divRightCol)
+        // var divRightCol = document.createElement('div')
+        // divRightCol.classList.add('col-3')
+        // divInstructorHdgRow.appendChild(divRightCol)
         
-        dtlParent.appendChild(divInstructorHdgRow)
+        divStaffSection.appendChild(divInstructorHdgRow)
 
         // Display List of Instructors
         instructors = data.instructorsDict
@@ -435,19 +447,22 @@ function displayMachineInstructorsAndMembers() {
             divNoInstructors.innerHTML = "No instructors assigned."
             //divNoInstructors.style.width = '400px'
             //divNoInstructors.style.paddingLeft = '60px'
-            dtlParent.appendChild(divNoInstructors)
+            divStaffSection.appendChild(divNoInstructors)
         }
         else {
             for (i of instructors) {
                 var divRow = document.createElement('div')
                 divRow.id = 'N' + i.machineID
                 divRow.classList.add('row')
+                divRow.classList.add('instructorListDtl')
             
-                divCol4.classList.add('col-4')
-                divRow.appendChild(divCol4)
+                // var divCol4 = document.createElement('div')
+                // divCol4.classList.add('col-3')
+                // divRow.appendChild(divCol4)
 
                 var divCol1 = document.createElement('div')
-                divCol1.classList.add('col-2')
+                divCol1.classList.add('col-6')
+                divCol1.style.paddingLeft='40px'
                 divCol1.innerHTML = i.instructorName
                 divRow.append(divCol1)
         
@@ -457,6 +472,7 @@ function displayMachineInstructorsAndMembers() {
                 //chkInput.id = 'C' + m['machineID']
                 chkInput.classList.add('col-1')
                 chkInput.classList.add('canCertify','instrChkbox')
+                chkInput.disabled=true
                 //chkInput.setAttribute("onclick","certifyFunction(this)")
                 if (i.canCertify) {
                     chkInput.checked = true
@@ -474,6 +490,7 @@ function displayMachineInstructorsAndMembers() {
                 chkInput.classList.add('col-1')
                 chkInput.classList.add('keyProvider','instrChkbox')
                 //chkInput.setAttribute("onclick","certifyFunction(this)")
+                chkInput.disabled=true
                 if (i.keyProvider) {
                     chkInput.checked = true
                     chkInput.innerHTML = 'True'
@@ -490,6 +507,7 @@ function displayMachineInstructorsAndMembers() {
                 chkInput.classList.add('col-1')
                 chkInput.classList.add('canAssist','instrChkbox')
                 //chkInput.setAttribute("onclick","certifyFunction(this)")
+                chkInput.disabled=true 
                 if (i.canAssist) {
                     chkInput.checked = true
                     chkInput.innerHTML = 'True'
@@ -498,41 +516,9 @@ function displayMachineInstructorsAndMembers() {
                     chkInput.innerHTML = 'False'
                 }
                 divRow.appendChild(chkInput)
-            
-                
-                // var divLeftCol = document.createElement('div')
-                // divLeftCol.classList.add('col-4')
-                // divNameRow.appendChild(divLeftCol)
-
-                // var divName = document.createElement('div')
-                // divName.classList.add('instructorName')
-                // divName.innerHTML = i.instructorName
-                // divName.classList.add('col-2')
-                // divNameRow.appendChild(divName)
-
-                // var divCertify = document.createElement('div')
-                // divCertify.innerHTML = i.canCertify
-                // divCertify.classList.add('col-1')
-                // divCertify.classList.add('staffClassification')
-                // divNameRow.appendChild(divCertify)
-
-                // var divKeyProvider = document.createElement('div')
-                // divKeyProvider.innerHTML = i.keyProvider
-                // divKeyProvider.classList.add('col-1')
-                // divCertify.classList.add('staffClassification')
-                // divNameRow.appendChild(divKeyProvider)
-
-                // var divAssist = document.createElement('div')
-                // divAssist.innerHTML = i.canAssist
-                // divAssist.classList.add('col-1')
-                // divCertify.classList.add('staffClassification')
-                // divNameRow.appendChild(divAssist)
-
-                // var divRightCol = document.createElement('div')
-                // divRightCol.classList.add('col-4')
-                // divInstructorHdgRow.appendChild(divRightCol)
-                dtlParent.appendChild(divRow)
+                divStaffSection.appendChild(divRow)
             }
+            dtlParent.appendChild(divStaffSection)
         }
 
         // Display 'Certified Members' heading

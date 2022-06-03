@@ -531,37 +531,29 @@ def prtMemberCertifications():
             'machineLocation': '',
             'dateCertified': ''
         }
-        print('machinesCertifiedItem - ',machinesCertifiedItem)
-
         machinesCertifiedDict.append(machineItem)
         return render_template("memberCerts.html",todaysDate=todaysDate,\
             memberName=memberName,villageID=villageID,\
             machineDict=machineDict)
+            
     # List the machines for which the member is certified
-    #     select memberMachineCertifications.*, machinesRequiringCertification.* from memberMachineCertifications
-    # left join machinesRequiringCertification on memberMachineCertifications.machineID = machinesRequiringCertification.machineID
-    # order by machineLocation, machineDesc
-    
     for mc in machinesCertified:
-        print('mc.machineID - ',mc.machineID)
-
         machineID = mc.machineID
         # Look up specific machine to get description and location
         machine = db.session.query(Machines).filter(Machines.machineID == machineID).first()
         if (machine == None):
-            msg="Missing machine record."
+            msg="Missing machine record # " + machineID + "."
             return jsonify(msg=msg,status=201)
         
         dateCertified=mc.dateCertified.strftime('%m-%d-%Y')
-        # print('machineID - ',machineID)
-        # print('dateCertified - ',dateCertified)
+        
         machinesCertifiedItem = {
             'machineID': machineID,
             'machineDesc': machine.machineDesc  + ' ('+ machineID + ')',
             'machineLocation': machine.machineLocation,
             'dateCertified':dateCertified
         }
-        # print('item - ',machinesCertifiedItem)
+        
         machinesCertifiedDict.append(machinesCertifiedItem)
         
     return render_template("memberCerts.html",todaysDate=todaysDate,\

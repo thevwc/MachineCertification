@@ -18,7 +18,7 @@ input:read-write {
     color:blue;
 }
 .colorCtrl {
-    display:inline-block;
+    display:none;
 }
 
 /* iPad portrait (810x1080) and Kindle fire (800x1280)*/
@@ -137,8 +137,17 @@ input:read-write {
         margin:auto;
         border-bottom:1px solid navy;
     } */
-    .instructorHdgRow {
-        background-color: yellow;
+    /* .instructorHdgRow {
+        width:70%;
+    } */
+    .staffSection {
+        margin-left:340px;
+    }
+    .instructorListHdg {
+        margin-left:0px
+    }
+    .instructorListDtl {
+        margin-left:0px
     }
     /* .instructorNameRow {
         margin-left:200px;
@@ -207,13 +216,12 @@ input:read-write {
         margin:auto;
         font-size:small;
         overflow: auto;
-        border:1px solid red;
     }
     .memberNameHdg {
         background-color: white;
         text-align: center;
-        margin:auto;
-        width:50%;
+        margin-left:250px;
+        width:450px;
         border:1px solid navy;
         font-size: 1rem;
     }
@@ -295,7 +303,7 @@ input:read-write {
     }
     #memberFooter {
         grid-area: footerArea;
-        display:none;
+        display:block;
         text-align: center;
         color:white;
         background-color: var (--member-bg-color);
@@ -303,7 +311,7 @@ input:read-write {
     }
     #instructorFooter {
         grid-area: footerArea;
-        display:none;
+        display:block;
         text-align: center;
         color:white;
         background-color:  var (--instructor-bg-color);
@@ -430,6 +438,16 @@ input:read-write {
         color:navy;
         margin-top:5px;
     }
+
+    .staffSection {
+        margin-left:150px;
+    }
+    /* .instructorListHdg {
+        margin-left:10px
+    } */
+    /* .instructorListDtl {
+        margin-left:70px
+    } */
     /* #keyInToolCrib {
         border:1px solid red;
         background-color: blue;
@@ -669,8 +687,8 @@ input:read-write {
     }
     .memberNameHdg {
         background-color: white;
-        margin-left:10px;
-        margin-right:10px;
+        width:450px;
+        margin-left:100px;
     }
     /* #memberMachineList {
         font-size: .75rem;
