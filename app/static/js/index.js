@@ -1544,4 +1544,9 @@ function retrieveStoredColors() {
     document.documentElement.style.setProperty('--instructor-fg-color', instructorFGcolorInput);
     colorWellInstructorFG.value = instructorFGcolorInput
 }
+
+function listStaff() {
+    shopLocation = localStorage.getItem('shopLocation')
+    window.location.href = '/listStaff?shopLocation=' + shopLocation
+}
 // END OF FUNCTIONS

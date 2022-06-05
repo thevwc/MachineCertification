@@ -903,3 +903,56 @@ def getDataForCertificationModal():
         dateCertified=dateCertifiedSTR,certificationDuration=certificationDuration,\
         suggestedDuration=suggestedDuration,\
         instructorsDict=instructorsDict,transactionType=transactionType)    
+
+@app.route('/listStaff',methods=['GET'])
+def listStaff():
+    shopLocation = request.args.get('shopLocation')
+    
+    if (shopLocation == 'RA'):
+        shopName = 'Rolling Acres'
+        whereClause = "WHERE machineLocation = 'RA' "
+    else:
+        if (shopLocation =='BW'):
+            shopName = 'Brownwood'
+            whereClause = "WHERE machineLocation = 'BW' "
+        else:
+            shopName = 'Both locations'
+            whereClause = ''
+
+    todays_date = date.today()
+    todays_dateSTR = todays_date.strftime('%B %-d, %Y')
+
+    sqlSelect = "select lfn_name, machineDesc, canCertify, machineInstructors.keyProvider as key_Provider, "
+    sqlSelect += "canAssist from machineInstructors "
+    sqlSelect += "left join tblMember_Data on machineInstructors.member_ID = tblMember_Data.member_ID "
+    sqlSelect += "left join machinesRequiringCertification on machineInstructors.machineID = machinesRequiringCertification.machineID "
+    sqlSelect += whereClause + " "
+    sqlSelect += "order by lfn_name, machineDesc"
+    
+
+    staff = db.session.execute(sqlSelect)
+
+    staffDict = []
+    staffItem = []
+
+    saveMemberName = ''
+    for s in staff:
+        if s.lfn_name != saveMemberName :
+            memberName = s.lfn_name
+        else:
+            memberName = ''
+
+        staffItem = {
+            'memberName':memberName,
+            'machineDesc':s.machineDesc,
+            'canCertify':s.canCertify,
+            'keyProvider':s.key_Provider,
+            'canAssist':s.canAssist
+        }
+        saveMemberName = s.lfn_name
+
+        staffDict.append(staffItem)
+
+    return render_template("rptStaffList.html",\
+        todaysDate=todays_dateSTR,staffDict=staffDict,shopName=shopName
+        )
