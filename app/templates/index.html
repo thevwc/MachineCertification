@@ -128,6 +128,7 @@
 
     <div id="machineFooter">
         <button id="clearMachineData" class="footerClearBtn" onclick="clrMachineData()">CLEAR</button>
+        <button id="listMachines" class="footerClearBtn" onclick="listMachines()">LIST MACHINES</button>
         <label for="colorWellInstrBG" class="colorCtrl">BG:</label>
         <input type="color" class="colorCtrl" value="#ff0000" id="colorWellMachineBG">
         <label for="colorWellMachineFG" class="colorCtrl" >Text:</label>
@@ -135,12 +136,14 @@
         <!-- <button class="colorCtrl footerResetBtn btn btn-sm btn-primary" onclick="recolorCtrl('machine')" style="margin-top:0px;margin-bottom:4px;">RESET</button> -->
     </div> 
     <div id="memberDetailSection">
+        <div id="currentMember" style="display:block"></div>
         <div id="memberData"></div>
         <div id="memberMachines"></div>
     </div>  
     <div id="memberFooter">
         <button id="clearMemberData" class="footerClearBtn"  onclick="clrMemberData()">CLEAR</button>
-        <button id="printMemberData"onclick="prtMemberCertifications()">PRINT</button>
+        <button id="listCertifiedMembers" class="footerClearBtn" onclick="listCertifiedMembers()">LIST AUTHORIZED</button>
+        <button id="printMemberData"onclick="prtMemberCertifications()">PRINT CURRENT</button>
         <label for="colorWellMemberBG" class="colorCtrl">BG:</label>
         <input type="color" class="colorCtrl" value="#ff0000" id="colorWellMemberBG">
         <label for="colorWellMemberFG" class="colorCtrl" >Text:</label>
@@ -153,6 +156,7 @@
     </div> 
     <div id="instructorFooter">
         <button id="clearInstructorData" class="footerClearBtn"  onclick="clrInstructorData()">CLEAR</button>
+        <button id="listStaff" class="footerClearBtn" onclick="listStaff()">LIST STAFF</button>
         <label for="colorWellInstrBG" class="colorCtrl">BG:</label>
         <input type="color" class="colorCtrl" value="#ff0000" id="colorWellInstrBG">
         <label for="colorWellInstrFG" class="colorCtrl">Text:</label>

@@ -220,10 +220,13 @@ input:read-write {
     .memberNameHdg {
         background-color: white;
         text-align: center;
-        margin-left:250px;
+        margin:auto;
         width:450px;
         border:1px solid navy;
         font-size: 1rem;
+    }
+    .certifiedHdg {
+        text-align: center;
     }
     #memberMachines {
         grid-area:detail2Area;
@@ -688,7 +691,10 @@ input:read-write {
     .memberNameHdg {
         background-color: white;
         width:450px;
-        margin-left:100px;
+        margin:auto;
+    }
+    .certifiedHdg {
+        text-align: center;
     }
     /* #memberMachineList {
         font-size: .75rem;
