@@ -27,12 +27,6 @@ from flask_mail import Mail, Message
 mail=Mail(app)
 import requests
 
-# temp code
-# @app.route('/index')
-# def index():
-#     print ('/index found')
-#     return
-
 # LOAD INITIAL LOGIN PAGE
 @app.route('/',methods=['GET','POST'])
 @app.route('/login',methods=['GET','POST'])
@@ -57,8 +51,7 @@ def index():
     sqlMachines += "suggestedCertificationDuration, keyInToolCrib, keyProvider "
     sqlMachines += "FROM MachinesRequiringCertification "
     sqlMachines += "ORDER BY machineLocation, machineDesc "
-    #print('sqlMachines - ',sqlMachines)
-
+    
     machineList = db.engine.execute(sqlMachines)
     if machineList == None:
         flash('No names to list.','danger')
@@ -114,11 +107,8 @@ def getMemberLoginData():
     
 @app.route('/displayMachineInstructorsMembersUsage',methods=['GET','POST'])
 def displayMachineData():
-    #print('... displayMachineData')
-
     req = request.get_json()
     machineID = req["machineID"]
-    #print('machineID - ',machineID)
 
     machine = db.session.query(Machines).filter(Machines.machineID == machineID).first()
     if machine == None:
@@ -250,8 +240,6 @@ def displayMachineData():
 
 @app.route('/displayMemberData',methods=['POST'])
 def displayMemberData():
-    #print('... displayMemberData')
-    
     req = request.get_json() 
     villageID = req["villageID"]
     shopLocation = req["shopLocation"]
@@ -403,9 +391,7 @@ def displayMachineInstructors():
 
 
 @app.route('/certifyMember',methods=['GET','POST'])
-def certifyMember():
-    #print('... /certifyMember')
-    
+def certifyMember():  
     req = request.get_json()
     transactionType = req["certifyTransactionType"]
     memberID = req["memberID"]
@@ -413,16 +399,9 @@ def certifyMember():
     certifiedBy = req["certifiedBy"]
     duration = req["duration"]
     dateCertified = req["dateCertified"]
-    #staffID = req["staffID"]
     todaysDate = date.today().strftime('%Y-%m-%d')
 
-    print('memberID -',memberID)
-    print('machineID - ',machineID)
-    print('certifiedBy - ',certifiedBy)
-    #print('todaysDate - ',todaysDate)
-
     # GET THE MEMBERS CURRENT CERTIFICATION RECORD
-    print('transactionType - ',transactionType)
     if (transactionType == 'EDIT'):
         mbrCert = db.session.query(MemberMachineCertifications)\
             .filter(MemberMachineCertifications.machineID == machineID)\
@@ -445,7 +424,7 @@ def certifyMember():
         # CREATE NEW RECORD
         sqlInsert = "INSERT INTO memberMachineCertifications (member_ID,dateCertified,certifiedBy,machineID,certificationDuration)"
         sqlInsert += " VALUES('" + memberID + "', '" + dateCertified + "', '" + certifiedBy + "', '" + machineID + "', '" + duration + "')"
-        #print('sqlInsert - ',sqlInsert)
+    
         try:
             certification = db.engine.execute(sqlInsert)
             msg="New certification record added."
@@ -456,36 +435,16 @@ def certifyMember():
             msg='Record could not be inserted'
             return jsonify(msg=msg,status=201)
 
-    # sp = "EXEC newMemberMachineCertification '" + memberID + "', '" + todaysDate + "', '" + machineID + "', '" + staffID + "'"
-    # print('sp - ',sp)
-    # try:
-    #     sql = SQLQuery(sp)
-    #     certification = db.engine.execute(sql)
-    # except:
-    #     print('error on EXEC')
-    # if certification == None: 
-    #     print('certification - ',certification)
-    #     msg='Record could not be inserted'
-    #     return jsonify(msg=msg,status=201)
-    
-    # msg='Success'
-    # return jsonify(msg=msg,status=200)
 
 @app.route('/deCertifyMember',methods=['GET','POST'])
 def deCertifyMember():
-    #print('... /deCertifyMember')
-    
     req = request.get_json()
     memberID = req["memberID"]
     machineID = req["machineID"]
     
-    # print('memberID - ',memberID)
-    # print('machineID - ',machineID)
-    # print('staffID - ',staffID)
-    
     sqlDelete = "DELETE FROM memberMachineCertifications "
     sqlDelete += " WHERE member_ID = '" + memberID + "' and machineID = '" + machineID + "'"
-    #print('sqlDelete - ',sqlDelete)
+   
     try:
         certification = db.engine.execute(sqlDelete)
         msg="Authorization removed."
@@ -498,7 +457,6 @@ def deCertifyMember():
     
 @app.route('/prtMemberCertifications')
 def prtMemberCertifications():
-    #print('/prtMemberCertifications')
     villageID=request.args.get('villageID')
     today=date.today()
     todaysDate = today.strftime('%B %d, %Y')
@@ -562,8 +520,6 @@ def prtMemberCertifications():
 
 @app.route('/editMachine',methods=['GET','POST'])
 def editMachine():
-    #print('... /editMachine')
-    
     req = request.get_json()
     machineID = req["machineID"]
     machineDesc = req["machineDesc"]
@@ -572,13 +528,6 @@ def editMachine():
     keyInToolCrib = req["keyInToolCrib"]
     keyProvider = req["keyProvider"]
 
-    # print('machineID - ',machineID)
-    # print('machineDesc -',machineDesc)
-    # print('machineLocation - ',machineLocation)
-    # print('certificationDuration - ',certificationDuration)
-    # print('keyInToolCrib - ',type(keyInToolCrib),keyInToolCrib)
-    # print('keyProvider - ',type(keyProvider),keyProvider)
-    
     machine = db.session.query(Machines).filter(Machines.machineID == machineID).first()
     if (machine == None):
         return jsonify(msg="Machine not found.",status=201)
@@ -586,34 +535,9 @@ def editMachine():
         machine.machineDesc = machineDesc
         machine.machineLocation = machineLocation
         machine.suggestedCertificationDuration = suggestedCertificationDuration
-        # if keyInToolCrib == 1:
-        #     machine.keyInToolCrib = True
-        # else:
-        #     machine.keyInToolCrib = False
         machine.keyInToolCrib = keyInToolCrib
-
-        # if keyProvider == 1:
-        #     machine.keyProvider = True
-        # else:
-        #     machine.keyProvider = False
         machine.keyProvider = keyProvider
-        
-        # print('machine.certificationDuration - ',machine.certificationDuration)
-        # print('machine.keyInToolCrib - ',machine.keyInToolCrib)
-        # print('machine.keyProvider - ',machine.keyProvider)
-        
-        # sqlUpdate = "UPDATE machinesRequiringCertification SET "
-        # sqlUpdate += "machineDesc = '" + machineDesc + "', "
-        # sqlUpdate += "machineLocation = '" + machineLocation + "', "
-        # sqlUpdate += "certificationDuration = '" + certificationDuration + "', "
-        # sqlUpdate += "keyInToolCrib = " + str(keyInToolCrib) + ", "
-        # sqlUpdate += "keyProvider = " + str(keyProvider) 
-        # sqlUpdate += " WHERE machineID = '" + machineID + "'"
-
-        # print(sqlUpdate)
-
     
-        #db.query.execute(sqlUpdate)
         db.session.commit()
         msg="Update succeeded"
         print(msg)
@@ -644,9 +568,7 @@ def editMachine():
 #except (sqlalchemy.exc.SQLAlchemyError, sqlalchemy.exc.DBAPIError) as e:
 
 @app.route('/newMachine',methods=['GET','POST'])
-def newMachine():
-    print('... /newMachine')
-    
+def newMachine():  
     req = request.get_json()
     machineDesc = req["machineDesc"]
     machineLocation = req["machineLocation"]
@@ -655,13 +577,6 @@ def newMachine():
     keyProvider = req["keyProvider"]
     machineID = getNextMachineID()
     
-
-    print('machineDesc -',machineDesc)
-    print('machineLocation - ',machineLocation)
-    print('certificationDuration - ',certificationDuration)
-    print('keyInToolCrib - ',type(keyInToolCrib),keyInToolCrib)
-    print('keyProvider - ',type(keyProvider),keyProvider)
-    print('machineID - ',machineID)
     if (keyInToolCrib):
         keyInToolCribNumber = 1
     else:
@@ -694,7 +609,7 @@ def newMachine():
     sqlInsert += "suggestedCertificationDuration,keyInToolCrib,keyProvider) "
     sqlInsert += " VALUES ('" + machineID + "', '" +  machineDesc +"', '" + machineLocation + "', '" 
     sqlInsert += suggestedCertificationDuration + "'," + str(keyInToolCribNumber) + "," + str(keyProviderNumber) + ")"
-    print('sqlInsert - ',sqlInsert)
+   
     try:
         result = db.engine.execute(sqlInsert)
         if result != 0:
@@ -706,28 +621,6 @@ def newMachine():
         flash("ERROR - DB error")
         msg='Record could not be inserted'
         return jsonify(msg=msg,status=201)
-
-    # sp = "EXEC newMachine '" + machineID + "', '" + machineDesc + "', '" 
-    # sp += "" + machineLocation + "', '" + certificationDuration + "', " 
-    # sp += "" + str(keyInToolCrib) + "," + str(keyProvider) 
-    # print('sp - ',sp)
-
-    # sql = SQLQuery(sp)
-    # try:
-    #     result = db.engine.execute(sql)
-    #     if result == 0:
-    #         msg = "Add failed"
-    #         status = 400
-    #     else:
-    #         msg = "Add succeeded"
-    #         status = 200
-    #     return jsonify(msg=msg,status=status)
-    # except (SQLAlchemyError, DBAPIError) as e:
-    #     print("ERROR -",e)
-    #     flash("ERROR - DB error")
-    #     msg='Record could not be added'
-    #     return jsonify(msg=msg,status=201)
-    
 
 
 def getNextMachineID():
@@ -750,7 +643,7 @@ def deleteMachine():
 
     try:
         result = db.engine.execute(sqlDelete)
-        print('result - ',result)
+        
         if result != 0:
             print('success')
             return jsonify(msg="Machine deleted.",status=200)
@@ -831,11 +724,8 @@ def getDataForCertificationModal():
     machineID = req["machineID"]
     villageID = req["villageID"]
     transactionType = req["certifyTransactionType"]
-    print('machineID - |'+machineID+"|")
+  
     # GET DATA COMMON TO BOTH 'NEW' AND 'EDIT'
-    # sqlSelect = "SELECT top 1 * FROM machinesRequiringCertification WHERE machineID = '" + machineID + "'"
-    #machine = db.engine.execute(sqlSelect)
-    # print('sqlSelect - ',sqlSelect)
     try:
         machine = db.session.query(Machines).filter(Machines.machineID == machineID).first()
     except (SQLAlchemyError, DBAPIError) as e:
@@ -929,9 +819,7 @@ def listCertified():
     sqlSelect += "left join tblMember_Data m2 on memberMachineCertifications.certifiedBy = m2.member_ID "
     sqlSelect += whereClause + " "
     sqlSelect += "order by m1.lfn_name, machineDesc"
-    
-    print(sqlSelect)
-
+   
     certified = db.session.execute(sqlSelect)
 
     certifiedDict = []
