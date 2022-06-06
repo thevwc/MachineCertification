@@ -907,8 +907,7 @@ def getDataForCertificationModal():
 @app.route('/listCertified',methods=['GET'])
 def listCertified():
     shopLocation = request.args.get('shopLocation')
-    print('shopLocation - ',shopLocation)
-
+    
     if (shopLocation == 'RA'):
         shopName = 'Rolling Acres'
         whereClause = "WHERE machineLocation = 'RA' "
@@ -954,18 +953,40 @@ def listCertified():
             machineDesc = c.machineDesc
 
         # Is certification expired?
+        today=date.today()
+        delta = today - c.dateCertified
+        daysElapsed = delta.days
 
-        # Look up initials of 'instructor'
-        #certifiedBy = c.certifiedBy
-        #instructorsInitials = db.session.query(Member.Initials).filter(Member.Member_ID == certifiedBy).scalar()
-        #print('instructorsInitials - ',instructorsInitials)
+        certificationDuration = c.certificationDuration
+        certificationExpired = False
+        if certificationDuration.rstrip() == 'UNL':
+            certificationExpired = False
+        if certificationDuration.rstrip() == '365 days':
+            if daysElapsed > 365:
+                certificationExpired = True
+        if certificationDuration.rstrip() == '180 days':
+            if daysElapsed > 180:
+                certificationExpired = True
+        if certificationDuration.rstrip() == '90 days':
+            if daysElapsed > 90:
+                certificationExpired = True
+        if certificationDuration.rstrip() == '60 days':
+            if daysElapsed > 60:
+                certificationExpired = True
+        if certificationDuration.rstrip() == '30 days':
+            if daysElapsed > 30:
+                certificationExpired = True
+        if certificationDuration.rstrip() == '7 days':
+            if daysElapsed > 7:
+                certificationExpired = True
 
         certifiedItem = {
             'memberName':memberName,
             'machineDesc':machineDesc,
             'duration':c.certificationDuration,
             'dateCertified':c.dateCertified.strftime('%-m-%-d-%Y'),
-            'certifiedBy':c.instructorInitials
+            'certifiedBy':c.instructorInitials,
+            'expired':certificationExpired
         }
         
         saveMemberName = c.memberName

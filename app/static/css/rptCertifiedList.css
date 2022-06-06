@@ -45,6 +45,9 @@
 	.newLine {
 		border-top:1px solid black;
 	}
+	.expired {
+		text-decoration: line-through;
+	}
 	/* th, td {
 		border: 1px solid black; 
 	} */
@@ -132,6 +135,9 @@
 	}
 	.newLine {
 		border-top:1px solid black;
+	}
+	.expired {
+		text-decoration: line-through;
 	}
 }
 

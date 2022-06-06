@@ -29,16 +29,30 @@
             <th>Name</th>
             <th>Machine</th>
             <th style="text-align:center">Duration</th>
-            <th>Date Certified</th>
-            <th>Certified By</th>
+            <th style="text-align:right">Date Certified</th>
+            <th></th>
+            <th style="text-align:center">Certified By</th>
         </thead> 
         {% for c in certifiedDict %} 
-            <tr id=certifiedLine {% if c['memberName'] != '' %} class="newLine" {% endif %}>
+            <tr id=certifiedLine
+                {% if c['memberName'] != '' %}
+                    class="newLine"
+                {% endif %}>
                 <td>{{c['memberName']}}</td>
                 <td>{{c['machineDesc']}}</td>
                 <td style="text-align:center">{{c['duration']}}</td>
-                <td>{{c['dateCertified']}}</td>
-                <td>{{c['certifiedBy']}}</td>
+                <td style="text-align:right"
+                    {% if c['expired'] %}
+                        class="expired"
+                    {% endif %}>
+                    {{c['dateCertified']}}
+                </td>
+                {% if (c['expired']) %}
+                    <td style="text-align:center">Expired</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+                <td style="text-align:center">{{c['certifiedBy']}}</td>
             </tr>  
         {% endfor %}
     </table> 
