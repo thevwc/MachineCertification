@@ -1545,6 +1545,18 @@ function retrieveStoredColors() {
     colorWellInstructorFG.value = instructorFGcolorInput
 }
 
+
+
+function listMachines() {
+    shopLocation = localStorage.getItem('shopLocation')
+    window.location.href = '/listMachines?shopLocation=' + shopLocation
+}
+
+function listCertifiedMembers() {
+    shopLocation = localStorage.getItem('shopLocation')
+    window.location.href = '/listCertified?shopLocation=' + shopLocation
+}
+
 function listStaff() {
     shopLocation = localStorage.getItem('shopLocation')
     window.location.href = '/listStaff?shopLocation=' + shopLocation

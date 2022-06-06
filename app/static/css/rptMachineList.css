@@ -1,0 +1,147 @@
+@media screen { 
+	.wholePage {
+		line-height: 1.5;
+	}
+	.pageButtons {
+		display:block;
+		text-align: right;
+		width:100%;
+		margin-right:20px;
+	} 
+	
+   	h1, h2, h3 {
+		color: black;
+		text-align: center;
+		font-family: "Times New Roman",Times, sans-serif,serif;
+   } 
+   	h1 {
+		font-size: 18pt;
+		break-before: avoid;
+	}
+	
+	h2 {
+		font-size: 16pt;
+	}
+	
+	h3 {
+		font-size: 14pt;
+	}
+	
+   	table {
+		width:55%;
+		margin:0 auto;
+	}
+	tr:nth-child(odd) {
+		background-color: white;
+	}
+	tr:nth-child(even) {
+		background-color: lightgray;
+	}
+	th {
+		font:size 10pt;
+		background-color: navy;
+		color:white;
+	}
+	.newLine {
+		border-top:1px solid black;
+	}
+	/* th, td {
+		border: 1px solid black; 
+	} */
+	td {
+		font: size 8pt;
+		/* border:1px solid blue; */
+		
+	}
+	#line1 {
+		background-color:lightgray;
+	}
+    .chkMark {
+		text-align: center;
+	}
+} 
+
+@media print {
+	html, body {
+		font-size:.85rem;
+		break-before:avoid;
+		break-after:avoid;
+	}
+	.wholePage {
+		line-height: 1.5;
+		width:100%;
+		margin:0 auto;
+		break-before:avoid;
+		break-after:avoid;
+		/* break-inside: avoid; */
+	}
+ 	
+	.pageButtons {
+		display:none;
+	}
+	body {
+		height:99%;
+		break-after:avoid;
+		break-before:avoid;
+	}
+	h1 {
+		font-size: 18pt;
+		break-before: avoid;
+	}
+			
+	h2 {
+			font-size: 16pt;
+			}
+			
+	h3 {
+			font-size: 14pt;
+			}
+			
+	h1, h2, h3, h4, h5 {
+		text-align:center;
+		font-weight: bold;
+		break-after: avoid;
+	}
+
+
+	table {
+		width:75%;
+		margin:0 auto;
+	}
+
+	table thead th { border-bottom: 1px solid #000; }
+
+	th {
+		background-color: white;
+		color: black;
+		font-size:14px;
+	}
+
+	
+	#line1 {
+		background-color:lightgray;
+	}
+	.chkMark {
+		text-align: center;
+	}
+	tr:nth-child(odd) {
+		background-color: white;
+	}
+	tr:nth-child(even) {
+		background-color: lightgray;
+	}
+	.newLine {
+		border-top:1px solid black;
+	}
+}
+
+@page {
+	size: portrait;
+	orientation: portrait;
+	display:block;
+	position:relative;
+	margin:1cm;
+	/* break-before: avoid;
+	break-after: avoid;
+	break-inside: avoid; */
+} 

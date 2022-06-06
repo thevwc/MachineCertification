@@ -54,7 +54,7 @@ def index():
      # BUILD ARRAY OF MACHINE NAMES FOR DROPDOWN LIST OF MACHINES
     #machineNames=[]
     sqlMachines = "SELECT machineID, machineDesc, machineLocation + ' - ' + machineDesc + ' (' + machineID + ')' as machineDisplayName, machineLocation, "
-    sqlMachines += "certificationDuration, keyInToolCrib, keyProvider "
+    sqlMachines += "suggestedCertificationDuration, keyInToolCrib, keyProvider "
     sqlMachines += "FROM MachinesRequiringCertification "
     sqlMachines += "ORDER BY machineLocation, machineDesc "
     #print('sqlMachines - ',sqlMachines)
@@ -126,7 +126,7 @@ def displayMachineData():
         return jsonify(msg=msg,status=400)
     machineDesc = machine.machineDesc + ' (' + machineID + ') at ' + machine.machineLocation
     machineLocation = machine.machineLocation
-    machineDuration = machine.certificationDuration
+    machineDuration = machine.suggestedCertificationDuration
     keyInToolCrib = machine.keyInToolCrib
     keyProvider = machine.keyProvider
     
@@ -568,7 +568,7 @@ def editMachine():
     machineID = req["machineID"]
     machineDesc = req["machineDesc"]
     machineLocation = req["machineLocation"]
-    certificationDuration = req["certificationDuration"]
+    suggestedCertificationDuration = req["suggestedCertificationDuration"]
     keyInToolCrib = req["keyInToolCrib"]
     keyProvider = req["keyProvider"]
 
@@ -585,7 +585,7 @@ def editMachine():
     try:
         machine.machineDesc = machineDesc
         machine.machineLocation = machineLocation
-        machine.certificationDuration = certificationDuration
+        machine.suggestedCertificationDuration = suggestedCertificationDuration
         # if keyInToolCrib == 1:
         #     machine.keyInToolCrib = True
         # else:
@@ -650,7 +650,7 @@ def newMachine():
     req = request.get_json()
     machineDesc = req["machineDesc"]
     machineLocation = req["machineLocation"]
-    certificationDuration = req["certificationDuration"]
+    suggestedCertificationDuration = req["suggestedCertificationDuration"]
     keyInToolCrib = req["keyInToolCrib"]
     keyProvider = req["keyProvider"]
     machineID = getNextMachineID()
@@ -691,9 +691,9 @@ def newMachine():
     #     return jsonify(msg=msg,status=201)
 
     sqlInsert = "INSERT INTO [machinesRequiringCertification] ([machineID],[machineDesc], [machineLocation],"
-    sqlInsert += "certificationDuration,keyInToolCrib,keyProvider) "
+    sqlInsert += "suggestedCertificationDuration,keyInToolCrib,keyProvider) "
     sqlInsert += " VALUES ('" + machineID + "', '" +  machineDesc +"', '" + machineLocation + "', '" 
-    sqlInsert += certificationDuration + "'," + str(keyInToolCribNumber) + "," + str(keyProviderNumber) + ")"
+    sqlInsert += suggestedCertificationDuration + "'," + str(keyInToolCribNumber) + "," + str(keyProviderNumber) + ")"
     print('sqlInsert - ',sqlInsert)
     try:
         result = db.engine.execute(sqlInsert)
@@ -844,7 +844,7 @@ def getDataForCertificationModal():
         return jsonify(msg=msg,status=201) 
     
     machineDesc = machine.machineDesc + "(" + machine.machineLocation + ")"
-    machineDuration = machine.certificationDuration
+    machineDuration = machine.suggestedCertificationDuration
     suggestedDuration = 'Std - ' + machineDuration
     
     # TRANSACTION DEPENDENT DATA FOR AUTHORIZATION MODAL FORM
@@ -852,7 +852,7 @@ def getDataForCertificationModal():
         # DATA FOR NEW CERTIFICATIONS
         dateCertified = date.today()
         dateCertifiedSTR = dateCertified.strftime('%Y-%m-%d')
-        certificationDuration = machineDuration
+        suggestedCertificationDuration = machineDuration
     else:
         # DATA FOR EDIT OF EXISTING CERTIFICATION
         try:
@@ -901,9 +901,136 @@ def getDataForCertificationModal():
             
     return jsonify(msg='No msg',status=200,machineDesc=machineDesc,\
         dateCertified=dateCertifiedSTR,certificationDuration=certificationDuration,\
-        suggestedDuration=suggestedDuration,\
+        suggestedCertificationDuration=suggestedCertificationDuration,\
         instructorsDict=instructorsDict,transactionType=transactionType)    
 
+@app.route('/listCertified',methods=['GET'])
+def listCertified():
+    shopLocation = request.args.get('shopLocation')
+    print('shopLocation - ',shopLocation)
+
+    if (shopLocation == 'RA'):
+        shopName = 'Rolling Acres'
+        whereClause = "WHERE machineLocation = 'RA' "
+    else:
+        if (shopLocation =='BW'):
+            shopName = 'Brownwood'
+            whereClause = "WHERE machineLocation = 'BW' "
+        else:
+            shopName = 'Both locations'
+            whereClause = ''
+
+    todays_date = date.today()
+    todays_dateSTR = todays_date.strftime('%B %-d, %Y')
+
+    sqlSelect = "select m1.lfn_name as memberName, machineDesc, memberMachineCertifications.machineID, machineLocation, dateCertified, "
+    sqlSelect += "certificationDuration, certifiedBy, m2.initials as instructorInitials FROM memberMachineCertifications "
+    sqlSelect += "left join tblMember_Data m1 on memberMachineCertifications.member_ID = m1.member_ID "
+    sqlSelect += "left join machinesRequiringCertification on memberMachineCertifications.machineID = machinesRequiringCertification.machineID "
+    sqlSelect += "left join tblMember_Data m2 on memberMachineCertifications.certifiedBy = m2.member_ID "
+    sqlSelect += whereClause + " "
+    sqlSelect += "order by m1.lfn_name, machineDesc"
+    
+    print(sqlSelect)
+
+    certified = db.session.execute(sqlSelect)
+
+    certifiedDict = []
+    certifiedItem = []
+
+    saveMemberName = ''
+    for c in certified:
+        if c.machineDesc == None or c.machineLocation == None:
+            continue
+        
+        if c.memberName != saveMemberName :
+            memberName = c.memberName
+        else:
+            memberName = ''
+
+        if shopLocation.upper() == 'BOTH':
+            machineDesc = c.machineDesc + " (" + c.machineLocation + ")"
+        else:
+            machineDesc = c.machineDesc
+
+        # Is certification expired?
+
+        # Look up initials of 'instructor'
+        #certifiedBy = c.certifiedBy
+        #instructorsInitials = db.session.query(Member.Initials).filter(Member.Member_ID == certifiedBy).scalar()
+        #print('instructorsInitials - ',instructorsInitials)
+
+        certifiedItem = {
+            'memberName':memberName,
+            'machineDesc':machineDesc,
+            'duration':c.certificationDuration,
+            'dateCertified':c.dateCertified.strftime('%-m-%-d-%Y'),
+            'certifiedBy':c.instructorInitials
+        }
+        
+        saveMemberName = c.memberName
+
+        certifiedDict.append(certifiedItem)
+
+    return render_template("rptcertifiedList.html",\
+        todaysDate=todays_dateSTR,certifiedDict=certifiedDict,shopName=shopName
+        )
+
+
+@app.route('/listMachines',methods=['GET'])
+def listMachines():
+    shopLocation = request.args.get('shopLocation')
+    
+    if (shopLocation == 'RA'):
+        shopName = 'Rolling Acres'
+        whereClause = "WHERE machineLocation = 'RA' "
+    else:
+        if (shopLocation =='BW'):
+            shopName = 'Brownwood'
+            whereClause = "WHERE machineLocation = 'BW' "
+        else:
+            shopName = 'Both locations'
+            whereClause = ''
+
+    todays_date = date.today()
+    todays_dateSTR = todays_date.strftime('%B %-d, %Y')
+
+    # sqlSelect = "select lfn_name, machineDesc, canCertify, machineInstructors.keyProvider as key_Provider, "
+    # sqlSelect += "canAssist from machineInstructors "
+    # sqlSelect += "left join tblMember_Data on machineInstructors.member_ID = tblMember_Data.member_ID "
+    # sqlSelect += "left join machinesRequiringCertification on machineInstructors.machineID = machinesRequiringCertification.machineID "
+    # sqlSelect += whereClause + " "
+    # sqlSelect += "order by lfn_name, machineDesc"
+    sqlSelect = "SELECT machineDesc, machineID, machineLocation, suggestedCertificationDuration, "
+    sqlSelect += "keyInToolCrib, keyProvider "
+    sqlSelect += "FROM machinesRequiringCertification "
+    sqlSelect += "ORDER BY machineDesc"
+
+    machines = db.session.execute(sqlSelect)
+
+    machinesDict = []
+    machinesItem = []
+
+    for m in machines:
+
+        if shopLocation == 'Both':
+            machineDesc = m.machineDesc + " (" + m.machineLocation + ")"
+        else:
+            machineDesc = m.machineDesc
+
+        machinesItem = {
+            'machineDesc':machineDesc,
+            'machineID':m.machineID,
+            'machineDuration':m.suggestedCertificationDuration,
+            'keyInToolCrib':m.keyInToolCrib,
+            'keyProvider':m.keyProvider
+        }
+        machinesDict.append(machinesItem)
+
+    return render_template("rptMachineList.html",\
+        todaysDate=todays_dateSTR,machinesDict=machinesDict,shopName=shopName
+        )
+    
 @app.route('/listStaff',methods=['GET'])
 def listStaff():
     shopLocation = request.args.get('shopLocation')

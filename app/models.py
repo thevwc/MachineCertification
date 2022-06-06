@@ -302,7 +302,7 @@ class Machines(db.Model):
     machineID = db.Column(db.String(20), primary_key=True)
     machineDesc = db.Column(db.String(50))
     machineLocation = db.Column(db.String(2))
-    certificationDuration = db.Column(db.String(10))
+    suggestedCertificationDuration = db.Column(db.String(10))
     keyInToolCrib = db.Column(db.Boolean)
     keyProvider = db.Column(db.Boolean)
 
