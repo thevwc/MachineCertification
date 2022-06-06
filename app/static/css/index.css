@@ -118,7 +118,7 @@ input:read-write {
         /* display:none; */
     }
     #machineBtns {
-        display:none;
+        /* display:none; */
         text-align: center;
     }
     .machineDescription {
@@ -190,12 +190,12 @@ input:read-write {
         margin:auto;
         border-bottom: 1px solid navy;
     }
-    .noUsage {
+    /* .noUsage {
         text-align: left;
         width:300px;
         padding-left:30px;
         margin:auto;
-    }
+    } */
     .usageDateAndName {
         text-align: left;
         width:300px;
@@ -467,9 +467,12 @@ input:read-write {
     .usageDateAndName {
         text-align: left;
         width:400px;
-        margin-left:60px;
+        margin-left:150px;
         font-size: 1rem;
     }
+    /* .noUsage {
+        margin-left:150px;
+    } */
     /* .usageMemberName {
         width:200px;
         color:red;
@@ -667,11 +670,11 @@ input:read-write {
         color:green;
     } */
 
-    .usageDateAndName {
+    /* .usageDateAndName {
         text-align:left;
         width:400px;
         margin-left:60px;
-    }
+    } */
     /* .usageMemberName {
         width:200px;
         color:red;
@@ -898,15 +901,15 @@ input:read-write {
         margin-top:20px;
         margin-left:90px;
     } */
-    .noUsage {
+    /* .noUsage {
         margin-left:110px;
-    }
-    .usageDateAndName {
+    } */
+    /* .usageDateAndName {
         text-align: left;
         width:400px;
         margin-left:110px;
         font-size: 1rem;
-    }
+    } */
     /* .usageMemberName {
         width:200px;
         color:red;

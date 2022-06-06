@@ -72,7 +72,7 @@ filterMachineDropdown(shopChoice.value)
 
 // SET VERSION OF APP AND CURRENT SCREEN SIZE (FOR DEVELOPMENT PURPOSES)
 versionText = document.getElementById('versionText')
-versionText.innerHTML='ver June 5, 2022  (' + window.innerWidth + ')'
+versionText.innerHTML='ver June 6, 2022  (' + window.innerWidth + ')'
 
 // IF NOT A LARGE SCREEN DISPLAY ONLY 1 PANEL AT A TIME INSTEAD OF ALL 3
 handleMediaChange(largeScreen)
@@ -210,7 +210,7 @@ function machineClicked() {
     else {
         btnEditMachine.style.display='none'
         btnDeleteMachine.style.display='none'
-        btnNewMachine.style.display='none'
+        //btnNewMachine.style.display='none'
         return
     }
     // HIDE MEMBER AND INSTRUCTOR SECTIONS IF NOT ON LARGE SCREEN
@@ -1108,6 +1108,7 @@ function showNewMachineModal() {
     document.getElementById('machineDescription').value = ''
     document.getElementById('machineLocation').value = localStorage.getItem('shopLocation')
     document.getElementById('certificationDuration').value = '180 days'
+    document.getElementById('certificationDuration').selectedIndex = 2
     document.getElementById('keyInToolCribID').checked = false
     document.getElementById('keyProviderID').checked = true
 
@@ -1177,7 +1178,7 @@ function saveMachineData() {
     alert('Saving ' + machineTransactionType + ' transaction.')
     machineDesc = document.getElementById('machineDescription').value
     machineLocation = document.getElementById('machineLocation').value
-    certificationDuration = document.getElementById('certificationDuration').value
+    suggestedCertificationDuration = document.getElementById('certificationDuration').value
 
     if (keyInToolCribID.checked==true){
         keyInToolCrib = 1
@@ -1204,7 +1205,7 @@ function saveMachineData() {
         machineID:machineID,
         machineDesc: machineDesc,
         machineLocation: machineLocation,
-        certificationDuration:certificationDuration,
+        suggestedCertificationDuration:suggestedCertificationDuration,
         keyInToolCrib:keyInToolCribID.checked,
         keyProvider:keyProviderID.checked
     };
@@ -1384,7 +1385,9 @@ function saveCertificationModal() {
 
 function clrMachineData() {
     btnDeleteMachine.disabled = true
-    machineBtns.style.display='none'
+    btnEditMachine.disabled = true 
+    
+
     if (!largeScreen) {
         // HIDE machineDetailSection
         machineDetailSection.style.display="none"
