@@ -138,10 +138,12 @@ input:read-write {
         border-bottom:1px solid navy;
     } */
     /* .instructorHdgRow {
-        width:70%;
+        margin-left:0px;
+        padding-left:0px;
+        text-align: left;
     } */
     .staffSection {
-        margin-left:340px;
+        margin-left:200px;
     }
     .instructorListHdg {
         margin-left:0px

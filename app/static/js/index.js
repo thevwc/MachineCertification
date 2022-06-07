@@ -72,7 +72,7 @@ filterMachineDropdown(shopChoice.value)
 
 // SET VERSION OF APP AND CURRENT SCREEN SIZE (FOR DEVELOPMENT PURPOSES)
 versionText = document.getElementById('versionText')
-versionText.innerHTML='ver June 6, 2022  (' + window.innerWidth + ')'
+versionText.innerHTML='ver June 7, 2022  (' + window.innerWidth + ')'
 
 // IF NOT A LARGE SCREEN DISPLAY ONLY 1 PANEL AT A TIME INSTEAD OF ALL 3
 handleMediaChange(largeScreen)
@@ -342,7 +342,7 @@ function displayMachineInstructorsAndMembers() {
         divKeyInToolCrib.appendChild(inputKeyInToolCrib)
         
         var labelKeyInToolCrib = document.createElement('label')
-        labelKeyInToolCrib.innerHTML = 'TC'
+        labelKeyInToolCrib.innerHTML = 'Tool Crib'
         labelKeyInToolCrib.style.marginLeft = '3px'
         divKeyInToolCrib.appendChild(labelKeyInToolCrib)
 
@@ -363,7 +363,7 @@ function displayMachineInstructorsAndMembers() {
         divKeyProvider.appendChild(inputKeyProvider)
         
         var labelKeyProvider = document.createElement('label')
-        labelKeyProvider.innerHTML = 'KP'
+        labelKeyProvider.innerHTML = 'Key Provider'
         labelKeyProvider.style.marginLeft = '3px'
         divKeyProvider.appendChild(labelKeyProvider)
 
