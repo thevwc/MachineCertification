@@ -683,10 +683,31 @@ def updateInstructorMachineSettings():
     canAssist=req["canAssist"]
     keyProvider=req["keyProvider"]
 
+    # print('memberID - ',memberID)
+    # print('machineID - ',machineID)
+    # print('canCertify - ',canCertify)
+    # print('keyProvider - ',keyProvider)
+    # print('canAssist - ',canAssist)
+
+    if not canCertify and not canAssist and not keyProvider:
+        try:
+            removeInstructor = db.session.query(MachineInstructors)\
+                .filter(MachineInstructors.member_ID == memberID)\
+                .filter(MachineInstructors.machineID == machineID)\
+                .delete()
+            db.session.commit()
+            msg = "Record deleted for member ID " + memberID + " on machine # " + machineID
+            return jsonify(msg=msg,status=200)
+        except:
+            db.session.rollback()
+            msg = "Record could NOT be deleted for member ID " + memberID + " on machine # " + machineID
+            return jsonify(msg=msg,status=201)
+
     # LOOK UP MACHINE INSTRUCTORS RECORD    
     machineInstructor = db.session.query(MachineInstructors).filter(MachineInstructors.member_ID == memberID)\
         .filter(MachineInstructors.machineID == machineID).first()
     if machineInstructor != None:
+        #  UPDATE CURRENT RECORD
         machineInstructor.canCertify = canCertify
         machineInstructor.canAssist = canAssist
         machineInstructor.keyProvider = keyProvider
@@ -702,7 +723,7 @@ def updateInstructorMachineSettings():
     else:
         sqlInsert = "INSERT INTO machineInstructors (machineID, member_ID, canCertify, canAssist, keyProvider) "
         sqlInsert += "VALUES ('" + machineID + "', '" + memberID + "'," + str(canCertify) + "," + str(canAssist) + "," + str(keyProvider) + ")"
-        
+        print(sqlInsert)
         try:
             result = db.engine.execute(sqlInsert)
             if result != 0:
@@ -743,8 +764,10 @@ def getDataForCertificationModal():
         dateCertified = date.today()
         dateCertifiedSTR = dateCertified.strftime('%Y-%m-%d')
         suggestedCertificationDuration = machineDuration
+        certificationDuration = '180 days'
     else:
         # DATA FOR EDIT OF EXISTING CERTIFICATION
+        suggestedCertificationDuration = '180 days'
         try:
             memberCertification = db.session.query(MemberMachineCertifications)\
                 .filter(MemberMachineCertifications.machineID == machineID)\

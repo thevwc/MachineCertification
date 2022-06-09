@@ -846,19 +846,21 @@ function displayMachineInstructorData() {
         divHdgCol1.innerHTML="Can"
         divHdgRow1.appendChild(divHdgCol1)
 
+                var divHdgCol3 = document.createElement('div')
+        divHdgCol3.classList.add('col-1')
+        divHdgCol3.classList.add('instrMachHdg')
+        divHdgCol3.innerHTML="Has"
+        divHdgRow1.appendChild(divHdgCol3)
+
         var divHdgCol2 = document.createElement('div')
         divHdgCol2.classList.add('col-1')
         divHdgCol2.classList.add('instrMachHdg')
         divHdgCol2.innerHTML="Can"
         divHdgRow1.appendChild(divHdgCol2)
 
-        var divHdgCol3 = document.createElement('div')
-        divHdgCol3.classList.add('col-1')
-        divHdgCol3.classList.add('instrMachHdg')
-        divHdgCol3.innerHTML="Has"
-        divHdgRow1.appendChild(divHdgCol3)
         // ADD HDG ROW WITH 'Can  Can  Has'
         instructorMachinesParent.appendChild(divHdgRow1)
+
 
         var divHdgRow2 = document.createElement('div')
         divHdgRow2.classList.add('row', 'headings')
@@ -868,17 +870,17 @@ function displayMachineInstructorData() {
         divHdgColA.innerHTML="Certify"
         divHdgRow2.appendChild(divHdgColA)
 
-        var divHdgColB = document.createElement('div')
-        divHdgColB.classList.add('col-1')
-        divHdgColB.classList.add('instrMachHdg')
-        divHdgColB.innerHTML="Assist"
-        divHdgRow2.appendChild(divHdgColB)
-
         var divHdgColC = document.createElement('div')
         divHdgColC.classList.add('col-1')
         divHdgColC.classList.add('instrMachHdg')
         divHdgColC.innerHTML="Key"
         divHdgRow2.appendChild(divHdgColC)
+
+        var divHdgColB = document.createElement('div')
+        divHdgColB.classList.add('col-1')
+        divHdgColB.classList.add('instrMachHdg')
+        divHdgColB.innerHTML="Assist"
+        divHdgRow2.appendChild(divHdgColB)
 
         // ADD HDG ROW WITH 'Certify   Assist   Key'
         instructorMachinesParent.appendChild(divHdgRow2)
@@ -1330,9 +1332,9 @@ function saveCheckedBoxes(el) {
         if (data.status != 200) {
             modalAlert('NEW MACHINE FOR INSTRUCTOR',data.msg)
         }
-        // else {
-        //     modalAlert('NEW MACHINE FOR INSTRUCTOR',data.msg)
-        // }
+        else {
+            modalAlert('NEW MACHINE FOR INSTRUCTOR',data.msg)
+        }
         // hide current SAVE button
         document.getElementById('S'+machineID).style.display='none'
     })
