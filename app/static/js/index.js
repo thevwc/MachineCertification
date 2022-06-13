@@ -73,7 +73,7 @@ filterMachineDropdown(shopChoice.value)
 // SET VERSION OF APP AND CURRENT SCREEN SIZE (FOR DEVELOPMENT PURPOSES)
 versionText = document.getElementById('versionText')
 //versionText.innerHTML='ver June 8, 2022  (' + window.innerWidth + ')'
-versionText.innerHTML='ver June 8, 2022'
+versionText.innerHTML='ver June 13, 2022'
 
 // IF NOT A LARGE SCREEN DISPLAY ONLY 1 PANEL AT A TIME INSTEAD OF ALL 3
 handleMediaChange(largeScreen)
@@ -1034,33 +1034,32 @@ function populateMemberCertificationModal(certifyTransactionType,machineID) {
         document.getElementById('certifyMachineID').value = machineID
         document.getElementById('certifyDescription').value = data.machineDesc
         document.getElementById('certifyDateCertified').value = data.dateCertified
-       
-        durationIndex = 2
-        if (data.certificationDuration == 'UNL') {
-            durationIndex = 0
-        }
-        if (data.certificationDuration == '365 days') {
-            durationIndex = 1
-        }
-        if (data.certificationDuration == '180 days') {
-            durationIndex = 2
-        }
-        if (data.certificationDuration == '90 days') {
-            durationIndex = 3
-        }
-        if (data.certificationDuration == '60 days') {
-            durationIndex = 5
-        }
-        if (data.certificationDuration == '30 days') {
-            durationIndex = 5
-        }
-        if (data.certificationDuration == '7 days') {
-            durationIndex = 6
-        }
         
-        document.getElementById('certificationDuration').selectedIndex = durationIndex
+        // durationIndex = 2
+        // if (data.certificationDuration == 'UNL') {
+        //     durationIndex = 0
+        // }
+        // if (data.certificationDuration == '365 days') {
+        //     durationIndex = 1
+        // }
+        // if (data.certificationDuration == '180 days') {
+        //     durationIndex = 2
+        // }
+        // if (data.certificationDuration == '90 days') {
+        //     durationIndex = 3
+        // }
+        // if (data.certificationDuration == '60 days') {
+        //     durationIndex = 5
+        // }
+        // if (data.certificationDuration == '30 days') {
+        //     durationIndex = 5
+        // }
+        // if (data.certificationDuration == '7 days') {
+        //     durationIndex = 6
+        // }
         
-
+        // document.getElementById('memberCertificationDuration').selectedIndex = durationIndex
+        
         // POPULATE certifyMemberModal DROP DOWN LIST WITH INSTRUCTORS
         var certificationModalInstructors = document.getElementById('certificationModalInstructors')
         while (certificationModalInstructors.firstChild) {
@@ -1089,6 +1088,14 @@ function populateMemberCertificationModal(certifyTransactionType,machineID) {
             optionLine.value = element.instructorID
             certificationModalInstructors.appendChild(optionLine)
         }
+
+        console.log('data.certificationDuration - '+data.certificationDuration)
+
+        document.getElementById('memberCertificationDuration').value = data.certificationDuration
+
+        console.log('data.certifedBy - '+data.certifiedBy)
+
+        document.getElementById('certificationModalInstructors').value = data.certifiedBy
         $('#certifyMemberModal').modal('show')
     return
     })
@@ -1110,8 +1117,8 @@ function showNewMachineModal() {
     document.getElementById('machineDescription').innerHTML = ''
     document.getElementById('machineDescription').value = ''
     document.getElementById('machineLocation').value = localStorage.getItem('shopLocation')
-    document.getElementById('certificationDuration').value = '180 days'
-    document.getElementById('certificationDuration').selectedIndex = 2
+    document.getElementById('modalSuggestedDuration').value = '180 days'
+    //document.getElementById('certificationDuration').selectedIndex = 2
     document.getElementById('keyInToolCribID').checked = false
     document.getElementById('keyProviderID').checked = true
 
@@ -1135,30 +1142,10 @@ function showEditMachineModal() {
     document.getElementById('machineModalTitle').innerHTML = 'EDIT MACHINE DATA'
     document.getElementById('machineDescription').value = currentDesc
     document.getElementById('machineLocation').value = datashopLocation
-    durationIndex = 2
-    if (dataduration == 'UNL') {
-        durationIndex = 0
-    }
-    if (dataduration == '365') {
-        durationIndex = 1
-    }
-    if (dataduration == '180') {
-        durationIndex = 2
-    }
-    if (dataduration == '90') {
-        durationIndex = 3
-    }
-    if (dataduration == '60') {
-        durationIndex = 5
-    }
-    if (dataduration == '30') {
-        durationIndex = 5
-    }
-    if (dataduration == '7') {
-        durationIndex = 6
-    }
-   
-    document.getElementById('certificationDuration').selectedIndex = durationIndex
+
+    console.log('dataduration - ',dataduration)
+    
+    document.getElementById('modalMachineSuggestedDuration').value = dataduration
   
     if (datakeyintoolcrib == 'True') {
         keyInToolCribID.checked = true
@@ -1181,7 +1168,7 @@ function saveMachineData() {
     alert('Saving ' + machineTransactionType + ' transaction.')
     machineDesc = document.getElementById('machineDescription').value
     machineLocation = document.getElementById('machineLocation').value
-    suggestedCertificationDuration = document.getElementById('certificationDuration').value
+    suggestedCertificationDuration = document.getElementById('modalMachineSuggestedDuration').value
 
     if (keyInToolCribID.checked==true){
         keyInToolCrib = 1
@@ -1352,9 +1339,10 @@ function saveCertificationModal() {
     memberID = sessionStorage.getItem('villageID')
     machineID = document.getElementById('certifyMachineID').value
     dateCertified = document.getElementById('certifyDateCertified').value
-    duration = document.getElementById('certificationDuration').value
+    duration = document.getElementById('memberCertificationDuration').value
     instructorElement  = document.getElementById('certificationModalInstructors')
     instructorAssigned = instructorElement.options[instructorElement.selectedIndex].value
+    alert('memberCertificationDuration - '+ memberCertificationDuration.value + ' index - ' + memberCertificationDuration.selectedIndex)
 
     let dataToSend = {
         certifyTransactionType: certifyTransactionType,

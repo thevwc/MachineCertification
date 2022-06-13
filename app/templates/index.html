@@ -43,11 +43,12 @@
             data-width='350px'>
             <option class="optMachines" value="">Select a machine ...</option>
             {% for m in machineList %}
+                <!-- {{m.suggestedCertificationDuration}} -->
                 <option 
                     class="optMachineName {{m.machineLocation}}" 
                     data-machineID={{m.machineID}} 
                     data-location={{m.machineLocation}} 
-                    data-duration={{m.certificationDuration}}
+                    data-duration={{m.suggestedCertificationDuration}}
                     data-keyInToolCrib={{m.keyInToolCrib}}
                     data-keyProvider={{m.keyProvider}}
                     value='{{m.machineDisplayName}}'>
@@ -226,7 +227,7 @@
                     <label for="newCertificationDuration">Suggested Duration</label>
                 </div>
                 <div class="col-5 machineData">
-                    <select name="" id="certificationDuration">
+                    <select name="" id="modalMachineSuggestedDuration">
                         <option value="UNL">Unlimited</option>
                         <option value="365 days">365 days</option>
                         <option value="180 days">180 days</option>
@@ -308,7 +309,7 @@
                     <label for="certifyDuration">Certification Duration</label>
                 </div>
                 <div class="col-5 certifyData">
-                    <select id="certificationDuration" name="">
+                    <select id="memberCertificationDuration" name="modalDuration">
                         <option value="UNL">Unlimited</option>
                         <option value="365 days">365 days</option>
                         <option value="180 days">180 days</option>

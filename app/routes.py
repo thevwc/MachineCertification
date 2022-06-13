@@ -54,7 +54,7 @@ def index():
     
     machineList = db.engine.execute(sqlMachines)
     if machineList == None:
-        flash('No names to list.','danger')
+        flash('No machines to list.','danger')
     
     # CREATE OBJECT OF NAMES FOR DROPDOWN LIST OF MEMBERS
     sqlNames = "SELECT Last_Name + ', ' + First_Name + ' (' + Member_ID + ')' as memberDisplayName,"
@@ -75,6 +75,10 @@ def index():
     instructorList = db.engine.execute(sqlNames)
     if instructorList == None:
         flash('No names to list.','danger')
+    
+    # for m in machineList:
+    #     print(m.machineID, m.suggestedCertificationDuration)
+
     return render_template("index.html",machineList=machineList,memberList=memberList,instructorList=instructorList)
     
 @app.route('/getMemberLoginData',methods=['POST'])
@@ -400,6 +404,9 @@ def certifyMember():
     duration = req["duration"]
     dateCertified = req["dateCertified"]
     todaysDate = date.today().strftime('%Y-%m-%d')
+
+    print('duration - ',duration)
+    print('certifiedBy - ',certifiedBy)
 
     # GET THE MEMBERS CURRENT CERTIFICATION RECORD
     if (transactionType == 'EDIT'):
@@ -745,7 +752,8 @@ def getDataForCertificationModal():
     machineID = req["machineID"]
     villageID = req["villageID"]
     transactionType = req["certifyTransactionType"]
-  
+    certifiedBy = ''
+
     # GET DATA COMMON TO BOTH 'NEW' AND 'EDIT'
     try:
         machine = db.session.query(Machines).filter(Machines.machineID == machineID).first()
@@ -765,13 +773,16 @@ def getDataForCertificationModal():
         dateCertifiedSTR = dateCertified.strftime('%Y-%m-%d')
         suggestedCertificationDuration = machineDuration
         certificationDuration = '180 days'
+        certifiedBy = ''
     else:
         # DATA FOR EDIT OF EXISTING CERTIFICATION
-        suggestedCertificationDuration = '180 days'
+        suggestedCertificationDuration = machine.suggestedCertificationDuration
+
         try:
             memberCertification = db.session.query(MemberMachineCertifications)\
                 .filter(MemberMachineCertifications.machineID == machineID)\
                 .filter(MemberMachineCertifications.member_ID == villageID).first()
+            print('member machine record found')
         except (SQLAlchemyError, DBAPIError) as e:
             msg='Database error - ' + e
             print(msg)
@@ -779,7 +790,10 @@ def getDataForCertificationModal():
         
         dateCertifiedSTR = memberCertification.dateCertified.strftime('%Y-%m-%d')
         certificationDuration = memberCertification.certificationDuration
-    
+        print('certificationDuration - ',certificationDuration)
+
+        certifiedBy = memberCertification.certifiedBy
+        print('certifiedBy - ',certifiedBy)
 
     # INSTRUCTORS ASSIGNED TO THIS MACHINE FOR DROP-DOWN LIST
     instructorsDict = []
@@ -815,7 +829,7 @@ def getDataForCertificationModal():
     return jsonify(msg='No msg',status=200,machineDesc=machineDesc,\
         dateCertified=dateCertifiedSTR,certificationDuration=certificationDuration,\
         suggestedCertificationDuration=suggestedCertificationDuration,\
-        instructorsDict=instructorsDict,transactionType=transactionType)    
+        instructorsDict=instructorsDict,certifiedBy=certifiedBy, transactionType=transactionType)    
 
 @app.route('/listCertified',methods=['GET'])
 def listCertified():
