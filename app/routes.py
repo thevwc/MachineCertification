@@ -782,7 +782,6 @@ def getDataForCertificationModal():
             memberCertification = db.session.query(MemberMachineCertifications)\
                 .filter(MemberMachineCertifications.machineID == machineID)\
                 .filter(MemberMachineCertifications.member_ID == villageID).first()
-            print('member machine record found')
         except (SQLAlchemyError, DBAPIError) as e:
             msg='Database error - ' + e
             print(msg)
@@ -790,11 +789,9 @@ def getDataForCertificationModal():
         
         dateCertifiedSTR = memberCertification.dateCertified.strftime('%Y-%m-%d')
         certificationDuration = memberCertification.certificationDuration
-        print('certificationDuration - ',certificationDuration)
 
         certifiedBy = memberCertification.certifiedBy
-        print('certifiedBy - ',certifiedBy)
-
+       
     # INSTRUCTORS ASSIGNED TO THIS MACHINE FOR DROP-DOWN LIST
     instructorsDict = []
     instructorItem = []
