@@ -405,9 +405,6 @@ def certifyMember():
     dateCertified = req["dateCertified"]
     todaysDate = date.today().strftime('%Y-%m-%d')
 
-    print('duration - ',duration)
-    print('certifiedBy - ',certifiedBy)
-
     # GET THE MEMBERS CURRENT CERTIFICATION RECORD
     if (transactionType == 'EDIT'):
         mbrCert = db.session.query(MemberMachineCertifications)\
@@ -532,6 +529,7 @@ def editMachine():
     machineDesc = req["machineDesc"]
     machineLocation = req["machineLocation"]
     suggestedCertificationDuration = req["suggestedCertificationDuration"]
+    #suggestedCertificationDuration = suggestedCertificationDuration.replace(' days','')
     keyInToolCrib = req["keyInToolCrib"]
     keyProvider = req["keyProvider"]
 
@@ -772,12 +770,14 @@ def getDataForCertificationModal():
         dateCertified = date.today()
         dateCertifiedSTR = dateCertified.strftime('%Y-%m-%d')
         suggestedCertificationDuration = machineDuration
-        certificationDuration = '180 days'
+        certificationDuration = machineDuration
+        print('machineDuration - ',machineDuration)
+
         certifiedBy = ''
     else:
         # DATA FOR EDIT OF EXISTING CERTIFICATION
         suggestedCertificationDuration = machine.suggestedCertificationDuration
-
+       
         try:
             memberCertification = db.session.query(MemberMachineCertifications)\
                 .filter(MemberMachineCertifications.machineID == machineID)\
@@ -788,8 +788,8 @@ def getDataForCertificationModal():
             return jsonify(msg=msg,status=201) 
         
         dateCertifiedSTR = memberCertification.dateCertified.strftime('%Y-%m-%d')
-        certificationDuration = memberCertification.certificationDuration
 
+        certificationDuration = memberCertification.certificationDuration
         certifiedBy = memberCertification.certifiedBy
        
     # INSTRUCTORS ASSIGNED TO THIS MACHINE FOR DROP-DOWN LIST
@@ -1026,3 +1026,29 @@ def listStaff():
     return render_template("rptStaffList.html",\
         todaysDate=todays_dateSTR,staffDict=staffDict,shopName=shopName
         )
+
+@app.route('/getMachineDataForEditModal',methods=['GET','POST'])
+def getMachineDataForEditModal():
+    print('/getMachineDataForEditModal')
+    req = request.get_json()
+    machineID = req["machineID"]
+
+    try:
+        machine = db.session.query(Machines).filter(Machines.machineID == machineID).first()
+    except (SQLAlchemyError, DBAPIError) as e:
+        msg='Database error - ' + e
+        print(msg)
+        return jsonify(msg=msg,status=201) 
+    
+    machineDesc = machine.machineDesc
+    machineDuration = machine.suggestedCertificationDuration
+    print('machineDuration - ',machineDuration)
+    
+    machineLocation = machine.machineLocation
+    keyInToolCrib = machine.keyInToolCrib
+    keyProvider = machine.keyProvider
+
+    msg="Success"
+    return jsonify(msg=msg,status=200,machineDesc=machineDesc,\
+        machineDuration=machineDuration,machineLocation=machineLocation,\
+        keyInToolCrib=keyInToolCrib,keyProvider=keyProvider)

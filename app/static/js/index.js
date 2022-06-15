@@ -196,11 +196,16 @@ function filterMachineDropdown(selectedLocation) {
 }
 
 function machineClicked() {
+    let option = machineSelected.options[machineSelected.selectedIndex]; 
+    machineID = machineSelected.options[machineSelected.selectedIndex].getAttribute('data-machineid')
+    sessionStorage.setItem('machineID',machineID)
+    alert('machine selected - '+ machineID)
+
     // CLEAR OTHER SELECTIONS
     if (machineSelected.selectedIndex > 1) {
         btnEditMachine.removeAttribute('disabled')
         btnDeleteMachine.removeAttribute('disabled')
-        $('.selectpicker').selectpicker('refresh');
+        //$('.selectpicker').selectpicker('refresh');
         memberSelected.selectedIndex = 0
         instructorSelected.selectedIndex = 0
         $('#memberSelected').prop('selectedIndex',0);
@@ -226,7 +231,7 @@ function machineClicked() {
     // GET MACHINE DATA TO DISPLAY
     machineBtns.style.display="block"
     machineInstructorsAndMembers.style.display="block"
-    displayMachineInstructorsAndMembers()
+    displayMachineInstructorsAndMembers(machineID)
 }
 
 function memberClicked() {
@@ -258,6 +263,9 @@ function memberClicked() {
 }
 
 function instructorClicked() {
+    let e = document.getElementById("instructorSelected");
+    instructorID = e.options[e.selectedIndex].getAttribute('data-villageid')
+
     // CLEAR OTHER SELECTIONS
     if (instructorSelected.selectedIndex != 0) {
         machineSelected.selectedIndex = 0
@@ -273,12 +281,10 @@ function instructorClicked() {
         instructorFooter.style.display="block"
     }
     // GET INSTRUCTOR CONTACT DATA TO DISPLAY
-    displayMachineInstructorData()
+    displayMachineInstructorData(instructorID)
 }
 
-function displayMachineInstructorsAndMembers() {
-    let e = document.getElementById("machineSelected");
-    machineID = e.options[e.selectedIndex].getAttribute('data-machineid')
+function displayMachineInstructorsAndMembers(machineID) {
     if (machineID == null) {
         return
     } 
@@ -314,6 +320,9 @@ function displayMachineInstructorsAndMembers() {
         divDescription.id = "D" + data.machineID
         divDescription.innerHTML = data.machineDesc
         dtlParent.appendChild(divDescription)
+
+        // MOVE DATA TO EDIT MACHINE MODAL
+        document.getElementById('machineDescription').value = data.machineDesc
 
         // INSERT MACHINE DURATION AND SET LOCATION RADIO BUTTONS
         var divDurationRow = document.createElement('div')
@@ -752,9 +761,7 @@ function handleMediaChange(e) {
     }
 }
 
-function displayMachineInstructorData() {
-    let e = document.getElementById("instructorSelected");
-    instructorID = e.options[e.selectedIndex].getAttribute('data-villageid')
+function displayMachineInstructorData(instructorID) {
     if (instructorID == null) {
         return
     } 
@@ -1034,7 +1041,7 @@ function populateMemberCertificationModal(certifyTransactionType,machineID) {
         document.getElementById('certifyMachineID').value = machineID
         document.getElementById('certifyDescription').value = data.machineDesc
         document.getElementById('certifyDateCertified').value = data.dateCertified
-        
+        document.getElementById('memberCertificationDuration').value = data.certificationDuration
         // durationIndex = 2
         // if (data.certificationDuration == 'UNL') {
         //     durationIndex = 0
@@ -1126,46 +1133,84 @@ function showNewMachineModal() {
     document.getElementById('machineDescription').focus()
 }
 function showEditMachineModal() {
+    // GET machineID FROM session variable
+    machineID = sessionStorage.getItem('machineID')
+
+    // SET TRANSACTION TYPE
     document.getElementById('machineTransactionType').innerHTML = 'EDIT'
 
-    // GET DESCRIPTION et al FROM SELECTED SELECTPICKER FOR MACHINES
-    let e = document.getElementById("machineSelected");
-    machineID = e.options[e.selectedIndex].getAttribute('data-machineID')
-    currentDesc = document.getElementById('D'+machineID).innerHTML
-    position = currentDesc.indexOf("(")
-    currentDesc = currentDesc.slice(0,position)
-    datashopLocation = e.options[e.selectedIndex].getAttribute('data-location')
-    dataduration = e.options[e.selectedIndex].getAttribute('data-duration')
-    datakeyintoolcrib = e.options[e.selectedIndex].getAttribute('data-keyintoolcrib')
-    datakeyprovider = e.options[e.selectedIndex].getAttribute('data-keyprovider')
+    url = window.location.origin + '/getMachineDataForEditModal'   
+    let dataToSend = {
+        machineID:machineID
+    };
+    fetch(url, {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify(dataToSend),
+        cache: "no-cache",
+        headers: new Headers({
+            "content-type": "application/json"
+        })
+    })
+    .then((res) => res.json())
+    .then((data) => {
+        if (data.status != 200) {
+            modalAlert('Machine edit ...',data.msg)
+        }
+        else {
+            // SET MODAL FORM TITLE
+            document.getElementById('machineModalTitle').innerHTML = 'EDIT MACHINE DATA'
 
-    document.getElementById('machineModalTitle').innerHTML = 'EDIT MACHINE DATA'
-    document.getElementById('machineDescription').value = currentDesc
-    document.getElementById('machineLocation').value = datashopLocation
+            // POPULATE EDIT MACHINE MODAL FORM
+            document.getElementById('machineDescription').value = data.machineDesc
+            document.getElementById('machineLocation').value = data.machineLocation
+            document.getElementById('modalMachineSuggestedDuration').value = data.machineDuration
+            keyInToolCribID.checked = data.keyInToolCrib
+            keyProviderID.checked = data.keyProvider
 
-    console.log('dataduration - ',dataduration)
-    
-    document.getElementById('modalMachineSuggestedDuration').value = dataduration
-  
-    if (datakeyintoolcrib == 'True') {
-        keyInToolCribID.checked = true
-    }
-    else {
-        keyInToolCribID.checked = false 
-    }
-    if (datakeyprovider == 'True') {
-        keyProviderID.checked = true
-    }
-    else {
-        keyProviderID.checked = false 
-    }
-    
-    $('#machineModal').modal('show')
-    document.getElementById('machineDescription').focus()
+        }
+        $('#machineModal').modal('show')
+        document.getElementById('machineDescription').focus()
+
+    })
 }
+
+
+
+    //  ........... change to get data from server for existing machines
+    
+    // GET DESCRIPTION et al FROM SELECTED SELECTPICKER FOR MACHINES
+    // let e = document.getElementById("machineSelected");
+    // alert('e.options[e.selectedIndex] - ' + e.options[e.selectedIndex]
+    // )
+    // machineID = e.options[e.selectedIndex].getAttribute('data-machineID')
+    // alert('machineID - ',machineID)
+
+    //currentDesc = document.getElementById('Desc'+machineID).innerHTML
+    //position = currentDesc.indexOf("(")
+    //currentDesc = currentDesc.slice(0,position)
+    // datashopLocation = e.options[e.selectedIndex].getAttribute('data-location')
+    // dataduration = e.options[e.selectedIndex].getAttribute('data-duration')
+    // datakeyintoolcrib = e.options[e.selectedIndex].getAttribute('data-keyintoolcrib')
+    // datakeyprovider = e.options[e.selectedIndex].getAttribute('data-keyprovider')
+
+    
+    //document.getElementById('machineDescription').value = currentDesc
+    //document.getElementById('machineLocation').value = datashopLocation
+
+    // if (dataduration != 'UNL') {
+    //     dataduration += ' days'
+    // }
+    // console.log('dataduration - ',dataduration)
+    
+    // document.getElementById('modalMachineSuggestedDuration').value = dataduration
+  
+    
+    
+    
+//}
 function saveMachineData() {
     machineTransactionType = document.getElementById('machineTransactionType').innerHTML
-    alert('Saving ' + machineTransactionType + ' transaction.')
     machineDesc = document.getElementById('machineDescription').value
     machineLocation = document.getElementById('machineLocation').value
     suggestedCertificationDuration = document.getElementById('modalMachineSuggestedDuration').value
@@ -1342,8 +1387,7 @@ function saveCertificationModal() {
     duration = document.getElementById('memberCertificationDuration').value
     instructorElement  = document.getElementById('certificationModalInstructors')
     instructorAssigned = instructorElement.options[instructorElement.selectedIndex].value
-    alert('memberCertificationDuration - '+ memberCertificationDuration.value + ' index - ' + memberCertificationDuration.selectedIndex)
-
+    
     let dataToSend = {
         certifyTransactionType: certifyTransactionType,
         memberID: memberID,
