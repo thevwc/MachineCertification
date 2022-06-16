@@ -73,7 +73,7 @@ filterMachineDropdown(shopChoice.value)
 // SET VERSION OF APP AND CURRENT SCREEN SIZE (FOR DEVELOPMENT PURPOSES)
 versionText = document.getElementById('versionText')
 //versionText.innerHTML='ver June 8, 2022  (' + window.innerWidth + ')'
-versionText.innerHTML='ver June 14, 2022'
+versionText.innerHTML='ver June 15, 2022'
 
 // IF NOT A LARGE SCREEN DISPLAY ONLY 1 PANEL AT A TIME INSTEAD OF ALL 3
 handleMediaChange(largeScreen)
@@ -199,7 +199,6 @@ function machineClicked() {
     let option = machineSelected.options[machineSelected.selectedIndex]; 
     machineID = machineSelected.options[machineSelected.selectedIndex].getAttribute('data-machineid')
     sessionStorage.setItem('machineID',machineID)
-    alert('machine selected - '+ machineID)
 
     // CLEAR OTHER SELECTIONS
     if (machineSelected.selectedIndex > 1) {
