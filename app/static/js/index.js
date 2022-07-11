@@ -73,7 +73,7 @@ filterMachineDropdown(shopChoice.value)
 // SET VERSION OF APP AND CURRENT SCREEN SIZE (FOR DEVELOPMENT PURPOSES)
 versionText = document.getElementById('versionText')
 //versionText.innerHTML='ver June 8, 2022  (' + window.innerWidth + ')'
-versionText.innerHTML='ver June 15, 2022'
+versionText.innerHTML='ver July 11, 2022'
 
 // IF NOT A LARGE SCREEN DISPLAY ONLY 1 PANEL AT A TIME INSTEAD OF ALL 3
 handleMediaChange(largeScreen)
@@ -914,6 +914,22 @@ function displayMachineInstructorData(instructorID) {
             }
             divRow.appendChild(chkInput)
             
+            // KEY PROVIDER CHECKBOX
+            var chkInput = document.createElement('input')
+            chkInput.type="checkbox"
+            chkInput.id = 'K' + m['machineID']
+            chkInput.classList.add('col-1')
+            chkInput.classList.add('keyProvider','instrChkbox')
+            chkInput.setAttribute("onclick","keyProviderFunction(this)")
+            if (m['keyProvider']) {
+                chkInput.checked = true
+                chkInput.innerHTML = 'True'
+            }
+            else {
+                chkInput.innerHTML = 'False'
+            }
+            divRow.appendChild(chkInput)
+
             // ASSIST CHECKBOX
             var chkInput = document.createElement('input')
             chkInput.type="checkbox"
@@ -930,21 +946,6 @@ function displayMachineInstructorData(instructorID) {
             }
             divRow.appendChild(chkInput)
 
-            // KEY PROVIDER CHECKBOX
-            var chkInput = document.createElement('input')
-            chkInput.type="checkbox"
-            chkInput.id = 'K' + m['machineID']
-            chkInput.classList.add('col-1')
-            chkInput.classList.add('keyProvider','instrChkbox')
-            chkInput.setAttribute("onclick","keyProviderFunction(this)")
-            if (m['keyProvider']) {
-                chkInput.checked = true
-                chkInput.innerHTML = 'True'
-            }
-            else {
-                chkInput.innerHTML = 'False'
-            }
-            divRow.appendChild(chkInput)
 
             // MACHINE DESCRIPTION
             var divColMachineDesc = document.createElement('div')
@@ -1123,11 +1124,11 @@ function showNewMachineModal() {
     document.getElementById('machineDescription').innerHTML = ''
     document.getElementById('machineDescription').value = ''
     document.getElementById('machineLocation').value = localStorage.getItem('shopLocation')
-    document.getElementById('modalSuggestedDuration').value = '180 days'
+    document.getElementById('modalMachineSuggestedDuration').value = '180 days'
     //document.getElementById('certificationDuration').selectedIndex = 2
     document.getElementById('keyInToolCribID').checked = false
     document.getElementById('keyProviderID').checked = true
-
+    alert('show #machineModal')
     $('#machineModal').modal('show')
     document.getElementById('machineDescription').focus()
 }

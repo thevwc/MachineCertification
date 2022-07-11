@@ -301,6 +301,7 @@ input:read-write {
     #machineFooter {
         grid-area: footerArea;
         display:block;
+        padding-top:5px;
         text-align: center;
         color: var (--machine-bg-color);
         background-color: var (--machine-fg-color);
@@ -309,6 +310,7 @@ input:read-write {
     #memberFooter {
         grid-area: footerArea;
         display:block;
+        padding-top:5px;
         text-align: center;
         color:white;
         background-color: var (--member-bg-color);
@@ -317,6 +319,7 @@ input:read-write {
     #instructorFooter {
         grid-area: footerArea;
         display:block;
+        padding-top:5px;
         text-align: center;
         color:white;
         background-color:  var (--instructor-bg-color);
@@ -781,10 +784,10 @@ input:read-write {
 @media (min-width: 1920px) {
     .parent {
         width:100%;
-        height: 980px;
+        height: 950px;
         display: grid;
         grid-template-columns:1fr 1fr 1fr;
-        grid-template-rows: 50px 50px 840px 40px;
+        grid-template-rows: 50px 50px 810px 50px;
         grid-template-areas:"hdgArea locationSelectorArea versionArea"
                             "machineSelectorArea memberSelectorArea instructorSelectorArea" 
                             "machineDetailArea memberDetailArea instructorDetailArea"

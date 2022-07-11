@@ -726,6 +726,9 @@ def updateInstructorMachineSettings():
             db.session.rollback()
             return jsonify(msg="Update failed.",status=201)
     else:
+        print('machineID - ',machineID)
+        print('memberID - ',memberID)
+        # memberID is missing ????
         sqlInsert = "INSERT INTO machineInstructors (machineID, member_ID, canCertify, canAssist, keyProvider) "
         sqlInsert += "VALUES ('" + machineID + "', '" + memberID + "'," + str(canCertify) + "," + str(canAssist) + "," + str(keyProvider) + ")"
         print(sqlInsert)
@@ -915,7 +918,7 @@ def listCertified():
 
         certifiedDict.append(certifiedItem)
 
-    return render_template("rptcertifiedList.html",\
+    return render_template("rptCertifiedList.html",\
         todaysDate=todays_dateSTR,certifiedDict=certifiedDict,shopName=shopName
         )
 
