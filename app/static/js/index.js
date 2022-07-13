@@ -73,7 +73,7 @@ filterMachineDropdown(shopChoice.value)
 // SET VERSION OF APP AND CURRENT SCREEN SIZE (FOR DEVELOPMENT PURPOSES)
 versionText = document.getElementById('versionText')
 //versionText.innerHTML='ver June 8, 2022  (' + window.innerWidth + ')'
-versionText.innerHTML='ver July 11, 2022'
+versionText.innerHTML='ver July 13, 2022'
 
 // IF NOT A LARGE SCREEN DISPLAY ONLY 1 PANEL AT A TIME INSTEAD OF ALL 3
 handleMediaChange(largeScreen)
@@ -1128,7 +1128,6 @@ function showNewMachineModal() {
     //document.getElementById('certificationDuration').selectedIndex = 2
     document.getElementById('keyInToolCribID').checked = false
     document.getElementById('keyProviderID').checked = true
-    alert('show #machineModal')
     $('#machineModal').modal('show')
     document.getElementById('machineDescription').focus()
 }
