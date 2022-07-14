@@ -118,12 +118,22 @@ def displayMachineData():
     if machine == None:
         msg = "Machine ID " + machineID + " was not found."
         return jsonify(msg=msg,status=400)
-    machineDesc = machine.machineDesc + ' (' + machineID + ') at ' + machine.machineLocation
+    
+    if machine.keyNumber :
+        keyNumber = machine.keyNumber
+        displayKeyNumber = " (key# " + machine.keyNumber + ") "
+    else:
+        keyNumber = ''
+        displayKeyNumber = ''
+
+    machineDesc = machine.machineDesc + displayKeyNumber + ' at ' + machine.machineLocation
     machineLocation = machine.machineLocation
     machineDuration = machine.suggestedCertificationDuration
     keyInToolCrib = machine.keyInToolCrib
     keyProvider = machine.keyProvider
     
+    
+
     # GET INSTRUCTORS FOR THIS MACHINE
         # GET INSTRUCTOR FOR THIS MACHINE
     instructorsDict = []
@@ -237,7 +247,7 @@ def displayMachineData():
     msg="Success"
     status=200
     return jsonify(msg=msg,status=status,machineLocation=machineLocation,machineID=machineID,\
-        machineDesc=machineDesc,machineDuration=machineDuration,\
+        machineDesc=machineDesc,machineDuration=machineDuration,keyNumber=keyNumber,\
         instructorsDict=instructorsDict,\
         certifiedDict=certifiedDict,UsageDict=usageDict,keyInToolCrib=keyInToolCrib,keyProvider=keyProvider)
 
@@ -527,6 +537,7 @@ def editMachine():
     req = request.get_json()
     machineID = req["machineID"]
     machineDesc = req["machineDesc"]
+    keyNumber = req["keyNumber"]
     machineLocation = req["machineLocation"]
     suggestedCertificationDuration = req["suggestedCertificationDuration"]
     #suggestedCertificationDuration = suggestedCertificationDuration.replace(' days','')
@@ -542,7 +553,7 @@ def editMachine():
         machine.suggestedCertificationDuration = suggestedCertificationDuration
         machine.keyInToolCrib = keyInToolCrib
         machine.keyProvider = keyProvider
-    
+        machine.keyNumber = keyNumber
         db.session.commit()
         msg="Update succeeded"
         print(msg)
@@ -576,6 +587,7 @@ def editMachine():
 def newMachine():  
     req = request.get_json()
     machineDesc = req["machineDesc"]
+    keyNumber = req["keyNumber"]
     machineLocation = req["machineLocation"]
     suggestedCertificationDuration = req["suggestedCertificationDuration"]
     keyInToolCrib = req["keyInToolCrib"]
@@ -611,9 +623,9 @@ def newMachine():
     #     return jsonify(msg=msg,status=201)
 
     sqlInsert = "INSERT INTO [machinesRequiringCertification] ([machineID],[machineDesc], [machineLocation],"
-    sqlInsert += "suggestedCertificationDuration,keyInToolCrib,keyProvider) "
+    sqlInsert += "suggestedCertificationDuration,keyInToolCrib,keyProvider,keyNumber) "
     sqlInsert += " VALUES ('" + machineID + "', '" +  machineDesc +"', '" + machineLocation + "', '" 
-    sqlInsert += suggestedCertificationDuration + "'," + str(keyInToolCribNumber) + "," + str(keyProviderNumber) + ")"
+    sqlInsert += suggestedCertificationDuration + "'," + str(keyInToolCribNumber) + "," + str(keyProviderNumber) + "," + str(keyNumber) + ")"
    
     try:
         result = db.engine.execute(sqlInsert)
@@ -948,10 +960,10 @@ def listMachines():
     # sqlSelect += whereClause + " "
     # sqlSelect += "order by lfn_name, machineDesc"
     sqlSelect = "SELECT machineDesc, machineID, machineLocation, suggestedCertificationDuration, "
-    sqlSelect += "keyInToolCrib, keyProvider "
+    sqlSelect += "keyInToolCrib, keyProvider, keyNumber"
     sqlSelect += "FROM machinesRequiringCertification "
-    sqlSelect += "ORDER BY machineDesc"
-
+    sqlSelect += whereClause
+    sqlSelect += " ORDER BY machineDesc"
     machines = db.session.execute(sqlSelect)
 
     machinesDict = []
@@ -1050,8 +1062,11 @@ def getMachineDataForEditModal():
     machineLocation = machine.machineLocation
     keyInToolCrib = machine.keyInToolCrib
     keyProvider = machine.keyProvider
-
+    if machine.keyNumber:
+        keyNumber = machine.keyNumber
+    else:
+        keyNumber = ''
     msg="Success"
     return jsonify(msg=msg,status=200,machineDesc=machineDesc,\
         machineDuration=machineDuration,machineLocation=machineLocation,\
-        keyInToolCrib=keyInToolCrib,keyProvider=keyProvider)
+        keyInToolCrib=keyInToolCrib,keyProvider=keyProvider,keyNumber=keyNumber)

@@ -73,7 +73,7 @@ filterMachineDropdown(shopChoice.value)
 // SET VERSION OF APP AND CURRENT SCREEN SIZE (FOR DEVELOPMENT PURPOSES)
 versionText = document.getElementById('versionText')
 //versionText.innerHTML='ver June 8, 2022  (' + window.innerWidth + ')'
-versionText.innerHTML='ver July 13, 2022'
+versionText.innerHTML='ver July 14, 2022'
 
 // IF NOT A LARGE SCREEN DISPLAY ONLY 1 PANEL AT A TIME INSTEAD OF ALL 3
 handleMediaChange(largeScreen)
@@ -328,11 +328,16 @@ function displayMachineInstructorsAndMembers(machineID) {
         divDurationRow.classList.add('row')
 
         var divCol3 = document.createElement('div')
-        divCol3.classList.add('col-3')
+        divCol3.classList.add('col-2')
         divDurationRow.appendChild(divCol3)
 
+        var divKeyNumber = document.createElement('div')
+        divKeyNumber.classList.add('col-2')
+        divKeyNumber.innerHTML = 'Key - ' + data.keyNumber
+        divDurationRow.appendChild(divKeyNumber)
+
         var divDuration = document.createElement('div')
-        divDuration.classList.add('col-3')
+        divDuration.classList.add('col-2')
         divDuration.innerHTML = data.machineDuration
         divDurationRow.appendChild(divDuration)
         
@@ -1123,6 +1128,8 @@ function showNewMachineModal() {
     document.getElementById('machineModalTitle').innerHTML = 'ADD NEW MACHINE'
     document.getElementById('machineDescription').innerHTML = ''
     document.getElementById('machineDescription').value = ''
+    document.getElementById('keyNumber').innerHTML = ''
+    document.getElementById('keyNumber').value = ''
     document.getElementById('machineLocation').value = localStorage.getItem('shopLocation')
     document.getElementById('modalMachineSuggestedDuration').value = '180 days'
     //document.getElementById('certificationDuration').selectedIndex = 2
@@ -1162,6 +1169,7 @@ function showEditMachineModal() {
 
             // POPULATE EDIT MACHINE MODAL FORM
             document.getElementById('machineDescription').value = data.machineDesc
+            document.getElementById('keyNumber').value = data.keyNumber 
             document.getElementById('machineLocation').value = data.machineLocation
             document.getElementById('modalMachineSuggestedDuration').value = data.machineDuration
             keyInToolCribID.checked = data.keyInToolCrib
@@ -1211,6 +1219,7 @@ function showEditMachineModal() {
 function saveMachineData() {
     machineTransactionType = document.getElementById('machineTransactionType').innerHTML
     machineDesc = document.getElementById('machineDescription').value
+    keyNumber = document.getElementById('keyNumber').value 
     machineLocation = document.getElementById('machineLocation').value
     suggestedCertificationDuration = document.getElementById('modalMachineSuggestedDuration').value
 
@@ -1238,6 +1247,7 @@ function saveMachineData() {
     let dataToSend = {
         machineID:machineID,
         machineDesc: machineDesc,
+        keyNumber: keyNumber,
         machineLocation: machineLocation,
         suggestedCertificationDuration:suggestedCertificationDuration,
         keyInToolCrib:keyInToolCribID.checked,
