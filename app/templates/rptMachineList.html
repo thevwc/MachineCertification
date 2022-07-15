@@ -28,6 +28,7 @@
         <thead>
             <th>Machine</th>
             <th>Machine ID</th>
+	    <th>Key #</th>
             <th style="text-align:center">Suggested Duration</th>
             <th class="chkMark">Key In Tool Crib</th>
             <th class="chkMark">Call Key Provider</th>
@@ -36,6 +37,7 @@
             <tr id=machineLine>
                 <td>{{m['machineDesc']}}</td>
                 <td>{{m['machineID']}}</td>
+                <td>{{m['keyNumber']}}</td>
                 <td style="text-align:center">{{m['machineDuration']}}</td>
                 <td class="chkMark">{% if m['keyInToolCrib'] == True %}&#10004;{% else %}&nbsp;{% endif %}</td>
                 <td class="chkMark">{% if m['keyProvider'] == True %}&#10004;{% else %}&nbsp;{% endif %}</td>

@@ -960,7 +960,7 @@ def listMachines():
     # sqlSelect += whereClause + " "
     # sqlSelect += "order by lfn_name, machineDesc"
     sqlSelect = "SELECT machineDesc, machineID, machineLocation, suggestedCertificationDuration, "
-    sqlSelect += "keyInToolCrib, keyProvider, keyNumber"
+    sqlSelect += "keyInToolCrib, keyProvider, keyNumber "
     sqlSelect += "FROM machinesRequiringCertification "
     sqlSelect += whereClause
     sqlSelect += " ORDER BY machineDesc"
@@ -981,7 +981,8 @@ def listMachines():
             'machineID':m.machineID,
             'machineDuration':m.suggestedCertificationDuration,
             'keyInToolCrib':m.keyInToolCrib,
-            'keyProvider':m.keyProvider
+            'keyProvider':m.keyProvider,
+            'keyNumber':m.keyNumber
         }
         machinesDict.append(machinesItem)
 
