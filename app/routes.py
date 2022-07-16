@@ -625,7 +625,7 @@ def newMachine():
     sqlInsert = "INSERT INTO [machinesRequiringCertification] ([machineID],[machineDesc], [machineLocation],"
     sqlInsert += "suggestedCertificationDuration,keyInToolCrib,keyProvider,keyNumber) "
     sqlInsert += " VALUES ('" + machineID + "', '" +  machineDesc +"', '" + machineLocation + "', '" 
-    sqlInsert += suggestedCertificationDuration + "'," + str(keyInToolCribNumber) + "," + str(keyProviderNumber) + "," + str(keyNumber) + ")"
+    sqlInsert += suggestedCertificationDuration + "', '" + str(keyInToolCribNumber) + "', '" + str(keyProviderNumber) + "', '" + str(keyNumber) + "')"
    
     try:
         result = db.engine.execute(sqlInsert)

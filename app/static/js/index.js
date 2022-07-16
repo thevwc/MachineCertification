@@ -328,11 +328,11 @@ function displayMachineInstructorsAndMembers(machineID) {
         divDurationRow.classList.add('row')
 
         var divCol3 = document.createElement('div')
-        divCol3.classList.add('col-2')
+        divCol3.classList.add('col-1')
         divDurationRow.appendChild(divCol3)
 
         var divKeyNumber = document.createElement('div')
-        divKeyNumber.classList.add('col-2')
+        divKeyNumber.classList.add('col-3')
         divKeyNumber.innerHTML = 'Key - ' + data.keyNumber
         divDurationRow.appendChild(divKeyNumber)
 
