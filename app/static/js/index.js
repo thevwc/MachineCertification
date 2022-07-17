@@ -73,7 +73,7 @@ filterMachineDropdown(shopChoice.value)
 // SET VERSION OF APP AND CURRENT SCREEN SIZE (FOR DEVELOPMENT PURPOSES)
 versionText = document.getElementById('versionText')
 //versionText.innerHTML='ver June 8, 2022  (' + window.innerWidth + ')'
-versionText.innerHTML='ver July 14, 2022'
+versionText.innerHTML='ver July 17, 2022'
 
 // IF NOT A LARGE SCREEN DISPLAY ONLY 1 PANEL AT A TIME INSTEAD OF ALL 3
 handleMediaChange(largeScreen)
