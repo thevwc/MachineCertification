@@ -101,6 +101,7 @@ def getMemberLoginData():
     if password != member.Password:
         msg = "The password does not match the password on file for <br>" + memberName + "."
         return jsonify(msg=msg,status=200)
+    print('member.machineCertificationStaff - ',member.machineCertificationStaff)
     
     if member.machineCertificationStaff != True:
         msg = "You are not currently authorized to use this application."

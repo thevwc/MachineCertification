@@ -73,7 +73,7 @@ filterMachineDropdown(shopChoice.value)
 // SET VERSION OF APP AND CURRENT SCREEN SIZE (FOR DEVELOPMENT PURPOSES)
 versionText = document.getElementById('versionText')
 //versionText.innerHTML='ver June 8, 2022  (' + window.innerWidth + ')'
-versionText.innerHTML='ver July 17, 2022'
+versionText.innerHTML='ver July 18, 2022'
 
 // IF NOT A LARGE SCREEN DISPLAY ONLY 1 PANEL AT A TIME INSTEAD OF ALL 3
 handleMediaChange(largeScreen)
@@ -1313,7 +1313,10 @@ function certifyFunction(el) {
     document.getElementById('S'+el.id.substring(1,8)).style.display='block'
 }
 function assistFunction(el) {
+    id = 'S'+el.id.substring(1,8)
+    //alert('id - '+id)
     document.getElementById('S'+el.id.substring(1,8)).style.display='block'
+    //document.getElementById(id).style.display='block'
 }
 function keyProviderFunction(el) {
     document.getElementById('S'+el.id.substring(1,8)).style.display='block'
